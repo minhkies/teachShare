@@ -5,8 +5,8 @@ import SubjectsFilterStyles from '../compstyles/SubjectsFilterStyles';
 export default function SubjectsFilter() {
     let margin;
     let initSelect = [];
+    let tempStyles=[];
     let [select, setSelect] = useState([]);
-    let tempStyles = [];
     let [styles, setStyles] = useState([]);
 
     let currentUser=[
@@ -28,16 +28,13 @@ export default function SubjectsFilter() {
         }
     ];
 
-    for (let i=0; i <=currentUser[0].subjects.length; i++){
-        initSelect.push(true);
-    }
-
     let ShowOptions = ({subject, grade, ind}) => {
         if (ind===0){
             margin = 20
         } else {
             margin = 10
         }
+
         return(
             <TouchableOpacity style={{marginLeft: margin}}
                               onPress={()=>{
@@ -50,14 +47,22 @@ export default function SubjectsFilter() {
     };
 
     let HandleClick = (ind) => {
+        initSelect=select;
         initSelect[ind]=!initSelect[ind];
+        setSelect(initSelect);
         for (let i = 0; i < initSelect.length; i++){
-            initSelect[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt
+            select[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt
         }
         setStyles(tempStyles);
+        console.log(select, initSelect);
     };
 
-
+    useEffect(()=>{
+        for (let i=0; i <currentUser[0].subjects.length; i++){
+            initSelect.push(true);
+        }
+        setSelect(initSelect);
+    },[]);
 
     return(
         <View style={SubjectsFilterStyles.wrapper}>
