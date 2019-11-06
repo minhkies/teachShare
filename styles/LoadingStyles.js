@@ -4,8 +4,7 @@ const LoadingStyles = StyleSheet.create({
     wrapper:{
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
-        margin: -20
+        alignItems: "center"
     },
     top:{
         flex: 8,
