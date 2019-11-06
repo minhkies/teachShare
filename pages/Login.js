@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
 import LoginStyles from "../styles/LoginStyles";
-// import {Actions} from 'react-native-router-flux';
+import {Actions} from 'react-native-router-flux';
 
 export default function Login(){
     let [pass, setPass] = useState(true);
@@ -64,12 +64,13 @@ export default function Login(){
                     <TouchableOpacity
                         style={[LoginStyles.btn, LoginStyles.loginBtn]}
                         // onPress={handleLogin}
+                        onPress={()=>Actions.main()}
                     >
                         <Text style={LoginStyles.loginBtnTxt}>Login</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[LoginStyles.btn, LoginStyles.registerBtn]}
-                        // onPress={() => Actions.register()}
+                        onPress={() => Actions.register()}
                         >
                         <Text style={LoginStyles.registerBtnTxt}>Register</Text>
                     </TouchableOpacity>

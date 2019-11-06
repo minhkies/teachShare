@@ -32,12 +32,12 @@ import Login from './pages/Login'
 import Main from './pages/Main'
 import Router from './Route'
 import AppStyles from './styles/AppStyles';
-// import Route from './Route';
+import Route from './Route';
 
 export default function App() {
   return(
     <View style={AppStyles.app}>
-      <Main/>
+      <Route/>
     </View>
 
   )
