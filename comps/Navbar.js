@@ -13,36 +13,37 @@ export default function Navbar(props) {
 
     let data = [
         {
-            "img": null,
-            "lbl": null,
-            "page": "home",
-            "hook": setHome,
+            'img': null,
+            'lbl': null,
+            'page': 'home',
+            'hook': setHome,
         },
         {
-            "img": null,
-            "lbl": null,
-            "page": "discover",
-            "hook": setDiscover,
+            'img': null,
+            'lbl': null,
+            'page': 'discover',
+            'hook': setDiscover,
         },
         {
-            "img": null,
-            "lbl": null,
-            "page": "createPost",
-            "hook": setCreate,
+            'img': null,
+            'lbl': null,
+            'page': 'createPost',
+            'hook': setCreate,
         },
         {
-            "img": null,
-            "lbl": null,
-            "page": "notifications",
-            "hook": setNotifications,
+            'img': null,
+            'lbl': null,
+            'page': 'notifications',
+            'hook': setNotifications,
         },
         {
-            "img": null,
-            "lbl": null,
-            "page": "more",
-            "hook": setMore,
+            'img': null,
+            'lbl': null,
+            'page': 'more',
+            'hook': setMore,
         },
     ];
+
     function falseEverything() {
         setHome(false);
         setDiscover(false);
@@ -51,7 +52,7 @@ export default function Navbar(props) {
         setMore(false);
     }
 
-    if (home===true){
+    if (home === true) {
         data[0].img = <Image style={NavbarStyles.icon} source={require('../media/icon/home-selected.png')}/>;
         data[0].lbl = <Text style={NavbarStyles.txtSelected}>Home</Text>;
     } else {
@@ -59,7 +60,7 @@ export default function Navbar(props) {
         data[0].lbl = <Text style={NavbarStyles.txt}>Home</Text>;
     }
 
-    if (discover===true){
+    if (discover === true) {
         data[1].img = <Image style={NavbarStyles.icon} source={require('../media/icon/discover-selected.png')}/>;
         data[1].lbl = <Text style={NavbarStyles.txtSelected}>Discover</Text>;
     } else {
@@ -67,7 +68,7 @@ export default function Navbar(props) {
         data[1].lbl = <Text style={NavbarStyles.txt}>Discover</Text>;
     }
 
-    if (create===true){
+    if (create === true) {
         data[2].img = <Image style={NavbarStyles.icon} source={require('../media/icon/create-selected.png')}/>;
         data[2].lbl = <Text style={NavbarStyles.txtSelected}>Create</Text>;
     } else {
@@ -75,7 +76,7 @@ export default function Navbar(props) {
         data[2].lbl = <Text style={NavbarStyles.txt}>Create</Text>;
     }
 
-    if (notifications===true){
+    if (notifications === true) {
         data[3].img = <Image style={NavbarStyles.icon} source={require('../media/icon/notification-selected.png')}/>;
         data[3].lbl = <Text style={NavbarStyles.txtSelected}>Notifications</Text>;
     } else {
@@ -83,7 +84,7 @@ export default function Navbar(props) {
         data[3].lbl = <Text style={NavbarStyles.txt}>Notifications</Text>;
     }
 
-    if (more===true){
+    if (more === true) {
         data[4].img = <Image style={NavbarStyles.icon} source={require('../media/icon/more-selected.png')}/>;
         data[4].lbl = <Text style={NavbarStyles.txtSelected}>More</Text>;
     } else {
@@ -92,10 +93,10 @@ export default function Navbar(props) {
     }
 
     let MenuOptions = ({ind, img, lbl, page, hook}) => {
-        return(
+        return (
             <TouchableOpacity
                 style={NavbarStyles.iconWrapper}
-                onPress={()=>{
+                onPress={() => {
                     falseEverything();
                     hook(true);
                     Actions[page]();
@@ -104,28 +105,24 @@ export default function Navbar(props) {
                 {img}
                 {lbl}
             </TouchableOpacity>
-        )
+        );
     };
 
-    if (props.OS==="android"){
-        return(
-            <View style={NavbarStyles.wrapper}>
-                {
-                    data.map((obj, ind)=>{
-                        return(
-                            <MenuOptions
-                                key={ind}
-                                img={obj.img}
-                                lbl={obj.lbl}
-                                page={obj.page}
-                                hook={obj.hook}
-                            />
-                        )
-                    })
-                }
-            </View>
-        )
-    }
-
-
+    return (
+        <View style={NavbarStyles.wrapper}>
+            {
+                data.map((obj, ind) => {
+                    return (
+                        <MenuOptions
+                            key={ind}
+                            img={obj.img}
+                            lbl={obj.lbl}
+                            page={obj.page}
+                            hook={obj.hook}
+                        />
+                    );
+                })
+            }
+        </View>
+    );
 }
