@@ -91,23 +91,35 @@ export default function Navbar(props) {
         data[4].lbl = <Text style={NavbarStyles.txt}>More</Text>;
     }
 
+    let MenuOptions = ({ind, img, lbl, page, hook}) => {
+        return(
+            <TouchableOpacity
+                style={NavbarStyles.iconWrapper}
+                onPress={()=>{
+                    falseEverything();
+                    hook(true);
+                    Actions[page]();
+                }}
+            >
+                {img}
+                {lbl}
+            </TouchableOpacity>
+        )
+    };
+
     if (props.OS==="android"){
         return(
             <View style={NavbarStyles.wrapper}>
                 {
                     data.map((obj, ind)=>{
                         return(
-                            <TouchableOpacity
-                                style={NavbarStyles.iconWrapper}
-                                onPress={()=>{
-                                    falseEverything();
-                                    obj.hook(true);
-                                    Actions[obj.page]();
-                                }}
-                            >
-                                {obj.img}
-                                {obj.lbl}
-                            </TouchableOpacity>
+                            <MenuOptions
+                                key={ind}
+                                img={obj.img}
+                                lbl={obj.lbl}
+                                page={obj.page}
+                                hook={obj.hook}
+                            />
                         )
                     })
                 }

@@ -1,8 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import  {View, ScrollView, Text, TouchableOpacity} from 'react-native';
+import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import SubjectsFilterStyles from '../compstyles/SubjectsFilterStyles';
 
 export default function SubjectsFilter() {
+    let margin;
+    let initSelect = [];
+    let [select, setSelect] = useState([]);
+    let tempStyles = [];
+    let [styles, setStyles] = useState([]);
+
     let currentUser=[
         {
             subjects: [
@@ -22,6 +28,34 @@ export default function SubjectsFilter() {
         }
     ];
 
+    for (let i=0; i <=currentUser[0].subjects.length; i++){
+        initSelect.push(true);
+    }
+
+    let ShowOptions = ({subject, grade, ind}) => {
+        if (ind===0){
+            margin = 20
+        } else {
+            margin = 10
+        }
+        return(
+            <TouchableOpacity style={{marginLeft: margin}}
+                              onPress={()=>{
+                                    HandleClick(ind)
+                              }}
+            >
+                <Text style={[SubjectsFilterStyles.txt, SubjectsFilterStyles.selectedTxt, styles[ind]]}>{subject} {grade}</Text>
+            </TouchableOpacity>
+        )
+    };
+
+    let HandleClick = (ind) => {
+        initSelect[ind]=!initSelect[ind];
+        for (let i = 0; i < initSelect.length; i++){
+            initSelect[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt
+        }
+        setStyles(tempStyles);
+    };
 
 
 
@@ -35,32 +69,12 @@ export default function SubjectsFilter() {
             >
                 {
                     currentUser[0].subjects.map((obj, ind)=>{
-                        let margin;
-                        if (ind===0){
-                            margin = 20
-                        } else {
-                            margin = 10
-                        }
-                        const handleBtn = () => {
-                            let [select, setSelect] = useState(true);
-                            let tagStyles = null;
-                            useEffect(()=>{
-                                if (select===true){
-                                    tagStyles = SubjectsFilterStyles.selectedTxt;
-                                } else {
-                                    tagStyles = SubjectsFilterStyles.unselectedTxt;
-                                }
-                            })
-                        };
-                        return(
-                            <TouchableOpacity style={{marginLeft: margin}}
-                                onPress={()=>{
-                                    handleBtn()
-                                }}
-                            >
-                                <Text style={[SubjectsFilterStyles.txt, tagStyles]}>{obj.sub} {obj.grade}</Text>
-                            </TouchableOpacity>
-                        )
+                        return <ShowOptions
+                            key={ind}
+                            ind={ind}
+                            subject={obj.sub}
+                            grade={obj.grade}
+                        />
                     })
                 }
             </ScrollView>
