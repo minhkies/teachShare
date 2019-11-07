@@ -8,20 +8,20 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
+    SafeAreaView,
+    StyleSheet,
+    ScrollView,
+    View,
+    Text,
+    StatusBar,
 } from 'react-native';
 
 import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
+    Header,
+    LearnMoreLinks,
+    Colors,
+    DebugInstructions,
+    ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 
@@ -34,11 +34,13 @@ import Router from './Route'
 import AppStyles from './styles/AppStyles';
 import Route from './Route';
 
-export default function App() {
-  return(
-    <View style={AppStyles.app}>
+function App() {
+    return (
+        <View style={AppStyles.app}>
       <Route/>
     </View>
 
-  )
+    )
 }
+
+export default from "./storybook";

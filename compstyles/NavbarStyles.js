@@ -11,6 +11,7 @@ const NavbarStyles = StyleSheet.create({
         alignItems: "center",
         marginBottom: -20,
         backgroundColor: "white",
+        paddingTop: 10,
         paddingBottom: 30,
         ...Platform.select({
             ios: {
@@ -20,8 +21,8 @@ const NavbarStyles = StyleSheet.create({
             },
             android: {
                 justifyContent: "space-between",
-                paddingLeft: 60,
-                paddingRight: 60,
+                paddingLeft: 55,
+                paddingRight: 55,
             },
         }),
     },
@@ -30,18 +31,20 @@ const NavbarStyles = StyleSheet.create({
         alignItems: "center"
     },
     icon:{
-        height: 20,
-        width: 20,
-        resizeMode: "contain"
+        height: 18,
+        width: 18,
+        resizeMode: "stretch",
+        justifyContent: "center",
+        alignItems: "center"
     },
     txt:{
         paddingTop: 5,
-        fontSize: 11,
+        fontSize: 10,
         color: "black"
     },
     txtSelected:{
         paddingTop: 5,
-        fontSize: 11,
+        fontSize: 10,
         color: "#007dff"
     }
 });
