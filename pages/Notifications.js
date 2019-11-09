@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text,Image,StyleSheet} from 'react-native';
 
 export default function Notifications(){
     return(
@@ -13,21 +13,21 @@ export default function Notifications(){
             <Text style={styles.bodyletter}>
                 <Image
                     style={styles.img}
-                    source={require('../Img/appreciations.png')}
+                    source={require('../media/icon/download.png')}
                 />
                 90 new appreciations for our posts
             </Text>
             <Text style={styles.bodyletter}>
                 <Image
                     style={styles.img}
-                    source={require('../Img/download.png')}
+                    source={require('../media/icon/download.png')}
                 />
                 90 new downloads on your posts
             </Text>
             <Text style={styles.bodyletter}>
                 <Image
                     style={styles.img}
-                    source={require('../Img/comments.png')}
+                    source={require('../media/icon/download.png')}
                 />
                 90 new comments on our posts
             </Text>
