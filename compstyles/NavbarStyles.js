@@ -16,8 +16,8 @@ const NavbarStyles = StyleSheet.create({
         ...Platform.select({
             ios: {
                 justifyContent: "space-around",
-                paddingLeft: 0,
-                paddingRight: 0,
+                paddingLeft: 20,
+                paddingRight: 20,
             },
             android: {
                 justifyContent: "space-between",
