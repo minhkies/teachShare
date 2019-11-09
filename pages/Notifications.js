@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   Image,
   FlatList,
   TouchableOpacity,
+  ScrollView
 } from 'react-native';
+import NotificaionsStyles from '../styles/NotificaionsStyles';
 
 function NotificationItem(props) {
     const style = {
@@ -39,7 +40,7 @@ function NotificationItem(props) {
     );
 }
 
-function Notification(){
+function Notifications(){
     const [selectedId, setSelectedId] = useState('');
     
     const notifications = [
@@ -65,7 +66,7 @@ function Notification(){
     };
     
     return(
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
 {/* Title and Sub */}
             <View style={styles.header}>
                 <Text style={styles.title}>Notifications</Text>
@@ -90,61 +91,9 @@ function Notification(){
                 />
 
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
 
-// Style for this Page
-
-const styles = StyleSheet.create({
-    container: {
-        // height: '100%',
-    },
-    title: {
-      fontSize: 29,
-      fontWeight: 'bold',
-
-    },
-    subtitle: {
-        fontSize: 8,
-        fontWeight: 'bold',
-        paddingTop: 2,
-    },
-    bodyletter: {
-        fontSize: 12,
-
-    },
-    img: {
-        width: 25, 
-        height: 25,
-        marginRight: 10,
-        marginLeft: 10,
-    },
-    header: {
-        marginTop: 35,
-        marginLeft: 15,
-        width: '100%',
-    },
-    notiList: {
-        width: '90%',
-        marginTop: 25,
-        marginBottom: 15,
-        marginRight: 14,
-        marginLeft: 14,
-    },
-    notiListItem: {
-        flexDirection: "row",
-        alignItems: 'center',
-        marginTop: 3,
-        marginBottom: 3,
-        paddingTop: 15,
-        paddingBottom: 15,
-        borderRadius: 5,
-        
-    },
-
-  });
-
-
-export default Notification;
+export default Notifications;
