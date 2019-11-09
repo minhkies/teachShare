@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView
 } from 'react-native';
-import NotificaionsStyles from '../styles/NotificaionsStyles';
+import styles from '../styles/NotificaitionsStyles';
 
 function NotificationItem(props) {
     const style = {
