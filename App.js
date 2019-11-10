@@ -37,9 +37,8 @@ import Route from './Route';
 function App() {
     return (
         <View style={AppStyles.app}>
-      <Route/>
-    </View>
-
+            <Route/>
+        </View>
     )
 }
 
