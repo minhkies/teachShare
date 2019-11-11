@@ -43,4 +43,4 @@ function App() {
     )
 }
 
-export default from "./comps/CoreCompetencies";
+export default from "./storybook";

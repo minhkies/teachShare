@@ -45,9 +45,75 @@ let CoreCompetenciesStyles = StyleSheet.create({
         backgroundColor: "#4FB76E"
     },
     modalPopup:{
-        backgroundColor: "rgba(255,255,255,.5)",
+        margin: 0,
+        width: "100%",
+        height: "100%",
+        padding: 20,
+        backgroundColor: "white",
         justifyContent: "space-around",
         alignItems: "center"
+    },
+    popupContentWrapper:{
+        flex: 9,
+        justifyContent: "flex-start",
+        width: "100%"
+    },
+    popupHeadingWrapper:{
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        marginTop: 40,
+    },
+    popupHeading:{
+        fontSize: 36,
+        fontWeight: "bold",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    popupDesc:{
+        alignItems: "center",
+        color: "gray",
+        marginBottom: 50
+    },
+    popupSelectionsWrapper:{
+        justifyContent: "center",
+        alignItems: "stretch",
+    },
+    popupSubCoreBtn:{
+        margin: 5,
+        padding: 20,
+        borderRadius: 40,
+        borderWidth: 1,
+        justifyContent: "center",
+        alignItems:"center",
+        fontWeight: "bold"
+    },
+    popupProfileSelectionsWrapper:{
+        flexDirection: "row",
+        marginTop: 5,
+        marginBottom: 5,
+        alignItems: "stretch",
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingRight: 10,
+        borderRadius: 10
+    },
+    popupProfileLevels:{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: -10,
+        marginBottom: -10,
+        borderBottomLeftRadius: 10,
+        borderTopLeftRadius: 10
+    },
+    popupProfileLevelsTxt:{
+        color: "white",
+        fontWeight: "bold",
+        fontSize: 18
+    },
+    popupProfileDesc:{
+        flex: 6,
+        paddingLeft: 10
     }
 });
 
