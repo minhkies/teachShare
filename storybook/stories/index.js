@@ -7,6 +7,7 @@ import SearchBar from '../../comps/SearchBar';
 import SubjectsFilter from '../../comps/SubjectsFilter';
 import Discover from '../../pages/Discover';
 import Home from '../../pages/Home';
+import { MenuProvider } from 'react-native-popup-menu';
 
 storiesOf('Universal', module)
     .add('Nav Bar', () => <Navbar />)
@@ -15,5 +16,5 @@ storiesOf('Universal', module)
     .add('Subjects Filter', () => <SubjectsFilter />);
 
 storiesOf('Homepage', module)
-    .add('Home', () => <Home />)
-    .add('Discover', () => <Discover />);
+    .add('Home', () => <MenuProvider><Home /></MenuProvider>)
+    .add('Discover', () => <MenuProvider><Discover /></MenuProvider>);
