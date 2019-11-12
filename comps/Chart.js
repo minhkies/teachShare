@@ -6,9 +6,10 @@ import charts from '../stores/ChartStore';
 export default function Chart({style}) {
     
     function renderOptions() {
-        return charts.map((obj, i)=> {
+        return charts.map((obj, ind)=> {
             return (
                 <TouchableOpacity style={[ChartStyles.rect, {backgroundColor: obj.color}]}
+                                  key={ind}
                                   onPress={() => {
                                       HandleClick(i)
                                   }}>

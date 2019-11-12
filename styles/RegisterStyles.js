@@ -17,7 +17,6 @@ const RegisterStyles = StyleSheet.create({
         fontWeight: "700"
     },
     inpWrapper:{
-        elevation : 10,
         borderRadius: 15,
         backgroundColor: "white",
         padding: 10,

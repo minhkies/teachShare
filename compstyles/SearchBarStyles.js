@@ -9,7 +9,6 @@ const SearchBarStyles = StyleSheet.create({
         marginBottom: 15
     },
     img:{
-        elevation: 1,
         marginLeft: 10,
         width: 15,
         height: 15,

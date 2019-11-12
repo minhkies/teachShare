@@ -10,8 +10,8 @@ import posts from '../stores/PostStore';
 export default function Discover(){
     
     function renderCards() {
-        return posts.map(data => {
-            return <Card data={data} style={DiscoverStyles.card}/>
+        return posts.map((data, ind) => {
+            return <Card data={data} key={ind} style={DiscoverStyles.card}/>
         })
     }
 

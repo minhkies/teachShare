@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, ScrollView, Image} from 'react-native';
 // import ShadowView from 'react-native-simple-shadow-view/src/ShadowView';
-// import firebase from 'react-native-firebase';
-// import {Actions} from 'react-native-router-flux'
+import firebase from 'react-native-firebase';
+import {Actions} from 'react-native-router-flux'
 import RegisterStyles from "../styles/RegisterStyles";
 
 export default function Register() {
@@ -22,16 +22,13 @@ export default function Register() {
         passIcon=require("../media/icon/eye.png")
     }
 
-    // let handleSignUp = () => {
-    //     // TODO: Firebase stuff...
-    //     console.log('handleSignUp');
-    //     firebase
-    //       .auth()
-    //       .createUserWithEmailAndPassword(setEmail, setPassword)
-    //       .then(() => Actions.login())
-    //       .catch(error => setErrorMsg({ errorMessage: error.message }))
-    // };
-
+    let handleSignUp = () => {
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password)
+          .then(() => Actions.login())
+          .catch(error => alert(error));
+    };
 
     return(
         <ScrollView style={RegisterStyles.wrapper}
@@ -76,8 +73,8 @@ export default function Register() {
                     <TextInput
                         style={RegisterStyles.inp}
                         placeholder={"Enter a school username"}
-                        value={null}
-                        onValueChange={()=>{}}
+                        value={email}
+                        onChangeText={(val)=>{setEmail(val)}}
                     />
                 </View>
                 <View style={RegisterStyles.inpWrapper}>
@@ -88,6 +85,7 @@ export default function Register() {
                           secureTextEntry={pass}
                           autoCapitalize="none"
                           placeholder="Enter a password"
+                          onChangeText={(val)=>{setPassword(val)}}
                         />
                         <TouchableOpacity
                           style={RegisterStyles.passImgWrapper}
@@ -104,13 +102,13 @@ export default function Register() {
             <View style={RegisterStyles.btnWrapper}>
                 <TouchableOpacity
                   style={RegisterStyles.registerBtn}
-                  // onPress={handleSignUp}
+                  onPress={handleSignUp}
                 >
                     <Text style={RegisterStyles.registerBtnTxt}>Register</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={RegisterStyles.loginBtn}
-                    // onPress={()=>{Actions.login()}}
+                    onPress={()=>{Actions.login()}}
                 >
                     <Text style={RegisterStyles.loginBtnTxt}>Already have an account? Login</Text>
                 </TouchableOpacity>

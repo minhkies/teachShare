@@ -8,13 +8,13 @@ import {Actions} from 'react-native-router-flux';
 export default function Loading() {
 
     let componentDidMount = (
-    firebase.auth().onAuthStateChanged(user => {
-      if (user){
-        Actions.main()
-      } else {
-        Actions.login()
-      }
-    })
+      firebase.auth().onAuthStateChanged(user => {
+        if (user){
+          Actions.main()
+        } else {
+          Actions.login()
+        }
+      })
     );
 
     return(

@@ -6,8 +6,7 @@ import {
     Menu,
     MenuOptions,
     MenuOption,
-    MenuTrigger,
-    MenuProvider
+    MenuTrigger
 } from 'react-native-popup-menu';
 
 const CardIconLikeCount = 1;
@@ -45,7 +44,6 @@ export default function Card({data, style}) {
     };
 
     return(
-        <MenuProvider>
         <View style={[CardStyles.container, style]}>
             <View style={CardStyles.cardTitleContainer}>
                 <UserAvatar user={data.user}/>
@@ -76,6 +74,5 @@ export default function Card({data, style}) {
                 <Text style={CardStyles.CardIconTime}>{data.createdTime}</Text>
             </View>
         </View>
-        </MenuProvider>
     )
 }

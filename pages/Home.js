@@ -9,8 +9,8 @@ import posts from '../stores/PostStore';
 
 export default function Home() {
     function renderPosts() {
-        return posts.map(data => {
-            return <Card data={data} style={HomeStyles.card}/>
+        return posts.map((data, ind) => {
+            return <Card data={data} key={ind} style={HomeStyles.card}/>
         })
     }
     
