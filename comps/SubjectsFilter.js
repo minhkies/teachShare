@@ -28,8 +28,12 @@ export default function SubjectsFilter() {
         }
     ];
 
-    let ShowOptions = ({subject, grade, i}) => {
-        if (i===0){
+    for (let i=0; i <=currentUser[0].subjects.length; i++){
+        initSelect.push(true);
+    }
+
+    let ShowOptions = ({subject, grade, ind}) => {
+        if (ind===0){
             margin = 20
         } else {
             margin = 10
@@ -38,23 +42,26 @@ export default function SubjectsFilter() {
         return(
             <TouchableOpacity style={{marginLeft: margin}}
                               onPress={()=>{
-                                    HandleClick(i)
+                                  HandleClick(ind)
                               }}
             >
-                <Text style={[SubjectsFilterStyles.txt, SubjectsFilterStyles.selectedTxt, styles[i]]}>{subject} {grade}</Text>
+                <Text style={[SubjectsFilterStyles.txt, SubjectsFilterStyles.selectedTxt, styles[ind]]}>{subject} {grade}</Text>
             </TouchableOpacity>
         )
     };
 
-    let HandleClick = (i) => {
+    let HandleClick = (ind) => {
         initSelect=select;
-        initSelect[i]=!initSelect[i];
+        initSelect[ind]=!initSelect[ind];
         setSelect(initSelect);
-        for (let x = 0; x < initSelect.length; x++){
-            select[x] ? tempStyles[x]=SubjectsFilterStyles.selectedTxt : tempStyles[x] = SubjectsFilterStyles.unselectedTxt
+        for (let i = 0; i < initSelect.length; i++){
+            initSelect[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt
+            select[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt
         }
         setStyles(tempStyles);
+        console.log(select, initSelect);
     };
+
 
     useEffect(()=>{
         for (let i=0; i <currentUser[0].subjects.length; i++){
@@ -72,10 +79,10 @@ export default function SubjectsFilter() {
                 style={SubjectsFilterStyles.selectionWrapper}
             >
                 {
-                    currentUser[0].subjects.map((obj, i)=>{
+                    currentUser[0].subjects.map((obj, ind)=>{
                         return <ShowOptions
-                            key={i}
-                            ind={i}
+                            key={ind}
+                            ind={ind}
                             subject={obj.sub}
                             grade={obj.grade}
                         />
