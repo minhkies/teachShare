@@ -30,6 +30,7 @@ import AppStyles from './styles/AppStyles';
 import Route from './Route';
 
 function App() {
+    console.disableYellowBox = true;
     return (
         <View style={AppStyles.app}>
       <Route/>
@@ -38,5 +39,5 @@ function App() {
     )
 }
 
-export default from "./storybook";
-// export default App;
+// export default from "./storybook";
+export default App;

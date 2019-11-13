@@ -3,6 +3,7 @@ import {Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
 import LoginStyles from "../styles/LoginStyles";
 import {Actions} from 'react-native-router-flux';
 import firebase from 'react-native-firebase';
+import UserData from '../data/UserData';
 
 export default function Login(){
     let [pass, setPass] = useState(true);
@@ -23,8 +24,11 @@ export default function Login(){
         firebase
             .auth()
             .signInWithEmailAndPassword(tempEmail, tempPassword)
-            .then(() => Actions.main())
-            .catch(error => this.setState({ errorMessage: error.message }))
+            .then(() => {
+                UserData();
+                Actions.main();
+            })
+            .catch(error => setErrorMsg(error))
     };
 
 

@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "android-phone": "adb reverse tcp:8081 tcp:8081 && react-native start"
   },
   "dependencies": {
     "@react-native-firebase/app": "^6.0.3",

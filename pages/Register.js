@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, ScrollView, Image, Modal} from 'react-native';
 // import ShadowView from 'react-native-simple-shadow-view/src/ShadowView';
 import firebase from 'react-native-firebase';
 import firestore from '@react-native-firebase/firestore';
 import {Actions} from 'react-native-router-flux';
 import RegisterStyles from "../styles/RegisterStyles";
+import UserData from '../data/UserData';
 
 export default function Register() {
     const ref = firestore().collection('UserProfiles');
@@ -33,7 +34,8 @@ export default function Register() {
             .catch(error => setErrorMsg(error))
     };
 
-    async function addUserProfile() {
+    let addUserProfile = async () => {
+
         const {currentUser} = firebase.auth();
         console.log(lastName);
         await ref.doc(currentUser && currentUser.uid).set({
@@ -41,9 +43,11 @@ export default function Register() {
             lname: lastName,
             school: school,
         })
-        .then(()=>Actions.main());
-    }
-
+        .then(()=>{
+            UserData();
+            Actions.main();
+        });
+    };
     return(
         <ScrollView style={RegisterStyles.wrapper}
                     showsVerticalScrollIndicator={false}>
