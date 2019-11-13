@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
 import LoginStyles from "../styles/LoginStyles";
 import {Actions} from 'react-native-router-flux';
+import firebase from 'react-native-firebase';
 
 export default function Login(){
     let [pass, setPass] = useState(true);
@@ -16,10 +17,16 @@ export default function Login(){
         passIcon=require("../media/icon/eye.png")
     }
 
-    // let handleLogin = () => {
-    //     // TODO: Firebase stuff...
-    //     console.log('handleSignUp')
-    // };
+    let HandleLogin = () => {
+        // TODO: Firebase stuff...
+        let tempEmail = email, tempPassword = password;
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(tempEmail, tempPassword)
+            .then(() => Actions.main())
+            .catch(error => this.setState({ errorMessage: error.message }))
+    };
+
 
     return(
         <View style={LoginStyles.wrapper}>
@@ -63,8 +70,8 @@ export default function Login(){
                 <View style={LoginStyles.btnWrapper}>
                     <TouchableOpacity
                         style={[LoginStyles.btn, LoginStyles.loginBtn]}
-                        // onPress={handleLogin}
-                        onPress={()=>Actions.main()}
+                        onPress={HandleLogin}
+                        // onPress={()=>Actions.main()}
                     >
                         <Text style={LoginStyles.loginBtnTxt}>Login</Text>
                     </TouchableOpacity>

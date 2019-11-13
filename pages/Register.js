@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, ScrollView, Image} from 'react-native';
 // import ShadowView from 'react-native-simple-shadow-view/src/ShadowView';
-// import firebase from 'react-native-firebase';
-// import {Actions} from 'react-native-router-flux'
+import firebase from 'react-native-firebase';
+import firestore from '@react-native-firebase/firestore';
+import {Actions} from 'react-native-router-flux';
 import RegisterStyles from "../styles/RegisterStyles";
 
 export default function Register() {
+    const ref = firestore().collection('UserProfiles');
     let [pass, setPass] = useState(true);
     let [firstName, setFirstName] = useState();
     let [lastName, setLastName] = useState();
@@ -22,16 +24,25 @@ export default function Register() {
         passIcon=require("../media/icon/eye.png")
     }
 
-    // let handleSignUp = () => {
-    //     // TODO: Firebase stuff...
-    //     console.log('handleSignUp');
-    //     firebase
-    //       .auth()
-    //       .createUserWithEmailAndPassword(setEmail, setPassword)
-    //       .then(() => Actions.login())
-    //       .catch(error => setErrorMsg({ errorMessage: error.message }))
-    // };
+    let HandleSignUp = () => {
+        // TODO: Firebase stuff...
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(() => addUserProfile())
+            .catch(error => setErrorMsg(error))
+    };
 
+    async function addUserProfile() {
+        const {currentUser} = firebase.auth();
+        console.log(lastName);
+        await ref.doc(currentUser && currentUser.uid).set({
+            fname: firstName,
+            lname: lastName,
+            school: school,
+        })
+        .then(()=>Actions.main());
+    }
 
     return(
         <ScrollView style={RegisterStyles.wrapper}
@@ -47,8 +58,7 @@ export default function Register() {
                         style={RegisterStyles.inp}
                         placeholder={"Enter your first name"}
                         autoCapitalize="words"
-                        value={null}
-                        onChangeText={()=>{}}
+                        onChangeText={(txt)=>{setFirstName(txt)}}
                     />
                 </View>
                 <View style={RegisterStyles.inpWrapper}>
@@ -57,27 +67,25 @@ export default function Register() {
                         style={RegisterStyles.inp}
                         placeholder={"Enter your last name"}
                         autoCapitalize="words"
-                        value={null}
-                        onValueChange={()=>{}}
+                        onChangeText={(txt)=>{setLastName(txt)}}
                     />
                 </View>
                 <View style={RegisterStyles.inpWrapper}>
                     <Text style={RegisterStyles.inpHeading}>School</Text>
                     <TextInput
                       style={RegisterStyles.inp}
-                      placeholder={"Enter your current workplace"}
+                      placeholder={"Enter your current school"}
                       autoCapitalize="words"
-                      value={null}
-                      onValueChange={()=>{}}
+                      onChangeText={(txt)=>{setSchool(txt)}}
                     />
                 </View>
                 <View style={RegisterStyles.inpWrapper}>
                     <Text style={RegisterStyles.inpHeading}>Email</Text>
                     <TextInput
                         style={RegisterStyles.inp}
-                        placeholder={"Enter a school username"}
+                        placeholder={"Enter a school email"}
                         value={null}
-                        onValueChange={()=>{}}
+                        onChangeText={(txt)=>{setEmail(txt)}}
                     />
                 </View>
                 <View style={RegisterStyles.inpWrapper}>
@@ -88,6 +96,7 @@ export default function Register() {
                           secureTextEntry={pass}
                           autoCapitalize="none"
                           placeholder="Enter a password"
+                          onChangeText={(txt)=>{setPassword(txt)}}
                         />
                         <TouchableOpacity
                           style={RegisterStyles.passImgWrapper}
@@ -104,13 +113,15 @@ export default function Register() {
             <View style={RegisterStyles.btnWrapper}>
                 <TouchableOpacity
                   style={RegisterStyles.registerBtn}
-                  // onPress={handleSignUp}
+                  onPress={()=>{
+                      HandleSignUp();
+                  }}
                 >
                     <Text style={RegisterStyles.registerBtnTxt}>Register</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={RegisterStyles.loginBtn}
-                    // onPress={()=>{Actions.login()}}
+                    onPress={()=>{Actions.login()}}
                 >
                     <Text style={RegisterStyles.loginBtnTxt}>Already have an account? Login</Text>
                 </TouchableOpacity>
