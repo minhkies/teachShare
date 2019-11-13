@@ -15,7 +15,7 @@ export default function More(){
             />
             <ProfileBtn
                 url={require('../media/imgs/settingsprofileavatar.png')}
-                name={"Ramneet Greywall"}
+                name={"Ramneet Grewal"}
             />
             <View style={MoreStyles.settingsWrapper}>
                 <Text style={MoreStyles.settingHeadings}>Settings</Text>
