@@ -1,26 +1,41 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import PageTitle from '../comps/PageTitle';
-import SettingsProfileBtn from '../comps/SettingsProfileBtn';
-import SettingsNotifBtn from '../comps/SettingsNotifBtn';
-import SettingsSupBtn from '../comps/SettingsSupBtn';
-import SettingsFeedBtn from '../comps/SettingsFeedBtn';
-import SettingsAbtBtn from '../comps/SettingsAbtBtn';
+import ProfileBtn from '../comps/ProfileBtn';
+import MoreStyles from '../styles/MoreStyles';
+import MoreOptions from '../comps/MoreOptions';
 
 
 export default function More(){
     return(
-        <View>
-            <PageTitle 
-                title={"Settings"}
+        <View style={MoreStyles.wrapper}>
+            <PageTitle
+                title={"More"}
                 msg={"View your profile and change the settings"}
             />
-            <SettingsProfileBtn />
-            <SettingsNotifBtn />
-            <SettingsSupBtn />
-            <SettingsFeedBtn />
-            <SettingsAbtBtn />
- 
+            <ProfileBtn
+                url={require('../media/imgs/settingsprofileavatar.png')}
+                name={"Ramneet Grewal"}
+            />
+            <View style={MoreStyles.settingsWrapper}>
+                <Text style={MoreStyles.settingHeadings}>Settings</Text>
+                <MoreOptions
+                    url={require('../media/icon/set-notification.png')}
+                    txt={"Notifications"}
+                />
+                <MoreOptions
+                    url={require('../media/icon/set-support.png')}
+                    txt={"Support"}
+                />
+                <MoreOptions
+                    url={require('../media/icon/set-feedback.png')}
+                    txt={"Feedback"}
+                />
+                <MoreOptions
+                    url={require('../media/icon/set-about.png')}
+                    txt={"About"}
+                />
+            </View>
         </View>
     )
 }
