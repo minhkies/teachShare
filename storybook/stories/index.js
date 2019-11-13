@@ -6,8 +6,10 @@ import Navbar from '../../comps/Navbar';
 import PageTitle from '../../comps/PageTitle';
 import SearchBar from '../../comps/SearchBar';
 import SubjectsFilter from '../../comps/SubjectsFilter';
+import MoreOptions from '../../comps/MoreOptions';
+import ProfileBtn from '../../comps/ProfileBtn';
+import More from '../../pages/More';
 import CoreCompetenciesSelections from '../../comps/CoreCompetencies';
-import CompetenciesSub from '../../comps/CompetenciesSub';
 
 storiesOf('Universal', module)
     .add('Nav Bar', () => <Navbar />)
@@ -17,6 +19,14 @@ storiesOf('Universal', module)
 storiesOf('Homepage', module)
     .add('Subjects Filter', () => <SubjectsFilter />);
 
+storiesOf('More Page', module)
+    .add('More Options', () => <MoreOptions />);
+
+storiesOf('More Page', module)
+    .add('Profile Btn', () => <ProfileBtn />);
+
+storiesOf('More Page', module)
+    .add('More', () => <More />);
+
 storiesOf('Create Page', module)
     .add('Core Competencies', ()=> <CoreCompetenciesSelections/>);
-    // .add('Competencies Sub', () => <CompetenciesSub/>);

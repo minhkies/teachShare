@@ -10,4 +10,4 @@ const AppStyles = StyleSheet.create({
     }
 });
 
-export default AppStyles
+export default AppStyles;
