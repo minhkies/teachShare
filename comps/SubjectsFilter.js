@@ -28,8 +28,8 @@ export default function SubjectsFilter() {
         }
     ];
 
-    let ShowOptions = ({subject, grade, ind}) => {
-        if (ind===0){
+    let ShowOptions = ({subject, grade, i}) => {
+        if (i===0){
             margin = 20
         } else {
             margin = 10
@@ -38,23 +38,22 @@ export default function SubjectsFilter() {
         return(
             <TouchableOpacity style={{marginLeft: margin}}
                               onPress={()=>{
-                                    HandleClick(ind)
+                                    HandleClick(i)
                               }}
             >
-                <Text style={[SubjectsFilterStyles.txt, SubjectsFilterStyles.selectedTxt, styles[ind]]}>{subject} {grade}</Text>
+                <Text style={[SubjectsFilterStyles.txt, SubjectsFilterStyles.selectedTxt, styles[i]]}>{subject} {grade}</Text>
             </TouchableOpacity>
         )
     };
 
-    let HandleClick = (ind) => {
+    let HandleClick = (i) => {
         initSelect=select;
-        initSelect[ind]=!initSelect[ind];
+        initSelect[i]=!initSelect[i];
         setSelect(initSelect);
-        for (let i = 0; i < initSelect.length; i++){
-            select[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt
+        for (let x = 0; x < initSelect.length; x++){
+            select[x] ? tempStyles[x]=SubjectsFilterStyles.selectedTxt : tempStyles[x] = SubjectsFilterStyles.unselectedTxt
         }
         setStyles(tempStyles);
-        console.log(select, initSelect);
     };
 
     useEffect(()=>{
@@ -73,10 +72,10 @@ export default function SubjectsFilter() {
                 style={SubjectsFilterStyles.selectionWrapper}
             >
                 {
-                    currentUser[0].subjects.map((obj, ind)=>{
+                    currentUser[0].subjects.map((obj, i)=>{
                         return <ShowOptions
-                            key={ind}
-                            ind={ind}
+                            key={i}
+                            ind={i}
                             subject={obj.sub}
                             grade={obj.grade}
                         />
