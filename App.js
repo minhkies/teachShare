@@ -26,11 +26,6 @@ import {
 
 
 // import the different screens
-import Loading from './pages/Loading'
-import Register from './pages/Register'
-import Login from './pages/Login'
-import Main from './pages/Main'
-import Router from './Route'
 import AppStyles from './styles/AppStyles';
 import Route from './Route';
 
