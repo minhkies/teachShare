@@ -3,7 +3,8 @@ import {StyleSheet} from 'react-native';
 let CoreCompetenciesStyles = StyleSheet.create({
     wrapper:{
         marginLeft: 100,
-        marginRight: 100
+        marginRight: 100,
+        marginTop: 50
     },
     btn:{
         margin: 5,

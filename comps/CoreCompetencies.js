@@ -3,8 +3,6 @@ import {Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import Modal from 'react-native-modal';
 import CoreCompetenciesStyles from '../compstyles/CoreCompetenciesStyles';
 import options from '../data/CoreCompetenciesData';
-import {Router, Scene, Stack} from 'react-native-router-flux';
-import CompetenciesSub from './CompetenciesSub';
 
 
 export default function CoreCompetenciesSelections() {
@@ -41,7 +39,8 @@ export default function CoreCompetenciesSelections() {
         initSelect[i] = !initSelect[i];
         setSelected(initSelect);
         for (let x = 0; x < selected.length; x++) {
-            selected[x] ? tempStyles[x] = options[x].styles[1] : tempStyles[x] = options[x].styles[0];
+            selected[x] ? (tempStyles[x] = options[x].styles[1]) : tempStyles[x] = options[x].styles[0];
+
         }
         setSelectedStyles(tempStyles);
     }
@@ -70,6 +69,7 @@ export default function CoreCompetenciesSelections() {
             return null;
         }
     };
+
     let PopupContent = ({screen}) => {
         if (screen===1){
             return(
