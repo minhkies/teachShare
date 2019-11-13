@@ -2,7 +2,7 @@ import React from "react";
 import {View, Text, Image} from 'react-native';
 import NotificationsTagsStyles from '../compstyles/NotificationTagsStyles';
 
-export default function NotificationsTags({type, data}) {
+export default function NotificationsTag({type, data}) {
     let preset = [];
 
     if (type==="appreciate"){
