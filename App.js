@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import "./ReactotronConfig";
 import {
     SafeAreaView,
     StyleSheet,
@@ -23,7 +24,6 @@ import {
     DebugInstructions,
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
 
 // import the different screens
 import AppStyles from './styles/AppStyles';

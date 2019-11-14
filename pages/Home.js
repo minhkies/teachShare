@@ -6,34 +6,44 @@ import SearchBar from '../comps/SearchBar';
 import SubjectsFilter from '../comps/SubjectsFilter';
 import firebase from 'react-native-firebase';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-community/async-storage';
 
-export default function Home(){
+export default function Home() {
+    let UserProfile, TeachingSubjects;
+    let [currentUser, setCurrentUser] = useState('');
 
-    let [currentUser, setCurrentUser] = useState("");
+    const capitalize = (s) => {
+        if (typeof s !== 'string') {return ''} else {
+            return s.charAt(0).toUpperCase() + s.slice(1)}
+    };
 
-    useEffect(()=>{
-        const {currentUser} = firebase.auth();
-        let ref = firestore().collection('UserProfiles').doc(currentUser && currentUser.uid);
+    let getData = async () => {
+        try {
+            UserProfile = await AsyncStorage.getItem('UserData');
+            if (UserProfile !== null) {
+                UserProfile = JSON.parse(UserProfile);
+                setCurrentUser(capitalize(UserProfile.fname));
+            }
+        } catch (e) {
+            // error reading value
+        }
+    };
 
-        firebase
-            .firestore()
-            .runTransaction(async transaction => {
-                const currentUser = await transaction.get(ref);
-                setCurrentUser(currentUser.data().fname)
-            });
-    },[]);
+    useEffect(() => {
+        getData();
+    }, );
 
-    return(
+    return (
         <ScrollView
             style={HomeStyles.wrapper}
             stickyHeaderIndices={[1]}
             showsVerticalScrollIndicator={false}>
             <PageTitle
-                title={"Hi, " + currentUser}
-                msg={"This homepage is tailored for you!"}
+                title={'Hi, ' + currentUser}
+                msg={'This homepage is tailored for you!'}
             />
             <SearchBar/>
             <SubjectsFilter/>
         </ScrollView>
-    )
+    );
 }

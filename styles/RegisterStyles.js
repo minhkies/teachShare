@@ -84,6 +84,47 @@ const RegisterStyles = StyleSheet.create({
     },
     loginBtnTxt:{
         color: "#b0b0b0"
+    },
+    subjectAddWrapper:{
+        flexDirection: "row",
+        alignItems: "center",
+        width: "100%"
+    },
+    addInp:{
+        flex: 3,
+        marginRight: 10
+    },
+    addGradeInp:{
+        flex: 1,
+        marginRight: 10
+    },
+    addBtnWrapper:{
+        flex: 1,
+        height: 60,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#edfaff",
+        borderColor: "#5dc1d8",
+        borderWidth: 1,
+        borderRadius: 10
+
+    },
+    addBtnTxt:{
+        color: "#5dc1d8"
+    },
+    subjectsList:{
+        paddingLeft: 10,
+        paddingTop: 10
+    },
+    subjectTxt:{
+        paddingTop: 10
+    },
+    msg:{
+        paddingTop: 20,
+        textAlign: "center",
+        color: "red",
+        fontSize: 11,
+        fontStyle: "italic"
     }
 });
 

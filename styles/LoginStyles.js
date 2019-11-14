@@ -89,6 +89,13 @@ const LoginStyles = StyleSheet.create({
     },
     forgetBtnTxt:{
         color: "#b0b0b0"
+    },
+    msg:{
+        paddingTop: 20,
+        textAlign: "center",
+        color: "red",
+        fontSize: 11,
+        fontStyle: "italic"
     }
 });
 

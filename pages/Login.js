@@ -9,8 +9,8 @@ export default function Login(){
     let [pass, setPass] = useState(true);
     let passIcon = null;
     let [email, setEmail] = useState();
-    let [password, setPassword] = useState();
-    let [errorMsg, setErrorMsg] = useState();
+    let [password, setPassword] = useState("");
+    let [errorMsg, setErrorMsg] = useState("");
 
     if (pass===true){
         passIcon=require("../media/icon/eye-closed.png")
@@ -20,15 +20,21 @@ export default function Login(){
 
     let HandleLogin = () => {
         // TODO: Firebase stuff...
-        let tempEmail = email, tempPassword = password;
-        firebase
-            .auth()
-            .signInWithEmailAndPassword(tempEmail, tempPassword)
-            .then(() => {
-                UserData();
-                Actions.main();
-            })
-            .catch(error => setErrorMsg(error))
+        if (email !== "" && password !== ""){
+            let tempEmail = email;
+            let tempPassword = password;
+            firebase
+                .auth()
+                .signInWithEmailAndPassword(tempEmail, tempPassword)
+                .then(() => {
+                    UserData();
+                    Actions.main();
+                })
+                .catch(error => setErrorMsg(error.message))
+        } else {
+            setErrorMsg("Invalid email or password")
+        }
+
     };
 
 
@@ -70,6 +76,7 @@ export default function Login(){
                     </View>
                 </View>
             </View>
+            <Text style={LoginStyles.msg}>{errorMsg}</Text>
             <View>
                 <View style={LoginStyles.btnWrapper}>
                     <TouchableOpacity

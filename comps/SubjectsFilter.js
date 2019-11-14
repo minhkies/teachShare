@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import SubjectsFilterStyles from '../compstyles/SubjectsFilterStyles';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function SubjectsFilter() {
     let margin;
@@ -8,27 +9,20 @@ export default function SubjectsFilter() {
     let tempStyles=[];
     let [select, setSelect] = useState([]);
     let [styles, setStyles] = useState([]);
+    let tempSubjects;
+    let [TeachingSubjects, setTeachingSubjects]=useState([]);
 
-    let currentUser=[
-        {
-            subjects: [
-                {
-                    sub: "Geography",
-                    grade: 12
-                },
-                {
-                    sub: "Social Study",
-                    grade: 11
-                },
-                {
-                    sub: "Programming",
-                    grade: 12
-                }
-            ]
+    let getData = async () => {
+        try {
+            tempSubjects = await AsyncStorage.getItem('TeachingSubjects');
+            if (tempSubjects !== null) {
+                 setTeachingSubjects(JSON.parse(tempSubjects));
+            }
+        } catch (e) {
         }
-    ];
+    };
 
-    for (let i=0; i <=currentUser[0].subjects.length; i++){
+    for (let i=0; i <=TeachingSubjects.length; i++){
         initSelect.push(true);
     }
 
@@ -55,16 +49,16 @@ export default function SubjectsFilter() {
         initSelect[ind]=!initSelect[ind];
         setSelect(initSelect);
         for (let i = 0; i < initSelect.length; i++){
-            initSelect[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt
-            select[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt
+            initSelect[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt;
+            select[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt;
         }
         setStyles(tempStyles);
-        console.log(select, initSelect);
     };
 
 
     useEffect(()=>{
-        for (let i=0; i <currentUser[0].subjects.length; i++){
+        getData();
+        for (let i=0; i <TeachingSubjects.length; i++){
             initSelect.push(true);
         }
         setSelect(initSelect);
@@ -79,11 +73,11 @@ export default function SubjectsFilter() {
                 style={SubjectsFilterStyles.selectionWrapper}
             >
                 {
-                    currentUser[0].subjects.map((obj, ind)=>{
+                    TeachingSubjects.map((obj, ind)=>{
                         return <ShowOptions
                             key={ind}
                             ind={ind}
-                            subject={obj.sub}
+                            subject={obj.subject}
                             grade={obj.grade}
                         />
                     })

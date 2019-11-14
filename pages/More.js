@@ -6,12 +6,17 @@ import MoreStyles from '../styles/MoreStyles';
 import MoreOptions from '../comps/MoreOptions';
 import firebase from 'react-native-firebase';
 import {Actions} from 'react-native-router-flux';
-import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 export default function More(){
-
+    let UserProfile;
     let [currentUser, setCurrentUser] = useState("");
+
+    const capitalize = (s) => {
+        if (typeof s !== 'string') {return ''} else {
+            return s.charAt(0).toUpperCase() + s.slice(1)}
+    };
 
     let SignOutUser = async () => {
         try {
@@ -22,16 +27,21 @@ export default function More(){
         }
     };
 
-    useEffect(()=>{
-        const {currentUser} = firebase.auth();
-        let ref = firestore().collection('UserProfiles').doc(currentUser && currentUser.uid);
+    let getData = async () => {
+        try {
+            UserProfile = await AsyncStorage.getItem('UserData');
+            UserProfile = JSON.parse(UserProfile);
+            setCurrentUser(capitalize(UserProfile.fname) + " " + capitalize(UserProfile.lname));
+            if (value !== null) {
+                // value previously stored
+            }
+        } catch (e) {
+            // error reading value
+        }
+    };
 
-        firebase
-            .firestore()
-            .runTransaction(async transaction => {
-                const currentUser = await transaction.get(ref);
-                setCurrentUser(currentUser.data().fname + " " + currentUser.data().lname)
-            });
+    useEffect(()=>{
+        getData()
     },[]);
 
     return(

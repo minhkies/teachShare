@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import firebase from "react-native-firebase";
 import firestore from '@react-native-firebase/firestore';
 
