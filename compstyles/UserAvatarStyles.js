@@ -8,7 +8,7 @@ const UserAvatarStyles = StyleSheet.create({
         height: 32,
         width: 32,
         borderRadius: 16,
-        backgroundColor: "green"
+        backgroundColor: "#ADC4D2"
     },
     img: {
         height: "100%",

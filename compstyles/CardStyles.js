@@ -39,7 +39,7 @@ const CardStyles = StyleSheet.create({
     },
     cardIconsWrapper: {
         flexDirection: "row",
-        backgroundColor: "lightgreen",
+        backgroundColor: "#EAF9E1",
         borderRadius: 20,
         padding: 5,
         marginLeft: 5,

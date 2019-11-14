@@ -9,7 +9,7 @@ const posts = [{
     commentCount: 13,
     createdTime: "14 Hours ago",
     user: {
-        name: "Hideki Murata"
+        name: "Henry"
     }
 }, {
     img: "https://previews.123rf.com/images/elvil/elvil1303/elvil130300039/18684057-blue-christmas-card-background-with-snowflakes.jpg",
@@ -22,7 +22,7 @@ const posts = [{
     commentCount: 13,
     createdTime: "14 Hours ago",
     user: {
-        name: "Hideki Murata"
+        name: "Henry"
     }
 }];
 

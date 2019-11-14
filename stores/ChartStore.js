@@ -1,16 +1,26 @@
 const charts = [
     {
         label: "Math",
-        color: "blue"
+        color: "#D4CCE2"
     },
     {
         label: "English",
-        color: "yellow"
+        color: "#F9D3BD"
     },
     {
         label: "Art",
-        color: "orange"
-    }
+        color: "#B19587"
+    },
+    {
+        label: "Literature",
+        color: "#CADDB8"
+    },
+    {
+        label: "Literature",
+        color: "#BDC0BF"
+    },
+    
+    
 ];
 
 export default charts;
