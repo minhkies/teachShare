@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-const DropBoxWithBoxStyles=StyleSheet.create({
+const DropBoxWBoxStyles=StyleSheet.create({
     wrapper:{
         elevation : 10,
         borderRadius: 15,
@@ -38,4 +38,4 @@ const DropBoxWithBoxStyles=StyleSheet.create({
     }
 });
 
-export default DropBoxWithBoxStyles;
+export default DropBoxWBoxStyles;

@@ -1,23 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Picker, Image} from 'react-native';
-import DropBoxWithBoxStyles from '../compstyles/DropboxWithBoxStyles';
+import DropboxWBoxStyles from '../compstyles/DropBoxWBoxStyles';
 
-export default function DropBoxWithBox({title, data, select, nextFunc}) {
+export default function DropBoxWBox({title, data, select}) {
+    const [selectedVal, setSelectedVal]= useState("placeholder");
     const capitalize = (s) => {
         if (typeof s !== 'string') {return ''} else {
             return s.charAt(0).toUpperCase() + s.slice(1)}
     };
     return(
-        <View style={DropBoxWithBoxStyles.wrapper}>
-            <Text style={DropBoxWithBoxStyles.title}>{capitalize(title)}</Text>
-            <View style={DropBoxWithBoxStyles.dropBoxWrapper}>
+        <View style={DropboxWBoxStyles.wrapper}>
+            <Text style={DropboxWBoxStyles.title}>{capitalize(title)}</Text>
+            <View style={DropboxWBoxStyles.dropBoxWrapper}>
                 <Picker
-                    style={DropBoxWithBoxStyles.dropBoxInp}
+                    style={DropboxWBoxStyles.dropBoxInp}
                     onValueChange={(value)=>
-                        {select(value);
-                        nextFunc();
+                        {
+                            setSelectedVal(value);
+                            select(value);
                         }}
-                    >
+                selectedValue={selectedVal}
+                >
                     <Picker.Item color={"gray"} value={"placeholder"} label={"Select the " + title}/>
                     {
                         data.map((obj)=>{
@@ -28,7 +31,7 @@ export default function DropBoxWithBox({title, data, select, nextFunc}) {
                     }
                 </Picker>
                 <Image
-                    style={DropBoxWithBoxStyles.dropdownIcon}
+                    style={DropboxWBoxStyles.dropdownIcon}
                     source={require("../media/icon/arrow.png")}
                 />
             </View>
