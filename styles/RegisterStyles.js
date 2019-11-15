@@ -27,7 +27,6 @@ const RegisterStyles = StyleSheet.create({
         marginRight: 20
     },
     inpHeading:{
-
         marginTop: 5,
         marginBottom: 10
     },

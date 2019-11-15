@@ -23,7 +23,7 @@ export default function ProfileBtn({url, name}) {
                         <Text style={ProfileBtnStyles.desc}>View profiles, account settings</Text>
                     </View>
                     <Image
-                        sourse={require('../media/icon/right-arrow.png')}
+                        sourse={require('../media/icon/arrow.png')}
                         style={ProfileBtnStyles.arrow}
                     />
                 </View>

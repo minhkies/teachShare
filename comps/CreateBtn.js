@@ -12,7 +12,9 @@ export default function CreateBtn({data, setView}){
     return(
         <TouchableOpacity
             style={CreateBtnStyles.wrapper}
-            onPress={()=>setView(2)}
+            onPress={()=>{
+                setView(2)
+            }}
         >
             <Image
                 style={CreateBtnStyles.btn}
