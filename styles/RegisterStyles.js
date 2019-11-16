@@ -17,14 +17,21 @@ const RegisterStyles = StyleSheet.create({
         fontWeight: "700"
     },
     inpWrapper:{
-        elevation : 10,
         borderRadius: 15,
-        backgroundColor: "white",
+        backgroundColor: "#FEFEFE",
+        borderWidth: 1,
+        borderColor: "#f7f7f7",
         padding: 10,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 20,
-        marginRight: 20
+        marginRight: 20,
+        ...Platform.select({
+            android: {
+                borderWidth: 1,
+                borderColor: "#f7f7f7",
+            }
+        })
     },
     inpHeading:{
         marginTop: 5,
@@ -33,7 +40,7 @@ const RegisterStyles = StyleSheet.create({
     inp:{
         height: 60,
         paddingLeft: 15,
-        backgroundColor: "#ebebeb",
+        backgroundColor: "#f7f7f7",
         borderRadius: 10
     },
     passInpWrapper:{

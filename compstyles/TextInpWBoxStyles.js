@@ -2,14 +2,19 @@ import {StyleSheet} from 'react-native';
 
 const TxtInpWBoxStyles = StyleSheet.create({
     inpWrapper:{
-        elevation : 10,
         borderRadius: 15,
         backgroundColor: "white",
         padding: 10,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 20,
-        marginRight: 20
+        marginRight: 20,
+        ...Platform.select({
+            android: {
+                borderWidth: 1,
+                borderColor: "#f7f7f7",
+            }
+        })
     },
     inpHeading:{
         marginTop: 5,

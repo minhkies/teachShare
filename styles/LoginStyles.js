@@ -5,7 +5,7 @@ const LoginStyles = StyleSheet.create({
         flex: 1,
         justifyContent: "space-between",
         alignItems: "stretch",
-        backgroundColor: "white",
+        backgroundColor: "#ffffff",
         padding: 20
     },
     topWrapper:{
@@ -29,7 +29,7 @@ const LoginStyles = StyleSheet.create({
         height: 60,
         paddingLeft: 15,
         marginBottom: 5,
-        backgroundColor: "#ebebeb",
+        backgroundColor: "#f7f7f7",
         borderRadius: 10
     },
     passInpWrapper:{

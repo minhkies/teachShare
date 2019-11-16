@@ -9,6 +9,7 @@ import CreateStyles from '../styles/CreateStyles';
 import CreateBtn from '../comps/CreateBtn';
 import DropBoxWBox from '../comps/DropBoxWBox';
 import TxtInpWBox from '../comps/TxtInpWithBox';
+import ImgOptions from '../comps/ImgOptions';
 
 export default function CreatePost(){
     const [data, setData] = useState(false);
@@ -132,6 +133,11 @@ export default function CreatePost(){
                     placeholder={"remarks"}
                     multiline={true}
                     set={setRemarks}
+                />
+                <ImgOptions
+                    title={"cover image"}
+                    type={"create"}
+                    topic = {selectedSubject}
                 />
             </ScrollView>
         )

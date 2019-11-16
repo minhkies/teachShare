@@ -2,14 +2,19 @@ import {StyleSheet} from 'react-native';
 
 const DropBoxWBoxStyles=StyleSheet.create({
     wrapper:{
-        elevation : 10,
         borderRadius: 15,
         backgroundColor: "white",
         padding: 10,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 20,
-        marginRight: 20
+        marginRight: 20,
+        ...Platform.select({
+            android: {
+                borderWidth: 1,
+                borderColor: "#f7f7f7",
+            }
+        })
     },
     title:{
         marginTop: 5,
@@ -22,7 +27,7 @@ const DropBoxWBoxStyles=StyleSheet.create({
     dropBoxInp:{
         height: 60,
         width: "100%",
-        backgroundColor: "#ebebeb",
+        backgroundColor: "#f7f7f7",
         borderRadius: 10,
     },
     dropdownIcon:{

@@ -20,7 +20,7 @@ const SearchBarStyles = StyleSheet.create({
         paddingLeft: 40,
         height: 40,
         borderRadius: 20,
-        backgroundColor: "#ebebeb",
+        backgroundColor: "#f7f7f7",
         width: "100%"
     }
 });

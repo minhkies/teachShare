@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, ScrollView, Image, Modal} from 'react-native';
 // import ShadowView from 'react-native-simple-shadow-view/src/ShadowView';
 import firebase from 'react-native-firebase';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 import {Actions} from 'react-native-router-flux';
 import RegisterStyles from '../styles/RegisterStyles';
 import UserData from '../data/UserData';
+import ImgOptions from '../comps/ImgOptions';
 
 export default function Register() {
     const ref = firestore().collection('UserProfiles');
@@ -20,6 +22,8 @@ export default function Register() {
     let passIcon = null;
     let [tempSub, setTempSub]=useState("");
     let [tempGrade, setTempGrade]=useState("");
+    let [uri, setUri] = useState("");
+    let [photo, setPhoto] = useState("");
     let sub=subjects;
     let alertMsg="Please enter a valid subject & grade level";
 
@@ -56,8 +60,25 @@ export default function Register() {
         firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
-            .then(() => addUserProfile())
+            .then(() => submitImg())
             .catch(error => setErrorMsg(error.message));
+    };
+
+    let submitImg = (uid) => {
+        // const ref2 = firebase.storage().ref("profilePhoto");
+        const {currentUser} = firebase.auth();
+        const file = uri;
+        const name = currentUser && currentUser.uid;
+        const ref2 = firebase.storage().ref().child("profilePhotos");
+        const metadata = { contentType: file.type };
+        const task = ref2.child(name).put(file, metadata);
+
+        task
+            .then(snapshot =>
+                setPhoto(snapshot.downloadURL)
+            )
+            // .then(() => addUserProfile())
+
     };
 
     let addUserProfile = async () => {
@@ -67,6 +88,7 @@ export default function Register() {
             fname: firstName.toLowerCase(),
             lname: lastName.toLowerCase(),
             school: school,
+            photo: photo
         })
             .then(addSubjects(currentUser))
             .catch(error => setErrorMsg(error.message));
@@ -86,6 +108,10 @@ export default function Register() {
             grade: obj[1]
         }).catch(error => setErrorMsg(error.message));
     }
+
+    useEffect(()=>{
+        addUserProfile();
+    },[photo]);
 
     return (
         <ScrollView style={RegisterStyles.wrapper}
@@ -200,13 +226,19 @@ export default function Register() {
                     }
                     </View>
                 </View>
+                <ImgOptions
+                title={"profile image"}
+                type={"register"}
+                setUri={setUri}
+                />
             </View>
             <Text style={RegisterStyles.msg}>{errorMsg}</Text>
             <View style={RegisterStyles.btnWrapper}>
                 <TouchableOpacity
                     style={RegisterStyles.registerBtn}
                     onPress={() => {
-                        HandleSignUp();
+                        HandleSignUp()
+                        ;
                     }}
                 >
                     <Text style={RegisterStyles.registerBtnTxt}>Register</Text>
