@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 import {Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
 import LoginStyles from "../styles/LoginStyles";
 import {Actions} from 'react-native-router-flux';
+import firebase from 'react-native-firebase';
+import UserData from '../data/UserData';
 
 export default function Login(){
     let [pass, setPass] = useState(true);
     let passIcon = null;
     let [email, setEmail] = useState();
-    let [password, setPassword] = useState();
-    let [errorMsg, setErrorMsg] = useState();
+    let [password, setPassword] = useState("");
+    let [errorMsg, setErrorMsg] = useState("");
 
     if (pass===true){
         passIcon=require("../media/icon/eye-closed.png")
@@ -16,10 +18,25 @@ export default function Login(){
         passIcon=require("../media/icon/eye.png")
     }
 
-    // let handleLogin = () => {
-    //     // TODO: Firebase stuff...
-    //     console.log('handleSignUp')
-    // };
+    let HandleLogin = () => {
+        // TODO: Firebase stuff...
+        if (email !== "" && password !== ""){
+            let tempEmail = email;
+            let tempPassword = password;
+            firebase
+                .auth()
+                .signInWithEmailAndPassword(tempEmail, tempPassword)
+                .then(() => {
+                    UserData();
+                    Actions.main();
+                })
+                .catch(error => setErrorMsg(error.message))
+        } else {
+            setErrorMsg("Invalid email or password")
+        }
+
+    };
+
 
     return(
         <View style={LoginStyles.wrapper}>
@@ -59,12 +76,13 @@ export default function Login(){
                     </View>
                 </View>
             </View>
+            <Text style={LoginStyles.msg}>{errorMsg}</Text>
             <View>
                 <View style={LoginStyles.btnWrapper}>
                     <TouchableOpacity
                         style={[LoginStyles.btn, LoginStyles.loginBtn]}
-                        // onPress={handleLogin}
-                        onPress={()=>Actions.main()}
+                        onPress={HandleLogin}
+                        // onPress={()=>Actions.main()}
                     >
                         <Text style={LoginStyles.loginBtnTxt}>Login</Text>
                     </TouchableOpacity>

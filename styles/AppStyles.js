@@ -5,6 +5,7 @@ const AppStyles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "stretch",
+        backgroundColor: "#ffffff"
         // padding: 20,
         // paddingTop: 0,
     }

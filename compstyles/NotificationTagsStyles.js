@@ -18,7 +18,12 @@ const NotificationsTagsStyles = StyleSheet.create({
         },
         shadowOpacity: 0.22,
         shadowRadius: 2.22,
-        elevation: 3,
+        ...Platform.select({
+            android: {
+                borderWidth: 1,
+                borderColor: "#f7f7f7",
+            }
+        })
     },
     icon:{
         width: 25,

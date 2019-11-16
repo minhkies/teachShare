@@ -1,13 +1,29 @@
 import React from 'react';
-import {Image} from 'react-native';
+import {Image, TouchableOpacity} from 'react-native';
 import CreateBtnStyles from '../compstyles/CreateBtnStyles';
+import {Actions} from 'react-native-router-flux';
 
-export default function CreateBtn(){
+/**
+ * @return {null}
+ */
+
+export default function CreateBtn({data, setView}){
+    if (data===true){
     return(
-        <Image
-            style={CreateBtnStyles.btn}
-            source={require('../media/icon/next.png')}
-        />
-    )
+        <TouchableOpacity
+            style={CreateBtnStyles.wrapper}
+            onPress={()=>{
+                setView(2)
+            }}
+        >
+            <Image
+                style={CreateBtnStyles.btn}
+                source={require('../media/icon/next.png')}
+            />
+        </TouchableOpacity>
+
+    )} else {
+        return null
+    }
 
 }

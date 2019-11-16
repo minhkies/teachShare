@@ -2,7 +2,8 @@ import {StyleSheet} from 'react-native';
 
 const CreateStyles=StyleSheet.create({
     wrapper:{
-        height: "100%"
+        height: "100%",
+        backgroundColor: "#ffffff"
     },
     desc:{
         marginTop: 50,

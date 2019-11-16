@@ -5,7 +5,7 @@ import CoreCompetenciesStyles from '../compstyles/CoreCompetenciesStyles';
 import options from '../data/CoreCompetenciesData';
 
 
-export default function CoreCompetenciesSelections() {
+export default function CoreCompetenciesSelections({setData}) {
     let [selected, setSelected] = useState([false, false, false]);
     let initSelect;
     let tempStyles = [];
@@ -35,13 +35,15 @@ export default function CoreCompetenciesSelections() {
     };
 
     function ColorChange(i) {
+        let count = 0;
         initSelect = selected;
         initSelect[i] = !initSelect[i];
         setSelected(initSelect);
         for (let x = 0; x < selected.length; x++) {
             selected[x] ? (tempStyles[x] = options[x].styles[1]) : tempStyles[x] = options[x].styles[0];
-
+            selected[x] && count++;
         }
+        count > 0 ? setData(true) : setData(false);
         setSelectedStyles(tempStyles);
     }
 

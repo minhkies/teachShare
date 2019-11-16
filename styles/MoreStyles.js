@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 const MoreStyles=StyleSheet.create({
    wrapper:{
        height: "100%",
-       backgroundColor: "white",
+       backgroundColor: "#ffffff",
        paddingBottom: 200
    },
     settingsWrapper:{

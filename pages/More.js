@@ -1,12 +1,49 @@
-import React from 'react';
-import {View, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Button} from 'react-native';
 import PageTitle from '../comps/PageTitle';
 import ProfileBtn from '../comps/ProfileBtn';
 import MoreStyles from '../styles/MoreStyles';
 import MoreOptions from '../comps/MoreOptions';
+import firebase from 'react-native-firebase';
+import {Actions} from 'react-native-router-flux';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 export default function More(){
+    let UserProfile;
+    let [currentUser, setCurrentUser] = useState("");
+
+    const capitalize = (s) => {
+        if (typeof s !== 'string') {return ''} else {
+            return s.charAt(0).toUpperCase() + s.slice(1)}
+    };
+
+    let SignOutUser = async () => {
+        try {
+            await firebase.auth().signOut()
+            .then(() => Actions.login())
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    let getData = async () => {
+        try {
+            UserProfile = await AsyncStorage.getItem('UserData');
+            UserProfile = JSON.parse(UserProfile);
+            setCurrentUser(capitalize(UserProfile.fname) + " " + capitalize(UserProfile.lname));
+            if (value !== null) {
+                // value previously stored
+            }
+        } catch (e) {
+            // error reading value
+        }
+    };
+
+    useEffect(()=>{
+        getData()
+    },[]);
+
     return(
         <View style={MoreStyles.wrapper}>
             <PageTitle
@@ -15,7 +52,7 @@ export default function More(){
             />
             <ProfileBtn
                 url={require('../media/imgs/settingsprofileavatar.png')}
-                name={"Ramneet Grewal"}
+                name={currentUser}
             />
             <View style={MoreStyles.settingsWrapper}>
                 <Text style={MoreStyles.settingHeadings}>Settings</Text>
@@ -34,6 +71,10 @@ export default function More(){
                 <MoreOptions
                     url={require('../media/icon/set-about.png')}
                     txt={"About"}
+                />
+                <Button
+                    title={"Log Out"}
+                    onPress={()=> SignOutUser()}
                 />
             </View>
         </View>

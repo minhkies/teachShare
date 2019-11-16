@@ -17,24 +17,30 @@ const RegisterStyles = StyleSheet.create({
         fontWeight: "700"
     },
     inpWrapper:{
-        elevation : 10,
         borderRadius: 15,
-        backgroundColor: "white",
+        backgroundColor: "#FEFEFE",
+        borderWidth: 1,
+        borderColor: "#f7f7f7",
         padding: 10,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 20,
-        marginRight: 20
+        marginRight: 20,
+        ...Platform.select({
+            android: {
+                borderWidth: 1,
+                borderColor: "#f7f7f7",
+            }
+        })
     },
     inpHeading:{
-
         marginTop: 5,
         marginBottom: 10
     },
     inp:{
         height: 60,
         paddingLeft: 15,
-        backgroundColor: "#ebebeb",
+        backgroundColor: "#f7f7f7",
         borderRadius: 10
     },
     passInpWrapper:{
@@ -84,6 +90,47 @@ const RegisterStyles = StyleSheet.create({
     },
     loginBtnTxt:{
         color: "#b0b0b0"
+    },
+    subjectAddWrapper:{
+        flexDirection: "row",
+        alignItems: "center",
+        width: "100%"
+    },
+    addInp:{
+        flex: 3,
+        marginRight: 10
+    },
+    addGradeInp:{
+        flex: 1,
+        marginRight: 10
+    },
+    addBtnWrapper:{
+        flex: 1,
+        height: 60,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#edfaff",
+        borderColor: "#5dc1d8",
+        borderWidth: 1,
+        borderRadius: 10
+
+    },
+    addBtnTxt:{
+        color: "#5dc1d8"
+    },
+    subjectsList:{
+        paddingLeft: 10,
+        paddingTop: 10
+    },
+    subjectTxt:{
+        paddingTop: 10
+    },
+    msg:{
+        paddingTop: 20,
+        textAlign: "center",
+        color: "red",
+        fontSize: 11,
+        fontStyle: "italic"
     }
 });
 
