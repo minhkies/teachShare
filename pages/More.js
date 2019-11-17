@@ -30,7 +30,7 @@ export default function More(){
 
     let getData = async () => {
         try {
-            UserProfile = await AsyncStorage.getItem('UserData');
+            UserProfile = await AsyncStorage.getItem('userData');
             UserProfile = JSON.parse(UserProfile);
             setCurrentUser(capitalize(UserProfile.fname) + " " + capitalize(UserProfile.lname));
             setProfilePhotoURL(UserProfile.photo);

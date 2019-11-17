@@ -8,6 +8,8 @@ import {Actions} from 'react-native-router-flux';
 import RegisterStyles from '../styles/RegisterStyles';
 import UserData from '../data/UserData';
 import ImgOptions from '../comps/ImgOptions';
+import DropBox from '../comps/DropBox';
+import curriculum from '../data/CurriculumData';
 
 export default function Register() {
     const ref = firestore().collection('UserProfiles');
@@ -20,12 +22,13 @@ export default function Register() {
     let [password, setPassword] = useState();
     let [errorMsg, setErrorMsg] = useState();
     let passIcon = null;
-    let [tempSub, setTempSub]=useState("");
-    let [tempGrade, setTempGrade]=useState("");
     let [uri, setUri] = useState("");
     let [photo, setPhoto] = useState("");
-    let sub=subjects;
-    let alertMsg="Please enter a valid subject & grade level";
+    let [curriculum, setCurriculum] = useState([]);
+    let [selectedCurriculum, setSelectedCurriculum] = useState("");
+    let [selectedGrade, setSelectedGrade] = useState("");
+    let [selectedSubject, setSelectedSubject] = useState("");
+    let [listSubjects, setListSubjects] = useState([]);
 
     if (pass === true) {
         passIcon = require('../media/icon/eye-closed.png');
@@ -33,28 +36,6 @@ export default function Register() {
         passIcon = require('../media/icon/eye.png');
     }
 
-    let checkInp = () => {
-        if ((tempSub) && (tempGrade) && tempSub !== "" && tempGrade !== ""){
-            tempSub = tempSub.trim();
-            tempGrade = tempGrade.trim();
-            if (isNaN(tempGrade) === false) {
-                sub.push([tempSub, tempGrade]);
-                setSubjects(sub);
-                setTempSub("");
-                setTempGrade("");
-            } else {
-                alert(alertMsg)
-            }
-        } else {
-            alert(alertMsg)
-        }
-
-    };
-
-    const capitalize = (s) => {
-        if (typeof s !== 'string') {return ''} else {
-        return s.charAt(0).toUpperCase() + s.slice(1)}
-    };
 
     let HandleSignUp = () => {
         firebase
@@ -64,7 +45,7 @@ export default function Register() {
             .catch(error => setErrorMsg(error.message));
     };
 
-    let submitImg = (uid) => {
+    let submitImg = () => {
         // const ref2 = firebase.storage().ref("profilePhoto");
         const {currentUser} = firebase.auth();
         const file = uri;
@@ -95,7 +76,7 @@ export default function Register() {
     };
 
     async function addSubjects(currentUser){
-        await subjects.map((obj)=>{
+        await listSubjects.map((obj)=>{
             addSub(currentUser, obj);
         })
             .then(Actions.loading())
@@ -103,16 +84,79 @@ export default function Register() {
     }
 
     async function addSub(currentUser, obj){
-        await ref.doc(currentUser && currentUser.uid).collection('teaching_subjects').doc().set({
+        await ref.doc(currentUser && currentUser.uid).collection('teachingSubjects').doc().set({
             subject: obj[0],
             grade: obj[1]
         }).catch(error => setErrorMsg(error.message));
+    }
+
+    function getCurriculum() {
+        let tempCurriculumArray =[];
+        firestore()
+            .collection('Curriculum').onSnapshot(querySnapshot=>{
+            querySnapshot.forEach(doc => {
+                const tempCurriculum = doc.id;
+                tempCurriculumArray.push(tempCurriculum)
+            });
+            setCurriculum(tempCurriculumArray);
+        });
+    }
+
+    function getSubjects() {
+        let tempSubjectsArray = [];
+        firestore()
+            .collection('Curriculum').doc(selectedCurriculum).collection(selectedGrade).onSnapshot(querySnapshot=>{
+            querySnapshot.forEach(doc => {
+                const tempSubjects = doc.id;
+                tempSubjectsArray.push(tempSubjects)
+            });
+            setSubjects(tempSubjectsArray);
+        });
+    }
+
+    function listAllSubjects(){
+        if (selectedCurriculum !== "" && selectedGrade !== "" && selectedGrade !== ""){
+            if (listSubjects.length === 0){
+                setListSubjects(listSubjects.concat([[selectedSubject, selectedGrade]]))
+            } else {
+                let count = 0;
+                listSubjects.map((obj) => {
+                    if (obj[0] === selectedSubject && obj[1] === selectedGrade){
+                        count++
+                    }
+                });
+                if (count > 0){
+                    alert("The selected subject is already added");
+                } else {
+                    setListSubjects(listSubjects.concat([[selectedSubject, selectedGrade]]))
+                }
+            }
+        } else {
+            alert("Please select a valid subject and grade level")
+        }
     }
 
     useEffect(()=>{
         addUserProfile();
     },[photo]);
 
+    useEffect(()=>{
+        getCurriculum();
+    }, []);
+
+    useEffect(()=>{
+        if (selectedGrade!=="" && selectedCurriculum !== ""){
+            getSubjects();
+        }
+    }, [selectedGrade]);
+
+    useEffect(()=>{
+        if (selectedGrade!=="" && selectedCurriculum !== ""){
+            getSubjects();
+        }
+    }, [selectedCurriculum]);
+
+    console.log(listSubjects);
     return (
         <ScrollView style={RegisterStyles.wrapper}
                     showsVerticalScrollIndicator={false}>
@@ -192,44 +236,45 @@ export default function Register() {
                 </View>
                 <View style={RegisterStyles.inpWrapper}>
                     <Text style={RegisterStyles.inpHeading}>Teaching Subjects</Text>
-                    <View style={RegisterStyles.subjectAddWrapper}>
-                        <TextInput
-                            style={[RegisterStyles.inp, RegisterStyles.addInp]}
-                            placeholder={'Math'}
-                            autoCapitalize="words"
-                            value={tempSub}
-                            onChangeText={(txt)=>setTempSub(txt)}
+                    <View>
+                        <DropBox
+                        title={"curriculum"}
+                        data={curriculum}
+                        select={setSelectedCurriculum}
                         />
-                        <TextInput
-                            style={[RegisterStyles.inp, RegisterStyles.addGradeInp]}
-                            placeholder={'12'}
-                            autoCapitalize="words"
-                            value={tempGrade}
-                            onChangeText={(txt)=>setTempGrade(txt)}
+                        <DropBox
+                            title={"grade"}
+                            data={["10", "11", "12"]}
+                            select={setSelectedGrade}
                         />
+                        <DropBox
+                            title={"subject"}
+                            data={subjects}
+                            select={setSelectedSubject}/>
                         <TouchableOpacity
-                            style={RegisterStyles.addBtnWrapper}
-                            onPress={()=>{
-                                checkInp();
-                            }}
-                        >
-                            <Text style={RegisterStyles.addBtnTxt}>Add</Text>
-                        </TouchableOpacity>
+                                style={RegisterStyles.addBtnWrapper}
+                                onPress={()=>{
+                                    listAllSubjects();
+                                }}
+                            >
+                                <Text style={RegisterStyles.addBtnTxt}>Add</Text>
+                            </TouchableOpacity>
                     </View>
                     <View style={RegisterStyles.subjectsList}>
-                    {
-                        subjects.map((obj, ind) => {
-                            return (
-                                <Text style={RegisterStyles.subjectTxt}>{capitalize(obj[0])} {obj[1]}</Text>
-                            )
-                        })
-                    }
-                    </View>
+                        {
+                            listSubjects.map((obj, ind) => {
+                                return (
+                                    <Text style={RegisterStyles.subjectTxt}>{obj[0]} {obj[1]}</Text>
+                                )
+                            })
+                        }
+                        </View>
                 </View>
                 <ImgOptions
                 title={"profile image"}
                 type={"register"}
                 setUri={setUri}
+                uri={uri}
                 />
             </View>
             <Text style={RegisterStyles.msg}>{errorMsg}</Text>

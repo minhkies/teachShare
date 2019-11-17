@@ -63,10 +63,16 @@ export default function CreatePost(){
     },[]);
 
     useEffect(()=>{
-        if (selectedGrade!==""){
+        if (selectedGrade!=="" && selectedCurriculum !== ""){
             getSubjects();
         }
     }, [selectedGrade]);
+
+    useEffect(()=>{
+        if (selectedGrade!=="" && selectedCurriculum !== ""){
+            getSubjects();
+        }
+    }, [selectedCurriculum]);
 
     useEffect(()=>{
         if (selectedSubject!==""){
@@ -74,8 +80,6 @@ export default function CreatePost(){
         }
     }, [selectedSubject]);
 
-    // console.log(selectedCurriculum);
-    // console.log(selectedGrade);
     if (view === 1){
         return(
             <View style={CreateStyles.wrapper}>
@@ -95,7 +99,9 @@ export default function CreatePost(){
         )
     } else {
         return(
-            <ScrollView style={{marginBottom: 60}}>
+            <ScrollView
+                style={[CreateStyles.wrapper, CreateStyles.scrollableWrapper]}
+                showsVerticalScrollIndicator={false}>
                 <DropBoxWBox
                     title={"curriculum"}
                     data={curriculum}

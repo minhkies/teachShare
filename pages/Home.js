@@ -19,7 +19,7 @@ export default function Home() {
 
     let getData = async () => {
         try {
-            UserProfile = await AsyncStorage.getItem('UserData');
+            UserProfile = await AsyncStorage.getItem('userData');
             if (UserProfile !== null) {
                 UserProfile = JSON.parse(UserProfile);
                 setCurrentUser(capitalize(UserProfile.fname));

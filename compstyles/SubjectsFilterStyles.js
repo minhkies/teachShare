@@ -23,12 +23,14 @@ const SubjectsFilterStyles=StyleSheet.create({
         borderRadius: 20
     },
     selectedTxt:{
-        color: "white",
-        backgroundColor: "#007dff"
+        borderColor: "#007dff",
+        color: "#007dff",
+        backgroundColor: "#E5F4FF"
     },
     unselectedTxt:{
-        color: "#007dff",
-        backgroundColor: "#f5faff"
+        borderColor: "#f7f7f7",
+        color: "#7C7C81",
+        backgroundColor: "#f7f7f7"
     }
 });
 

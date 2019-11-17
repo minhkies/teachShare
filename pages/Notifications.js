@@ -27,7 +27,7 @@ export default function Notifications() {
     return(
         <ScrollView style={NotificationsStyles.wrapper}>
             <PageTitle
-                title={"Notification"}
+                title={"Notifications"}
                 msg={"Good news come here first"}
             />
         {

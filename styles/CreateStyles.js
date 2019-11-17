@@ -5,6 +5,10 @@ const CreateStyles=StyleSheet.create({
         height: "100%",
         backgroundColor: "#ffffff"
     },
+    scrollableWrapper:{
+        marginBottom: 60,
+        paddingTop: 20
+    },
     desc:{
         marginTop: 50,
         textAlign: "center",

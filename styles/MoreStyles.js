@@ -8,14 +8,14 @@ const MoreStyles=StyleSheet.create({
    },
     settingsWrapper:{
        margin: 20,
-       marginTop: 100,
+       marginTop: 80,
         borderTopWidth: 1,
         borderColor: "#bebebe",
         paddingTop: 30
     },
     settingHeadings:{
        color: "#bebebe",
-        marginBottom: 30,
+        marginBottom: 20,
         fontWeight: "bold"
     }
 });
