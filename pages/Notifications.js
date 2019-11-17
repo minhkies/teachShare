@@ -2,6 +2,7 @@ import React from 'react';
 import {View, ScrollView} from 'react-native';
 import NotificationsTags from '../comps/NotificationsTag';
 import PageTitle from '../comps/PageTitle';
+import NotificationsStyles from "../styles/NotificationsStyles"
 
 export default function Notifications() {
     let example = [
@@ -24,7 +25,7 @@ export default function Notifications() {
     ];
 
     return(
-        <ScrollView>
+        <ScrollView style={NotificationsStyles.wrapper}>
             <PageTitle
                 title={"Notification"}
                 msg={"Good news come here first"}

@@ -7,6 +7,7 @@ const NotificationsTagsStyles = StyleSheet.create({
         marginRight: 20,
         marginBottom: 10,
         paddingLeft: 10,
+        paddingRight: 10,
         flexDirection: "row",
         alignItems: "center",
         borderRadius: 15,
@@ -29,6 +30,9 @@ const NotificationsTagsStyles = StyleSheet.create({
         width: 25,
         height: 25,
         marginRight: 10,
+    },
+    txt:{
+        paddingRight: 40
     },
     boldTxt:{
         fontWeight: "bold",

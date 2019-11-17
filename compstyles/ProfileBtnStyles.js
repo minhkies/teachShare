@@ -34,8 +34,11 @@ let ProfileBtnStyles = StyleSheet.create({
         flexDirection: "row"
     },
     profileImg:{
-        height: 100,
-        width: 100,
+        height: 80,
+        width: 80,
+        margin: 0,
+        padding: 0,
+        resizeMode: "cover",
         borderRadius: 50
     },
     nameWrapper:{
