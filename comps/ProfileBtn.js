@@ -1,13 +1,17 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image, ImageBackground} from 'react-native';
 import ProfileBtnStyles from '../compstyles/ProfileBtnStyles';
+import {Actions} from 'react-native-router-flux';
 
 export default function ProfileBtn({url, name}) {
 
 
   return(
         <View style={ProfileBtnStyles.wrapper}>
-            <TouchableOpacity style={ProfileBtnStyles.touchOp}>
+            <TouchableOpacity
+                style={ProfileBtnStyles.touchOp}
+                onPress={()=>{Actions.profile()}}
+            >
                 <Image
                     source={require('../media/imgs/profilebtn.png')}
                     style={ProfileBtnStyles.BtnBgImg}

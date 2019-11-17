@@ -10,9 +10,11 @@ import UserData from '../data/UserData';
 import ImgOptions from '../comps/ImgOptions';
 import DropBox from '../comps/DropBox';
 import curriculum from '../data/CurriculumData';
+import LoadingStyles from '../styles/LoadingStyles';
 
 export default function Register() {
     const ref = firestore().collection('UserProfiles');
+    let [loading, setLoading] = useState(false);
     let [pass, setPass] = useState(true);
     let [firstName, setFirstName] = useState();
     let [lastName, setLastName] = useState();
@@ -72,7 +74,10 @@ export default function Register() {
             photo: photo
         })
             .then(addSubjects(currentUser))
-            .catch(error => setErrorMsg(error.message));
+            .catch((error) => {
+                setLoading(false);
+                setErrorMsg(error.message)
+            });
     };
 
     async function addSubjects(currentUser){
@@ -80,14 +85,20 @@ export default function Register() {
             addSub(currentUser, obj);
         })
             .then(Actions.loading())
-            .catch(error => setErrorMsg(error.message));
+            .catch((error) => {
+                setLoading(false);
+                setErrorMsg(error.message)
+            });
     }
 
     async function addSub(currentUser, obj){
         await ref.doc(currentUser && currentUser.uid).collection('teachingSubjects').doc().set({
             subject: obj[0],
             grade: obj[1]
-        }).catch(error => setErrorMsg(error.message));
+        }).catch((error) => {
+            setLoading(false);
+            setErrorMsg(error.message)
+        });
     }
 
     function getCurriculum() {
@@ -157,101 +168,102 @@ export default function Register() {
     }, [selectedCurriculum]);
 
     console.log(listSubjects);
-    return (
-        <ScrollView style={RegisterStyles.wrapper}
-                    showsVerticalScrollIndicator={false}>
-            <View style={RegisterStyles.pgTitleWrapper}>
-                <Text style={RegisterStyles.pgTitle}>Register</Text>
-                <Text>Sign up for a teachShare account</Text>
-            </View>
-            <View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>First Name</Text>
-                    <TextInput
-                        style={RegisterStyles.inp}
-                        placeholder={'John'}
-                        autoCapitalize="words"
-                        onChangeText={(txt) => {
-                            setFirstName(txt);
-                        }}
-                    />
+    if(loading===false){
+        return (
+            <ScrollView style={RegisterStyles.wrapper}
+                        showsVerticalScrollIndicator={false}>
+                <View style={RegisterStyles.pgTitleWrapper}>
+                    <Text style={RegisterStyles.pgTitle}>Register</Text>
+                    <Text>Sign up for a teachShare account</Text>
                 </View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>Last Name</Text>
-                    <TextInput
-                        style={RegisterStyles.inp}
-                        placeholder={'McDonald'}
-                        autoCapitalize="words"
-                        onChangeText={(txt) => {
-                            setLastName(txt);
-                        }}
-                    />
-                </View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>Email</Text>
-                    <TextInput
-                        style={RegisterStyles.inp}
-                        placeholder={'example@sd42.bc.ca'}
-                        value={null}
-                        onChangeText={(txt) => {
-                            setEmail(txt.toLowerCase());
-                        }}
-                    />
-                </View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>Password</Text>
-                    <View style={RegisterStyles.passInpWrapper}>
+                <View>
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>First Name</Text>
                         <TextInput
-                            style={[RegisterStyles.inp, RegisterStyles.passInp]}
-                            secureTextEntry={pass}
-                            autoCapitalize="none"
-                            placeholder="**********"
+                            style={RegisterStyles.inp}
+                            placeholder={'John'}
+                            autoCapitalize="words"
                             onChangeText={(txt) => {
-                                setPassword(txt);
+                                setFirstName(txt);
                             }}
                         />
-                        <TouchableOpacity
-                            style={RegisterStyles.passImgWrapper}
-                            onPress={() => {
-                                setPass(!pass);
-                            }}
-                        >
-                            <Image
-                                style={RegisterStyles.passImg}
-                                source={passIcon}
-                            />
-                        </TouchableOpacity>
                     </View>
-                </View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>School</Text>
-                    <TextInput
-                        style={RegisterStyles.inp}
-                        placeholder={'McMath Secondary School'}
-                        autoCapitalize="words"
-                        onChangeText={(txt) => {
-                            setSchool(txt);
-                        }}
-                    />
-                </View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>Teaching Subjects</Text>
-                    <View>
-                        <DropBox
-                        title={"curriculum"}
-                        data={curriculum}
-                        select={setSelectedCurriculum}
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>Last Name</Text>
+                        <TextInput
+                            style={RegisterStyles.inp}
+                            placeholder={'McDonald'}
+                            autoCapitalize="words"
+                            onChangeText={(txt) => {
+                                setLastName(txt);
+                            }}
                         />
-                        <DropBox
-                            title={"grade"}
-                            data={["10", "11", "12"]}
-                            select={setSelectedGrade}
+                    </View>
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>Email</Text>
+                        <TextInput
+                            style={RegisterStyles.inp}
+                            placeholder={'example@sd42.bc.ca'}
+                            value={null}
+                            onChangeText={(txt) => {
+                                setEmail(txt.toLowerCase());
+                            }}
                         />
-                        <DropBox
-                            title={"subject"}
-                            data={subjects}
-                            select={setSelectedSubject}/>
-                        <TouchableOpacity
+                    </View>
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>Password</Text>
+                        <View style={RegisterStyles.passInpWrapper}>
+                            <TextInput
+                                style={[RegisterStyles.inp, RegisterStyles.passInp]}
+                                secureTextEntry={pass}
+                                autoCapitalize="none"
+                                placeholder="**********"
+                                onChangeText={(txt) => {
+                                    setPassword(txt);
+                                }}
+                            />
+                            <TouchableOpacity
+                                style={RegisterStyles.passImgWrapper}
+                                onPress={() => {
+                                    setPass(!pass);
+                                }}
+                            >
+                                <Image
+                                    style={RegisterStyles.passImg}
+                                    source={passIcon}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>School</Text>
+                        <TextInput
+                            style={RegisterStyles.inp}
+                            placeholder={'McMath Secondary School'}
+                            autoCapitalize="words"
+                            onChangeText={(txt) => {
+                                setSchool(txt);
+                            }}
+                        />
+                    </View>
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>Teaching Subjects</Text>
+                        <View>
+                            <DropBox
+                                title={"curriculum"}
+                                data={curriculum}
+                                select={setSelectedCurriculum}
+                            />
+                            <DropBox
+                                title={"grade"}
+                                data={["10", "11", "12"]}
+                                select={setSelectedGrade}
+                            />
+                            <DropBox
+                                title={"subject"}
+                                data={subjects}
+                                select={setSelectedSubject}/>
+                            <TouchableOpacity
                                 style={RegisterStyles.addBtnWrapper}
                                 onPress={()=>{
                                     listAllSubjects();
@@ -259,44 +271,62 @@ export default function Register() {
                             >
                                 <Text style={RegisterStyles.addBtnTxt}>Add</Text>
                             </TouchableOpacity>
-                    </View>
-                    <View style={RegisterStyles.subjectsList}>
-                        {
-                            listSubjects.map((obj, ind) => {
-                                return (
-                                    <Text style={RegisterStyles.subjectTxt}>{obj[0]} {obj[1]}</Text>
-                                )
-                            })
-                        }
                         </View>
+                        <View style={RegisterStyles.subjectsList}>
+                            {
+                                listSubjects.map((obj, ind) => {
+                                    return (
+                                        <Text style={RegisterStyles.subjectTxt}>{obj[0]} {obj[1]}</Text>
+                                    )
+                                })
+                            }
+                        </View>
+                    </View>
+                    <ImgOptions
+                        title={"profile image"}
+                        type={"register"}
+                        setUri={setUri}
+                        uri={uri}
+                    />
                 </View>
-                <ImgOptions
-                title={"profile image"}
-                type={"register"}
-                setUri={setUri}
-                uri={uri}
+                <Text style={RegisterStyles.msg}>{errorMsg}</Text>
+                <View style={RegisterStyles.btnWrapper}>
+                    <TouchableOpacity
+                        style={RegisterStyles.registerBtn}
+                        onPress={() => {
+                            setLoading(true);
+                            HandleSignUp();
+                        }}
+                    >
+                        <Text style={RegisterStyles.registerBtnTxt}>Register</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={RegisterStyles.loginBtn}
+                        onPress={() => {
+                            Actions.login();
+                        }}
+                    >
+                        <Text style={RegisterStyles.loginBtnTxt}>Already have an account? Login</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
+        );
+    } else {
+        return(
+            <View style={LoadingStyles.wrapper}>
+                <Image
+                    style={LoadingStyles.top}
+                    source={require('../media/imgs/loadingbg.png')}
                 />
+                <View style={LoadingStyles.bottom}>
+                    <Image
+                        style={LoadingStyles.logo}
+                        source={require('../media/imgs/logo.png')}
+                    />
+                    <Text style={LoadingStyles.txt}>teachShare. All rights reserved</Text>
+                </View>
             </View>
-            <Text style={RegisterStyles.msg}>{errorMsg}</Text>
-            <View style={RegisterStyles.btnWrapper}>
-                <TouchableOpacity
-                    style={RegisterStyles.registerBtn}
-                    onPress={() => {
-                        HandleSignUp()
-                        ;
-                    }}
-                >
-                    <Text style={RegisterStyles.registerBtnTxt}>Register</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={RegisterStyles.loginBtn}
-                    onPress={() => {
-                        Actions.login();
-                    }}
-                >
-                    <Text style={RegisterStyles.loginBtnTxt}>Already have an account? Login</Text>
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
-    );
+        )
+    }
+
 }
