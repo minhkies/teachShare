@@ -6,6 +6,7 @@ import Discover from './Discover';
 import CreatePost from './CreatePost';
 import Notifications from './Notifications';
 import More from './More';
+import Profile from './Profile';
 
 export default function Route(){
     return(
@@ -16,6 +17,7 @@ export default function Route(){
                 <Scene key="createPost" component={CreatePost}/>
                 <Scene key="notifications" component={Notifications}/>
                 <Scene key="more" component={More}/>
+                <Scene key="profile" component={Profile}/>
             </Stack>
         </Router>
     );

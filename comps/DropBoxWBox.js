@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, Picker, Image} from 'react-native';
-import DropboxWBoxStyles from '../compstyles/DropBoxWBoxStyles';
+import DropBoxWBoxStyles from '../compstyles/DropBoxWBoxStyles';
 
 export default function DropBoxWBox({title, data, select}) {
     const [selectedVal, setSelectedVal]= useState("placeholder");
@@ -9,11 +9,11 @@ export default function DropBoxWBox({title, data, select}) {
             return s.charAt(0).toUpperCase() + s.slice(1)}
     };
     return(
-        <View style={DropboxWBoxStyles.wrapper}>
-            <Text style={DropboxWBoxStyles.title}>{capitalize(title)}</Text>
-            <View style={DropboxWBoxStyles.dropBoxWrapper}>
+        <View style={DropBoxWBoxStyles.wrapper}>
+            <Text style={DropBoxWBoxStyles.title}>{capitalize(title)}</Text>
+            <View style={DropBoxWBoxStyles.dropBoxWrapper}>
                 <Picker
-                    style={DropboxWBoxStyles.dropBoxInp}
+                    style={DropBoxWBoxStyles.dropBoxInp}
                     onValueChange={(value)=>
                         {
                             setSelectedVal(value);
@@ -31,7 +31,7 @@ export default function DropBoxWBox({title, data, select}) {
                     }
                 </Picker>
                 <Image
-                    style={DropboxWBoxStyles.dropdownIcon}
+                    style={DropBoxWBoxStyles.dropdownIcon}
                     source={require("../media/icon/arrow.png")}
                 />
             </View>

@@ -33,8 +33,9 @@ export default function NotificationsTag({type, data}) {
                 source={preset[0]}
                 style={NotificationsTagsStyles.icon}
             />
-            <Text>
-                <Text style={NotificationsTagsStyles.boldTxt}>{preset[1]}</Text> {preset[2]}</Text>
+            <Text style={NotificationsTagsStyles.txt}>
+                <Text style={NotificationsTagsStyles.boldTxt}>{preset[1]}</Text> {preset[2]}
+            </Text>
         </View>
     )
 }

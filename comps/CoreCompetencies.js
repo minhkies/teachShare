@@ -53,6 +53,10 @@ export default function CoreCompetenciesSelections({setData}) {
                 <Modal
                     isVisible={clicked}
                     coverScreen={true}
+                    animationIn={"slideInLeft"}
+                    animationOut={"slideInRight"}
+                    animationInTiming={500}
+                    animationOutTiming={500}
                     style={CoreCompetenciesStyles.modalPopup}
                 >
                     <PopupContent
@@ -119,8 +123,8 @@ export default function CoreCompetenciesSelections({setData}) {
                                             setClicked(!clicked);
                                         }}
                                     >
-                                        <View style={[CoreCompetenciesStyles.popupProfileLevels, options[currentCore].styles[1]]}>
-                                            <Text style={CoreCompetenciesStyles.popupProfileLevelsTxt}>{obj.level}</Text>
+                                        <View style={CoreCompetenciesStyles.popupProfileLevels}>
+                                            <Text style={[options[currentCore].styles[1], CoreCompetenciesStyles.popupProfileLevelsTxt]}>{obj.level}</Text>
                                         </View>
                                         <Text style={CoreCompetenciesStyles.popupProfileDesc}>{obj.desc}</Text>
                                     </TouchableOpacity>

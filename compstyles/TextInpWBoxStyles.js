@@ -22,7 +22,7 @@ const TxtInpWBoxStyles = StyleSheet.create({
     },
     inp:{
         paddingLeft: 15,
-        backgroundColor: "#ebebeb",
+        backgroundColor: "#f7f7f7",
         borderRadius: 10
     },
     inpReg:{

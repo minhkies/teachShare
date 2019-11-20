@@ -2,14 +2,19 @@ import {StyleSheet} from 'react-native';
 
 const ImgOptionsStyles=StyleSheet.create({
     wrapper:{
-        elevation : 10,
         borderRadius: 15,
         backgroundColor: "white",
         padding: 10,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 20,
-        marginRight: 20
+        marginRight: 20,
+        ...Platform.select({
+            android: {
+                borderWidth: 1,
+                borderColor: "#f7f7f7",
+            }
+        })
     },
     title:{
         marginTop: 5,
@@ -23,10 +28,10 @@ const ImgOptionsStyles=StyleSheet.create({
         height: 60,
         borderRadius: 30,
         borderWidth: 1,
-        borderColor: "#ebebeb",
+        borderColor: "#f7f7f7",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#ebebeb"
+        backgroundColor: "#f7f7f7"
     },
     autoBtn:{
         marginRight: 5
@@ -35,8 +40,8 @@ const ImgOptionsStyles=StyleSheet.create({
         color: "#7C7C81"
     },
     unselectedBtn:{
-        borderColor: "#ebebeb",
-        backgroundColor: "#ebebeb"
+        borderColor: "#f7f7f7",
+        backgroundColor: "#f7f7f7"
     },
     unselectedBtnTxt:{
         color: "#7C7C81"

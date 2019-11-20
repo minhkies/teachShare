@@ -43,6 +43,10 @@ const RegisterStyles = StyleSheet.create({
         backgroundColor: "#f7f7f7",
         borderRadius: 10
     },
+    multilineInp:{
+        textAlignVertical: "top",
+        height: 180
+    },
     passInpWrapper:{
         flexDirection: "row",
         alignItems: "center",
@@ -112,7 +116,8 @@ const RegisterStyles = StyleSheet.create({
         backgroundColor: "#edfaff",
         borderColor: "#5dc1d8",
         borderWidth: 1,
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop: 10
 
     },
     addBtnTxt:{

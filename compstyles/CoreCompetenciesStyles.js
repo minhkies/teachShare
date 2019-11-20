@@ -16,34 +16,34 @@ let CoreCompetenciesStyles = StyleSheet.create({
         fontWeight: "bold"
     },
     btnCommunication:{
-        color: "#F58855",
-        borderColor: "#F58855",
-        backgroundColor: "#FBEBDE"
+        color: "#7C7C81",
+        borderColor: "#f7f7f7",
+        backgroundColor: "#f7f7f7"
     },
     btnThinking:{
-        color: "#009ADA",
-        borderColor: "#009ADA",
-        backgroundColor: "#DFE7F4"
+        color: "#7C7C81",
+        borderColor: "#f7f7f7",
+        backgroundColor: "#f7f7f7"
     },
     btnSocial:{
-        color: "#4FB76E",
-        borderColor: "#4FB76E",
-        backgroundColor: "#E2EFDB"
+        color: "#7C7C81",
+        borderColor: "#f7f7f7",
+        backgroundColor: "#f7f7f7"
     },
     btnCommunicationSelected:{
-        color: "white",
+        color: "#F58855",
         borderColor: "#F58855",
-        backgroundColor: "#F58855"
+        backgroundColor: "#fef9f5"
     },
     btnThinkingSelected:{
-        color: "white",
+        color: "#009ADA",
         borderColor: "#009ADA",
-        backgroundColor: "#009ADA"
+        backgroundColor: "#f2f5fb"
     },
     btnSocialSelected:{
-        color: "white",
+        color: "#4FB76E",
         borderColor: "#4FB76E",
-        backgroundColor: "#4FB76E"
+        backgroundColor: "#f0f7ed"
     },
     modalPopup:{
         margin: 0,
@@ -90,8 +90,8 @@ let CoreCompetenciesStyles = StyleSheet.create({
     },
     popupProfileSelectionsWrapper:{
         flexDirection: "row",
-        marginTop: 5,
-        marginBottom: 5,
+        marginTop: 0,
+        marginBottom: 8,
         alignItems: "stretch",
         paddingTop: 10,
         paddingBottom: 10,
@@ -100,6 +100,7 @@ let CoreCompetenciesStyles = StyleSheet.create({
     },
     popupProfileLevels:{
         flex: 1,
+        backgroundColor: "#ebebeb",
         justifyContent: "center",
         alignItems: "center",
         marginTop: -10,
@@ -108,7 +109,7 @@ let CoreCompetenciesStyles = StyleSheet.create({
         borderTopLeftRadius: 10
     },
     popupProfileLevelsTxt:{
-        color: "white",
+        backgroundColor: "#ebebeb",
         fontWeight: "bold",
         fontSize: 18
     },

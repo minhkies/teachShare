@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 let ProfileBtnStyles = StyleSheet.create({
     wrapper:{
-        marginTop: 100,
+        marginTop: 70,
         flex: 1,
         justifyContent: "center",
         alignItems: "center"
@@ -17,7 +17,7 @@ let ProfileBtnStyles = StyleSheet.create({
     },
     BtnBgImg: {
         position: "absolute",
-        top: 0,
+        top: 6,
         left: 0,
         height: 200,
         width: "100%",
@@ -28,22 +28,27 @@ let ProfileBtnStyles = StyleSheet.create({
         top: 0,
         left: 0,
         height: 200,
-        marginLeft: 30,
+        marginLeft: 25,
+        marginBottom: 10,
         justifyContent: "center",
         alignItems: "center",
-        flexDirection: "row"
+        flexDirection: "row",
     },
     profileImg:{
-        height: 100,
-        width: 100,
+        height: 80,
+        width: 80,
+        margin: 0,
+        marginRight: 10,
+        padding: 0,
+        resizeMode: "cover",
         borderRadius: 50
     },
     nameWrapper:{
-        marginTop: -15,
+        marginTop: -7,
     },
     name:{
         fontWeight: "bold",
-        fontSize: 26,
+        fontSize: 28,
         color: "white"
     },
     desc:{

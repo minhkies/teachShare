@@ -7,6 +7,7 @@ const NotificationsTagsStyles = StyleSheet.create({
         marginRight: 20,
         marginBottom: 10,
         paddingLeft: 10,
+        paddingRight: 10,
         flexDirection: "row",
         alignItems: "center",
         borderRadius: 15,
@@ -22,6 +23,15 @@ const NotificationsTagsStyles = StyleSheet.create({
             android: {
                 borderWidth: 1,
                 borderColor: "#f7f7f7",
+            },
+            ios:{
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 0,
+                },
+                shadowOpacity: 0.29,
+                shadowRadius: 4.65,
             }
         })
     },
@@ -29,6 +39,9 @@ const NotificationsTagsStyles = StyleSheet.create({
         width: 25,
         height: 25,
         marginRight: 10,
+    },
+    txt:{
+        paddingRight: 40
     },
     boldTxt:{
         fontWeight: "bold",

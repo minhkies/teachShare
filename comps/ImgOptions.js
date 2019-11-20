@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+// import ImagePicker from 'react-native-image-picker';
 import ImgOptionsStyles from '../compstyles/ImgOptionsStyles';
 import options from '../data/CoreCompetenciesData';
 import firebase from 'react-native-firebase';
 import storage from '@react-native-firebase/storage';
+import ImagePicker from 'react-native-image-crop-picker';
 
-export default function ImgOptions({title, type, topic, setUri}) {
+
+export default function ImgOptions({title, type, topic, setUri, uri}) {
 
     let [autoBtnStyles, setAutoBtnStyles] = useState(ImgOptionsStyles.unselectedBtn);
     let [uploadBtnStyles, setUploadBtnStyles] = useState(ImgOptionsStyles.unselectedBtn);
@@ -46,17 +48,46 @@ export default function ImgOptions({title, type, topic, setUri}) {
 
     }
 
-    function uploadImage(){
-        ImagePicker.launchImageLibrary(options,(response) => {
-            if(response.didCancel){
-                setUploadBtn(false)
-            } else if (response.error){
-                setUploadBtn(false)
-            } else {
-                setImg(response.uri);
-                setUri(response.uri);
+    // function uploadImage(){
+    //     ImagePicker.launchImageLibrary(options,(response) => {
+    //         if(response.didCancel){
+    //             setUploadBtn(false)
+    //         } else if (response.error){
+    //             setUploadBtn(false)
+    //         } else {
+    //             setImg(response.uri);
+    //             setUri(response.uri);
+    //         }
+    //     })
+    // }
+
+    async function uploadImage(){
+        if (type==="create"){
+            try{
+                await ImagePicker.openPicker({
+                    width: 1600,
+                    height: 900,
+                    cropping: true,
+                }).then(image => {
+                    setUri(image.path)
+                })
+            } catch (e) {
+                setUploadBtn(false);
             }
-        })
+        } else {
+            try{
+                await ImagePicker.openPicker({
+                    width: 500,
+                    height: 500,
+                    cropping: true,
+                    cropperCircleOverlay: true
+                }).then(image => {
+                    setUri(image.path)
+                })
+            } catch (e) {
+                setUploadBtn(false);
+            }
+        }
     }
 
 
@@ -79,7 +110,7 @@ export default function ImgOptions({title, type, topic, setUri}) {
                         setUploadBtn(true);
                         setAutoBtn(false);
                         uploadImage();
-;                    }}
+                    }}
                 >
                     <Text style={[ImgOptionsStyles.btnTxt, uploadTxtStyles]}>Upload</Text>
                 </TouchableOpacity>

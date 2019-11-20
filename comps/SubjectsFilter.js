@@ -10,19 +10,21 @@ export default function SubjectsFilter() {
     let [select, setSelect] = useState([]);
     let [styles, setStyles] = useState([]);
     let tempSubjects;
-    let [TeachingSubjects, setTeachingSubjects]=useState([]);
+    let [teachingSubjects, setTeachingSubjects]=useState([]);
 
     let getData = async () => {
         try {
-            tempSubjects = await AsyncStorage.getItem('TeachingSubjects');
+            tempSubjects = await AsyncStorage.getItem('teachingSubjects');
             if (tempSubjects !== null) {
                  setTeachingSubjects(JSON.parse(tempSubjects));
+                 console.log(JSON.parse(tempSubjects));
             }
+            console.log(teachingSubjects);
         } catch (e) {
         }
     };
 
-    for (let i=0; i <=TeachingSubjects.length; i++){
+    for (let i=0; i < teachingSubjects.length; i++){
         initSelect.push(true);
     }
 
@@ -58,7 +60,7 @@ export default function SubjectsFilter() {
 
     useEffect(()=>{
         getData();
-        for (let i=0; i <TeachingSubjects.length; i++){
+        for (let i=0; i <teachingSubjects.length; i++){
             initSelect.push(true);
         }
         setSelect(initSelect);
@@ -73,7 +75,7 @@ export default function SubjectsFilter() {
                 style={SubjectsFilterStyles.selectionWrapper}
             >
                 {
-                    TeachingSubjects.map((obj, ind)=>{
+                    teachingSubjects.map((obj, ind)=>{
                         return <ShowOptions
                             key={ind}
                             ind={ind}

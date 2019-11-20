@@ -8,24 +8,30 @@ import {Actions} from 'react-native-router-flux';
 import RegisterStyles from '../styles/RegisterStyles';
 import UserData from '../data/UserData';
 import ImgOptions from '../comps/ImgOptions';
+import DropBox from '../comps/DropBox';
+import curriculum from '../data/CurriculumData';
+import LoadingStyles from '../styles/LoadingStyles';
 
 export default function Register() {
     const ref = firestore().collection('UserProfiles');
+    let [loading, setLoading] = useState(false);
     let [pass, setPass] = useState(true);
     let [firstName, setFirstName] = useState();
     let [lastName, setLastName] = useState();
     let [school, setSchool] = useState();
     let [subjects, setSubjects] = useState([]);
     let [email, setEmail] = useState();
+    let [bio, setBio] = useState();
     let [password, setPassword] = useState();
     let [errorMsg, setErrorMsg] = useState();
     let passIcon = null;
-    let [tempSub, setTempSub]=useState("");
-    let [tempGrade, setTempGrade]=useState("");
     let [uri, setUri] = useState("");
     let [photo, setPhoto] = useState("");
-    let sub=subjects;
-    let alertMsg="Please enter a valid subject & grade level";
+    let [curriculum, setCurriculum] = useState([]);
+    let [selectedCurriculum, setSelectedCurriculum] = useState("");
+    let [selectedGrade, setSelectedGrade] = useState("");
+    let [selectedSubject, setSelectedSubject] = useState("");
+    let [listSubjects, setListSubjects] = useState([]);
 
     if (pass === true) {
         passIcon = require('../media/icon/eye-closed.png');
@@ -33,28 +39,6 @@ export default function Register() {
         passIcon = require('../media/icon/eye.png');
     }
 
-    let checkInp = () => {
-        if ((tempSub) && (tempGrade) && tempSub !== "" && tempGrade !== ""){
-            tempSub = tempSub.trim();
-            tempGrade = tempGrade.trim();
-            if (isNaN(tempGrade) === false) {
-                sub.push([tempSub, tempGrade]);
-                setSubjects(sub);
-                setTempSub("");
-                setTempGrade("");
-            } else {
-                alert(alertMsg)
-            }
-        } else {
-            alert(alertMsg)
-        }
-
-    };
-
-    const capitalize = (s) => {
-        if (typeof s !== 'string') {return ''} else {
-        return s.charAt(0).toUpperCase() + s.slice(1)}
-    };
 
     let HandleSignUp = () => {
         firebase
@@ -64,7 +48,7 @@ export default function Register() {
             .catch(error => setErrorMsg(error.message));
     };
 
-    let submitImg = (uid) => {
+    let submitImg = () => {
         // const ref2 = firebase.storage().ref("profilePhoto");
         const {currentUser} = firebase.auth();
         const file = uri;
@@ -88,170 +72,276 @@ export default function Register() {
             fname: firstName.toLowerCase(),
             lname: lastName.toLowerCase(),
             school: school,
+            bio: bio,
             photo: photo
         })
             .then(addSubjects(currentUser))
-            .catch(error => setErrorMsg(error.message));
+            .catch((error) => {
+                setLoading(false);
+                setErrorMsg(error.message)
+            });
     };
 
     async function addSubjects(currentUser){
-        await subjects.map((obj)=>{
+        await listSubjects.map((obj)=>{
             addSub(currentUser, obj);
         })
-            .then(Actions.loading())
-            .catch(error => setErrorMsg(error.message));
+            .then(()=>{
+                Actions.loading();
+                setLoading(false);
+            })
+            .catch((error) => {
+                setLoading(false);
+                setErrorMsg(error.message)
+            });
     }
 
     async function addSub(currentUser, obj){
-        await ref.doc(currentUser && currentUser.uid).collection('teaching_subjects').doc().set({
+        await ref.doc(currentUser && currentUser.uid).collection('teachingSubjects').doc().set({
             subject: obj[0],
             grade: obj[1]
-        }).catch(error => setErrorMsg(error.message));
+        }).catch((error) => {
+            setLoading(false);
+            setErrorMsg(error.message)
+        });
+    }
+
+    function getCurriculum() {
+        let tempCurriculumArray =[];
+        firestore()
+            .collection('Curriculum').onSnapshot(querySnapshot=>{
+            querySnapshot.forEach(doc => {
+                const tempCurriculum = doc.id;
+                tempCurriculumArray.push(tempCurriculum)
+            });
+            setCurriculum(tempCurriculumArray);
+        });
+    }
+
+    function getSubjects() {
+        let tempSubjectsArray = [];
+        firestore()
+            .collection('Curriculum').doc(selectedCurriculum).collection(selectedGrade).onSnapshot(querySnapshot=>{
+            querySnapshot.forEach(doc => {
+                const tempSubjects = doc.id;
+                tempSubjectsArray.push(tempSubjects)
+            });
+            setSubjects(tempSubjectsArray);
+        });
+    }
+
+    function listAllSubjects(){
+        if (selectedCurriculum !== "" && selectedGrade !== "" && selectedGrade !== ""){
+            if (listSubjects.length === 0){
+                setListSubjects(listSubjects.concat([[selectedSubject, selectedGrade]]))
+            } else {
+                let count = 0;
+                listSubjects.map((obj) => {
+                    if (obj[0] === selectedSubject && obj[1] === selectedGrade){
+                        count++
+                    }
+                });
+                if (count > 0){
+                    alert("The selected subject is already added");
+                } else {
+                    setListSubjects(listSubjects.concat([[selectedSubject, selectedGrade]]))
+                }
+            }
+        } else {
+            alert("Please select a valid subject and grade level")
+        }
     }
 
     useEffect(()=>{
         addUserProfile();
     },[photo]);
 
-    return (
-        <ScrollView style={RegisterStyles.wrapper}
-                    showsVerticalScrollIndicator={false}>
-            <View style={RegisterStyles.pgTitleWrapper}>
-                <Text style={RegisterStyles.pgTitle}>Register</Text>
-                <Text>Sign up for a teachShare account</Text>
-            </View>
-            <View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>First Name</Text>
-                    <TextInput
-                        style={RegisterStyles.inp}
-                        placeholder={'John'}
-                        autoCapitalize="words"
-                        onChangeText={(txt) => {
-                            setFirstName(txt);
-                        }}
-                    />
+    useEffect(()=>{
+        getCurriculum();
+    }, []);
+
+    useEffect(()=>{
+        if (selectedGrade!=="" && selectedCurriculum !== ""){
+            getSubjects();
+        }
+    }, [selectedGrade]);
+
+    useEffect(()=>{
+        if (selectedGrade!=="" && selectedCurriculum !== ""){
+            getSubjects();
+        }
+    }, [selectedCurriculum]);
+
+    if(loading===false){
+        return (
+            <ScrollView style={RegisterStyles.wrapper}
+                        showsVerticalScrollIndicator={false}>
+                <View style={RegisterStyles.pgTitleWrapper}>
+                    <Text style={RegisterStyles.pgTitle}>Register</Text>
+                    <Text>Sign up for a teachShare account</Text>
                 </View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>Last Name</Text>
-                    <TextInput
-                        style={RegisterStyles.inp}
-                        placeholder={'McDonald'}
-                        autoCapitalize="words"
-                        onChangeText={(txt) => {
-                            setLastName(txt);
-                        }}
-                    />
-                </View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>Email</Text>
-                    <TextInput
-                        style={RegisterStyles.inp}
-                        placeholder={'example@sd42.bc.ca'}
-                        value={null}
-                        onChangeText={(txt) => {
-                            setEmail(txt.toLowerCase());
-                        }}
-                    />
-                </View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>Password</Text>
-                    <View style={RegisterStyles.passInpWrapper}>
+                <View>
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>First Name</Text>
                         <TextInput
-                            style={[RegisterStyles.inp, RegisterStyles.passInp]}
-                            secureTextEntry={pass}
-                            autoCapitalize="none"
-                            placeholder="**********"
+                            style={RegisterStyles.inp}
+                            placeholder={'John'}
+                            autoCapitalize="words"
                             onChangeText={(txt) => {
-                                setPassword(txt);
+                                setFirstName(txt);
                             }}
                         />
-                        <TouchableOpacity
-                            style={RegisterStyles.passImgWrapper}
-                            onPress={() => {
-                                setPass(!pass);
-                            }}
-                        >
-                            <Image
-                                style={RegisterStyles.passImg}
-                                source={passIcon}
-                            />
-                        </TouchableOpacity>
                     </View>
-                </View>
-                <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>School</Text>
-                    <TextInput
-                        style={RegisterStyles.inp}
-                        placeholder={'McMath Secondary School'}
-                        autoCapitalize="words"
-                        onChangeText={(txt) => {
-                            setSchool(txt);
-                        }}
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>Last Name</Text>
+                        <TextInput
+                            style={RegisterStyles.inp}
+                            placeholder={'McDonald'}
+                            autoCapitalize="words"
+                            onChangeText={(txt) => {
+                                setLastName(txt);
+                            }}
+                        />
+                    </View>
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>Email</Text>
+                        <TextInput
+                            style={RegisterStyles.inp}
+                            placeholder={'example@sd42.bc.ca'}
+                            value={null}
+                            onChangeText={(txt) => {
+                                setEmail(txt.toLowerCase());
+                            }}
+                        />
+                    </View>
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>Password</Text>
+                        <View style={RegisterStyles.passInpWrapper}>
+                            <TextInput
+                                style={[RegisterStyles.inp, RegisterStyles.passInp]}
+                                secureTextEntry={pass}
+                                autoCapitalize="none"
+                                placeholder="**********"
+                                onChangeText={(txt) => {
+                                    setPassword(txt);
+                                }}
+                            />
+                            <TouchableOpacity
+                                style={RegisterStyles.passImgWrapper}
+                                onPress={() => {
+                                    setPass(!pass);
+                                }}
+                            >
+                                <Image
+                                    style={RegisterStyles.passImg}
+                                    source={passIcon}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>School</Text>
+                        <TextInput
+                            style={RegisterStyles.inp}
+                            placeholder={'McMath Secondary School'}
+                            autoCapitalize="words"
+                            onChangeText={(txt) => {
+                                setSchool(txt);
+                            }}
+                        />
+                    </View>
+                    <View style={RegisterStyles.inpWrapper}>
+                        <Text style={RegisterStyles.inpHeading}>Teaching Subjects</Text>
+                        <View>
+                            <DropBox
+                                title={"curriculum"}
+                                data={curriculum}
+                                select={setSelectedCurriculum}
+                            />
+                            <DropBox
+                                title={"grade"}
+                                data={["10", "11", "12"]}
+                                select={setSelectedGrade}
+                            />
+                            <DropBox
+                                title={"subject"}
+                                data={subjects}
+                                select={setSelectedSubject}/>
+                            <TouchableOpacity
+                                style={RegisterStyles.addBtnWrapper}
+                                onPress={()=>{
+                                    listAllSubjects();
+                                }}
+                            >
+                                <Text style={RegisterStyles.addBtnTxt}>Add</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={RegisterStyles.subjectsList}>
+                            {
+                                listSubjects.map((obj, ind) => {
+                                    return (
+                                        <Text style={RegisterStyles.subjectTxt}>{obj[0]} {obj[1]}</Text>
+                                    )
+                                })
+                            }
+                        </View>
+                    </View>
+                    <ImgOptions
+                        title={"profile image"}
+                        type={"register"}
+                        setUri={setUri}
+                        uri={uri}
                     />
                 </View>
                 <View style={RegisterStyles.inpWrapper}>
-                    <Text style={RegisterStyles.inpHeading}>Teaching Subjects</Text>
-                    <View style={RegisterStyles.subjectAddWrapper}>
-                        <TextInput
-                            style={[RegisterStyles.inp, RegisterStyles.addInp]}
-                            placeholder={'Math'}
-                            autoCapitalize="words"
-                            value={tempSub}
-                            onChangeText={(txt)=>setTempSub(txt)}
-                        />
-                        <TextInput
-                            style={[RegisterStyles.inp, RegisterStyles.addGradeInp]}
-                            placeholder={'12'}
-                            autoCapitalize="words"
-                            value={tempGrade}
-                            onChangeText={(txt)=>setTempGrade(txt)}
-                        />
-                        <TouchableOpacity
-                            style={RegisterStyles.addBtnWrapper}
-                            onPress={()=>{
-                                checkInp();
-                            }}
-                        >
-                            <Text style={RegisterStyles.addBtnTxt}>Add</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={RegisterStyles.subjectsList}>
-                    {
-                        subjects.map((obj, ind) => {
-                            return (
-                                <Text style={RegisterStyles.subjectTxt}>{capitalize(obj[0])} {obj[1]}</Text>
-                            )
-                        })
-                    }
-                    </View>
+                    <Text style={RegisterStyles.inpHeading}>Bio</Text>
+                    <TextInput
+                        style={[RegisterStyles.inp, RegisterStyles.multilineInp]}
+                        multiline={true}
+                        placeholder={'Tell us a bit about yous'}
+                        onChangeText={(txt) => {
+                            setBio(txt);
+                        }}
+                    />
                 </View>
-                <ImgOptions
-                title={"profile image"}
-                type={"register"}
-                setUri={setUri}
+                <Text style={RegisterStyles.msg}>{errorMsg}</Text>
+                <View style={RegisterStyles.btnWrapper}>
+                    <TouchableOpacity
+                        style={RegisterStyles.registerBtn}
+                        onPress={() => {
+                            setLoading(true);
+                            HandleSignUp();
+                        }}
+                    >
+                        <Text style={RegisterStyles.registerBtnTxt}>Register</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={RegisterStyles.loginBtn}
+                        onPress={() => {
+                            Actions.login();
+                        }}
+                    >
+                        <Text style={RegisterStyles.loginBtnTxt}>Already have an account? Login</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
+        );
+    } else {
+        return(
+            <View style={LoadingStyles.wrapper}>
+                <Image
+                    style={LoadingStyles.top}
+                    source={require('../media/imgs/loadingbg.png')}
                 />
+                <View style={LoadingStyles.bottom}>
+                    <Image
+                        style={LoadingStyles.logo}
+                        source={require('../media/imgs/logo.png')}
+                    />
+                    <Text style={LoadingStyles.txt}>teachShare. All rights reserved</Text>
+                </View>
             </View>
-            <Text style={RegisterStyles.msg}>{errorMsg}</Text>
-            <View style={RegisterStyles.btnWrapper}>
-                <TouchableOpacity
-                    style={RegisterStyles.registerBtn}
-                    onPress={() => {
-                        HandleSignUp()
-                        ;
-                    }}
-                >
-                    <Text style={RegisterStyles.registerBtnTxt}>Register</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={RegisterStyles.loginBtn}
-                    onPress={() => {
-                        Actions.login();
-                    }}
-                >
-                    <Text style={RegisterStyles.loginBtnTxt}>Already have an account? Login</Text>
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
-    );
+        )
+    }
+
 }

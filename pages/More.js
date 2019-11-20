@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 export default function More(){
     let UserProfile;
     let [currentUser, setCurrentUser] = useState("");
+    let [profilePhotoURL, setProfilePhotoURL] = useState("");
 
     const capitalize = (s) => {
         if (typeof s !== 'string') {return ''} else {
@@ -29,9 +30,10 @@ export default function More(){
 
     let getData = async () => {
         try {
-            UserProfile = await AsyncStorage.getItem('UserData');
+            UserProfile = await AsyncStorage.getItem('userData');
             UserProfile = JSON.parse(UserProfile);
             setCurrentUser(capitalize(UserProfile.fname) + " " + capitalize(UserProfile.lname));
+            setProfilePhotoURL(UserProfile.photo);
             if (value !== null) {
                 // value previously stored
             }
@@ -51,7 +53,7 @@ export default function More(){
                 msg={"View your profile and change the settings"}
             />
             <ProfileBtn
-                url={require('../media/imgs/settingsprofileavatar.png')}
+                url={{uri: profilePhotoURL}}
                 name={currentUser}
             />
             <View style={MoreStyles.settingsWrapper}>
