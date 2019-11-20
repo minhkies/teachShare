@@ -28,7 +28,7 @@ export default function Login(){
                 .signInWithEmailAndPassword(tempEmail, tempPassword)
                 .then(() => {
                     UserData();
-                    Actions.main();
+                    Actions.loading();
                 })
                 .catch(error => setErrorMsg(error.message))
         } else {

@@ -17,7 +17,9 @@ export default function SubjectsFilter() {
             tempSubjects = await AsyncStorage.getItem('teachingSubjects');
             if (tempSubjects !== null) {
                  setTeachingSubjects(JSON.parse(tempSubjects));
+                 console.log(JSON.parse(tempSubjects));
             }
+            console.log(teachingSubjects);
         } catch (e) {
         }
     };

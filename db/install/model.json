@@ -1,0 +1,50 @@
+[
+  {
+    "model":"lessonPlans",
+    "cols":["id", "uid", "img", "subject", "grade", "topic", "description", "instruction", "isPublic", "isDraft", "createdTime", "learningObjs", "remarks"],
+    "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "BOOLEAN", "BOOLEAN", "TIMESTAMP", "TEXT", "TEXT"],
+    "order":["id"]
+  },
+  {
+    "model":"appreciates",
+    "cols":["id", "uid", "pid"],
+    "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT"],
+    "order":["id"]
+  },
+  {
+    "model":"cmts",
+    "cols":["id", "uid", "pid", "content", "replyTo", "createdTime"],
+    "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT", "TIMESTAMP"],
+    "order":["id"]
+  },
+  {
+    "model":"competencies",
+    "cols":["id","pid","core","sub","profile"],
+    "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT"],
+    "order":["id"]
+  },
+  {
+    "model":"downloads",
+    "cols":["id","pid","uid"],
+    "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT"],
+    "order":["id"]
+  },
+  {
+    "model":"files",
+    "cols":["id","uid","pid","name","fileLink"],
+    "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT"],
+    "order":["id"]
+  },
+  {
+    "model":"links",
+    "cols":["id","pid","link"],
+    "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT"],
+    "order":["id"]
+  },
+  {
+    "model":"views",
+    "cols":["id","uid","pid","createdTime"],
+    "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT", "TIMESTAMP"],
+    "order":["id"]
+  }
+]

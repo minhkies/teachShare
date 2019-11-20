@@ -62,19 +62,32 @@ export default function ImgOptions({title, type, topic, setUri, uri}) {
     // }
 
     async function uploadImage(){
-        try{
-            await ImagePicker.openPicker({
-                width: 500,
-                height: 500,
-                cropping: true,
-                cropperCircleOverlay: true
-            }).then(image => {
-                setUri(image.path)
-            })
-        } catch (e) {
-            setUploadBtn(false);
+        if (type==="create"){
+            try{
+                await ImagePicker.openPicker({
+                    width: 1600,
+                    height: 900,
+                    cropping: true,
+                }).then(image => {
+                    setUri(image.path)
+                })
+            } catch (e) {
+                setUploadBtn(false);
+            }
+        } else {
+            try{
+                await ImagePicker.openPicker({
+                    width: 500,
+                    height: 500,
+                    cropping: true,
+                    cropperCircleOverlay: true
+                }).then(image => {
+                    setUri(image.path)
+                })
+            } catch (e) {
+                setUploadBtn(false);
+            }
         }
-
     }
 
 

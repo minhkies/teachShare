@@ -13,6 +13,7 @@ export default function Loading() {
         const TeachingSubjects = [];
         const {currentUser} = firebase.auth();
         let ref = firestore().collection('UserProfiles').doc(currentUser && currentUser.uid);
+        await AsyncStorage.setItem('uid', currentUser && currentUser.uid);
         ref.collection('teachingSubjects').onSnapshot(querySnapshot => {
             querySnapshot.forEach(doc => {
                 const {subject, grade} = doc.data();

@@ -23,6 +23,15 @@ const NotificationsTagsStyles = StyleSheet.create({
             android: {
                 borderWidth: 1,
                 borderColor: "#f7f7f7",
+            },
+            ios:{
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 0,
+                },
+                shadowOpacity: 0.29,
+                shadowRadius: 4.65,
             }
         })
     },

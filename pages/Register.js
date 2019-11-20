@@ -21,6 +21,7 @@ export default function Register() {
     let [school, setSchool] = useState();
     let [subjects, setSubjects] = useState([]);
     let [email, setEmail] = useState();
+    let [bio, setBio] = useState();
     let [password, setPassword] = useState();
     let [errorMsg, setErrorMsg] = useState();
     let passIcon = null;
@@ -71,6 +72,7 @@ export default function Register() {
             fname: firstName.toLowerCase(),
             lname: lastName.toLowerCase(),
             school: school,
+            bio: bio,
             photo: photo
         })
             .then(addSubjects(currentUser))
@@ -84,7 +86,10 @@ export default function Register() {
         await listSubjects.map((obj)=>{
             addSub(currentUser, obj);
         })
-            .then(Actions.loading())
+            .then(()=>{
+                Actions.loading();
+                setLoading(false);
+            })
             .catch((error) => {
                 setLoading(false);
                 setErrorMsg(error.message)
@@ -167,7 +172,6 @@ export default function Register() {
         }
     }, [selectedCurriculum]);
 
-    console.log(listSubjects);
     if(loading===false){
         return (
             <ScrollView style={RegisterStyles.wrapper}
@@ -287,6 +291,17 @@ export default function Register() {
                         type={"register"}
                         setUri={setUri}
                         uri={uri}
+                    />
+                </View>
+                <View style={RegisterStyles.inpWrapper}>
+                    <Text style={RegisterStyles.inpHeading}>Bio</Text>
+                    <TextInput
+                        style={[RegisterStyles.inp, RegisterStyles.multilineInp]}
+                        multiline={true}
+                        placeholder={'Tell us a bit about yous'}
+                        onChangeText={(txt) => {
+                            setBio(txt);
+                        }}
                     />
                 </View>
                 <Text style={RegisterStyles.msg}>{errorMsg}</Text>

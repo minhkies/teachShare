@@ -43,6 +43,10 @@ const RegisterStyles = StyleSheet.create({
         backgroundColor: "#f7f7f7",
         borderRadius: 10
     },
+    multilineInp:{
+        textAlignVertical: "top",
+        height: 180
+    },
     passInpWrapper:{
         flexDirection: "row",
         alignItems: "center",
