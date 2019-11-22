@@ -16,7 +16,8 @@ import MultiTxtInpWBox from '../comps/MultiTxtInpWBox';
 import TxtWBox from '../comps/TxtWBox';
 
 export default function CreatePost() {
-    const host = 'http://192.168.1.85:3001/post';
+
+    const host = 'htin.postgres.database.azure.com:3001/post';
 
     const [selectedCoreCompetencies, setSelectedCoreCompetencies] = useState([null, null, null]);
     const [data, setData] = useState(false);

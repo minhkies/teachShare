@@ -15,7 +15,7 @@ export default function Home() {
     let [currentUser, setCurrentUser] = useState('');
     let [lessonPlans, setLessonPlans] = useState([]);
 
-    const host = 'http://192.168.1.85:3001/post';
+    const host = 'htin.postgres.database.azure.com:3001/post';
 
     const capitalize = (s) => {
         if (typeof s !== 'string') {return ''} else {

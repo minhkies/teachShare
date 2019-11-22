@@ -16,11 +16,11 @@ module.exports.post = async (event, context, callback)=>{
         },
         body: null
       };
-
+  
   var key = obj.key,
       posts = obj.data,
       result = null;
-
+  
   //combine all handlers
   var handlers = {
 		...lesson_plans_handler,
@@ -40,10 +40,10 @@ module.exports.post = async (event, context, callback)=>{
   if(result === null){
     result = {status:false, msg:"no handler"};
   }
-
+  
   response.body = JSON.stringify(result);
   if(typeof callback === "function"){
     callback(null, response);
   }
   return response;
-};
+}
