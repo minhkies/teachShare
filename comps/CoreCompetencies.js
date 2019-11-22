@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import Modal from 'react-native-modal';
 import CoreCompetenciesStyles from '../compstyles/CoreCompetenciesStyles';
 import options from '../data/CoreCompetenciesData';
 
 
-export default function CoreCompetenciesSelections({setData}) {
+export default function CoreCompetenciesSelections({setData, setCoreCompetencies, coreCompetencies}) {
     let [selected, setSelected] = useState([false, false, false]);
     let initSelect;
     let tempStyles = [];
@@ -13,6 +13,7 @@ export default function CoreCompetenciesSelections({setData}) {
     let [clicked, setClicked] = useState(false);
     let [currentCore, setCurrentCore] = useState();
     let [currentSub, setCurrentSub] = useState();
+    let [currentProfile, setCurrentProfile] = useState();
     let [currentPopup, setCurrentPopup] = useState(0);
     // let clicked=false;
     let CoreCompetencies = ({name, i}) => {
@@ -40,7 +41,7 @@ export default function CoreCompetenciesSelections({setData}) {
         initSelect[i] = !initSelect[i];
         setSelected(initSelect);
         for (let x = 0; x < selected.length; x++) {
-            selected[x] ? (tempStyles[x] = options[x].styles[1]) : tempStyles[x] = options[x].styles[0];
+            selected[x] ? (tempStyles[x] = options[x].styles[1]) : (tempStyles[x] = options[x].styles[0]);
             selected[x] && count++;
         }
         count > 0 ? setData(true) : setData(false);
@@ -75,6 +76,26 @@ export default function CoreCompetenciesSelections({setData}) {
             return null;
         }
     };
+
+    function saveData() {
+        let tempCompetencies = coreCompetencies;
+        if (selected[currentCore]===true){
+            if (currentCore !== undefined && currentSub !== undefined && currentProfile !== undefined){
+                tempCompetencies[currentCore] = [options[currentCore].name, options[currentCore].subCategory[currentSub].sub, currentProfile];
+                setCoreCompetencies(tempCompetencies);
+            }
+        } else {
+            tempCompetencies[currentCore] = null;
+            setCoreCompetencies(tempCompetencies);
+        }
+            }
+
+    // useEffect(()=>{
+    //     saveData();
+    // },[currentProfile]);
+    useEffect(()=>{
+        saveData();
+    },[selectedStyles]);
 
     let PopupContent = ({screen}) => {
         if (screen===1){
@@ -119,8 +140,10 @@ export default function CoreCompetenciesSelections({setData}) {
                                     <TouchableOpacity
                                         style={[CoreCompetenciesStyles.popupProfileSelectionsWrapper, options[currentCore].styles[0]]}
                                         onPress={()=>{
+                                            setCurrentProfile(ind);
                                             ColorChange(currentCore);
                                             setClicked(!clicked);
+                                            saveData();
                                         }}
                                     >
                                         <View style={CoreCompetenciesStyles.popupProfileLevels}>

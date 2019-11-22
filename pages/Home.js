@@ -7,10 +7,15 @@ import SubjectsFilter from '../comps/SubjectsFilter';
 import firebase from 'react-native-firebase';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-community/async-storage';
+import PostCard from '../comps/PostCard';
+import axios from 'axios';
 
 export default function Home() {
     let UserProfile, TeachingSubjects;
     let [currentUser, setCurrentUser] = useState('');
+    let [lessonPlans, setLessonPlans] = useState([]);
+
+    const host = 'http://192.168.1.85:3001/post';
 
     const capitalize = (s) => {
         if (typeof s !== 'string') {return ''} else {
@@ -29,9 +34,25 @@ export default function Home() {
         }
     };
 
+    let ReadLessonPlans = async () => {
+            //fetch to the bd to read
+            let obj = {
+                key: 'lesson_plans_read',
+                data: {},
+            };
+
+            let data = await axios.post(host, obj);
+            console.log('read', JSON.parse(data.data.body).data[0]);
+            setLessonPlans(JSON.parse(data.data.body).data)
+        };
+
     useEffect(() => {
         getData();
     }, );
+
+    useEffect(()=>{
+        ReadLessonPlans();
+    }, []);
 
     return (
         <ScrollView
@@ -39,11 +60,34 @@ export default function Home() {
             stickyHeaderIndices={[1]}
             showsVerticalScrollIndicator={false}>
             <PageTitle
-                title={'Hi, ' + currentUser}
+                title={'Welcome ' + currentUser}
                 msg={'This homepage is tailored for you!'}
             />
             <SearchBar/>
             <SubjectsFilter/>
+            {
+                lessonPlans.map((o,i)=>{
+                    if (o.is_public === true){
+                        return(
+                            <PostCard
+                                id={o.id}
+                                uid={o.uid}
+                                img={o.img}
+                                subject={o.subject}
+                                grade={o.grade}
+                                topic={o.topic}
+                                desc={o.description}
+                                inst={o.instruction}
+                                remarks={o.remarks}
+                                created_time={o.created_time}
+                                objs={o.learning_objs}
+                            />
+                        )
+                    }
+
+
+                })
+            }
         </ScrollView>
     );
 }

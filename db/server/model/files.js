@@ -5,7 +5,7 @@ const DB = require(types.DB_PATH);
 
 module.exports = class filesDB extends DB {
   constructor(data){
-    super("files", ["id","uid","pid","name","fileLink"]);
+    super("files", ["id","uid","pid","name","file_link"]);
     this.data = data;
     this.returns = ["*"];
     this.config = {};

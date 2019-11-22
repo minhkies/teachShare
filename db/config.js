@@ -16,7 +16,7 @@ const config = {
         password: "1189^hniM",
         host: "localhost",
         port: "5433",
-        database: "teachShare"
+        database: "teachShare",
     },
     types: types
 }

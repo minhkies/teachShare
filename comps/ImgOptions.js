@@ -39,14 +39,24 @@ export default function ImgOptions({title, type, topic, setUri, uri}) {
         uploadTxtStyles = ImgOptionsStyles.unselectedTxt;
     }
 
-    function getAutoImage(){
+    async function getAutoImage(){
+        let tempUrl;
         if (type === "create"){
-            fetch('https://source.unsplash.com/1600x900/?' + topic).then((response)=> {
-                setImg(response.url);
-            })
+            await fetch('https://source.unsplash.com/1600x900/?' + topic).then((response)=> {
+                RNFetchBlob
+                    .config({
+                        fileCache : true,
+                    })
+                    .fetch('GET', response.url, {
+                    })
+                    .then((res) => {
+                        // the temp file path
+                       setUri(res.path())
+                    })
+            });
         }
-
     }
+
 
     // function uploadImage(){
     //     ImagePicker.launchImageLibrary(options,(response) => {

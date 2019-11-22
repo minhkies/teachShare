@@ -1,7 +1,7 @@
 [
   {
-    "model":"lessonPlans",
-    "cols":["id", "uid", "img", "subject", "grade", "topic", "description", "instruction", "isPublic", "isDraft", "createdTime", "learningObjs", "remarks"],
+    "model":"lesson_plans",
+    "cols":["id", "uid", "img", "subject", "grade", "topic", "description", "instruction", "is_public", "is_draft", "created_time", "learning_objs", "remarks"],
     "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "BOOLEAN", "BOOLEAN", "TIMESTAMP", "TEXT", "TEXT"],
     "order":["id"]
   },
@@ -13,7 +13,7 @@
   },
   {
     "model":"cmts",
-    "cols":["id", "uid", "pid", "content", "replyTo", "createdTime"],
+    "cols":["id", "uid", "pid", "content", "reply_to", "created_time"],
     "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT", "TIMESTAMP"],
     "order":["id"]
   },
@@ -31,7 +31,7 @@
   },
   {
     "model":"files",
-    "cols":["id","uid","pid","name","fileLink"],
+    "cols":["id","uid","pid","name","file_link"],
     "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT", "TEXT", "TEXT"],
     "order":["id"]
   },
@@ -43,7 +43,7 @@
   },
   {
     "model":"views",
-    "cols":["id","uid","pid","createdTime"],
+    "cols":["id","uid","pid","created_time"],
     "colstype":["SERIAL PRIMARY KEY", "TEXT", "TEXT", "TIMESTAMP"],
     "order":["id"]
   }
