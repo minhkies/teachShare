@@ -5,7 +5,7 @@ const DB = require(types.DB_PATH);
 
 module.exports = class viewsDB extends DB {
   constructor(data){
-    super("views", ["id","uid","pid","createdTime"]);
+    super("views", ["id","uid","pid","created_time"]);
     this.data = data;
     this.returns = ["*"];
     this.config = {};

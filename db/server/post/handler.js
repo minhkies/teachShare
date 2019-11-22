@@ -1,4 +1,4 @@
-const lessonplans_handler = require('./lessonplans_handler');
+const lesson_plans_handler = require('./lesson_plans_handler');
 const appreciates_handler = require('./appreciates_handler');
 const cmts_handler = require('./cmts_handler');
 const competencies_handler = require('./competencies_handler');
@@ -16,14 +16,14 @@ module.exports.post = async (event, context, callback)=>{
         },
         body: null
       };
-
+  
   var key = obj.key,
       posts = obj.data,
       result = null;
-
+  
   //combine all handlers
   var handlers = {
-		...lessonplans_handler,
+		...lesson_plans_handler,
 		...appreciates_handler,
 		...cmts_handler,
 		...competencies_handler,
@@ -40,7 +40,7 @@ module.exports.post = async (event, context, callback)=>{
   if(result === null){
     result = {status:false, msg:"no handler"};
   }
-
+  
   response.body = JSON.stringify(result);
   if(typeof callback === "function"){
     callback(null, response);
