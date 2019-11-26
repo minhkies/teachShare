@@ -2,7 +2,8 @@ import {StyleSheet} from 'react-native';
 
 const HomeStyles=StyleSheet.create({
     wrapper:{
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
+        marginBottom: 60
     }
 });
 

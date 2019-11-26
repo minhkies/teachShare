@@ -30,6 +30,25 @@ const CreateStyles=StyleSheet.create({
     btnTxt:{
         color: "#5dc1d8"
     },
+    popUpWrapper:{
+        justifyContent: "flex-end"
+    },
+    popUp:{
+        backgroundColor: "#f7f7f7",
+        borderRadius: 15,
+        alignItems: "center",
+        width: "100%",
+        height: 100,
+        flexDirection: "row",
+
+    },
+    popUpAnimation:{
+        width: 100,
+        height: 100
+    },
+    popUpTxt:{
+        marginLeft: -5
+    }
 });
 
 export default CreateStyles

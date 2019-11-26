@@ -3,7 +3,7 @@ const config = require(approot+"/config");
 const {Client} = require("pg");
 const dbconfig = config.db;
 let exp = {};
-
+/*
 if (config.db.type === "dev"){
   //using pg pools for dev
   const pool = new pg.Pool(dbconfig);
@@ -36,5 +36,23 @@ if (config.db.type === "dev"){
     }
   }
 }
+*/
+
+exp = {
+  query:async function(q, d){
+    try {
+      var client = new Client({
+        connectionString:process.env.DATABASE_URL,
+        ssl:true
+      });
+      await client.connect();
+      var results = await client.query(q,d);
+    } catch (err){
+      return err;
+    }
+    await client.end();
+    return results.rows;
+  }
+};
 
 module.exports = exp;

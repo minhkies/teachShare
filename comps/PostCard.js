@@ -39,35 +39,35 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
                             if (cuMi-cMi > 1){
                                 setTimeTxt(cuMi-cMi + " minutes ago")
                             } else {
-                                setTimeTxt(cuMi-cMi +" minute ago")
+                                setTimeTxt("a minute ago")
                             }
                         }
                     } else{
                         if(cuH-cH>1){
                             setTimeTxt(cuH-cH+" hours ago")
                         } else {
-                            setTimeTxt(cuH-cH+" hour ago")
+                            setTimeTxt("an hour ago")
                         }
                     }
                 } else {
                     if (cuD-cD>1){
                         setTimeTxt(cuD-cD + " days ago")
                     } else {
-                        setTimeTxt(cuD-cD + " day ago")
+                        setTimeTxt("a day ago")
                     }
                 }
             } else {
                 if(cuM-cM>1){
                     setTimeTxt(cuM-cM+" months ago")
                 } else {
-                    setTimeTxt(cuM-cM+" month ago")
+                    setTimeTxt("a month ago")
                 }
             }
         } else {
             if(cuY-cY>1){
                 setTimeTxt(cuY-cY+" years ago")
             } else {
-                setTimeTxt(cuY-cY+" year ago")
+                setTimeTxt("a year ago")
             }
         }
 
@@ -113,8 +113,35 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
             <Text style={PostCardStyles.subjectTxt}>{subject} {grade}</Text>
             <Text>{desc}</Text>
             <View style={PostCardStyles.statisticTag}>
-                <View>
-                    <Text style={PostCardStyles.leftTxt}>Bla bla</Text>
+                <View style={PostCardStyles.leftWrapper}>
+                    <View style={PostCardStyles.statWrapper}>
+                        <Image
+                            style={PostCardStyles.statIcon}
+                            source={require('../media/icon/appreciate-stat.png')}
+                        />
+                        <Text style={PostCardStyles.statTxt}>12</Text>
+                    </View>
+                    <View style={PostCardStyles.statWrapper}>
+                        <Image
+                            style={PostCardStyles.statIcon}
+                            source={require('../media/icon/view-stat.png')}
+                        />
+                        <Text style={PostCardStyles.statTxt}>24</Text>
+                    </View>
+                    <View style={PostCardStyles.statWrapper}>
+                        <Image
+                            style={PostCardStyles.statIcon}
+                            source={require('../media/icon/download-stat.png')}
+                        />
+                        <Text style={PostCardStyles.statTxt}>12</Text>
+                    </View>
+                    <View style={PostCardStyles.statWrapper}>
+                        <Image
+                            style={PostCardStyles.statIcon}
+                            source={require('../media/icon/cmt-stat.png')}
+                        />
+                        <Text style={PostCardStyles.statTxt}>12</Text>
+                    </View>
                 </View>
                 <Text style={PostCardStyles.timeTxt}>{timeTxt}</Text>
             </View>
