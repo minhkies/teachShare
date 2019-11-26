@@ -6,6 +6,7 @@ import options from '../data/CoreCompetenciesData';
 import firebase from 'react-native-firebase';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
+import RNFetchBlob from 'rn-fetch-blob'
 
 
 export default function ImgOptions({title, type, topic, setUri, uri}) {
@@ -50,7 +51,6 @@ export default function ImgOptions({title, type, topic, setUri, uri}) {
                     .fetch('GET', response.url, {
                     })
                     .then((res) => {
-                        // the temp file path
                        setUri(res.path())
                     })
             });

@@ -3,30 +3,25 @@ import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import SubjectsFilterStyles from '../compstyles/SubjectsFilterStyles';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export default function SubjectsFilter() {
+export default function SubjectsFilter({subjects, selectedSubjects, setSelectedSubjects}) {
     let margin;
     let initSelect = [];
     let tempStyles=[];
     let [select, setSelect] = useState([]);
     let [styles, setStyles] = useState([]);
-    let tempSubjects;
-    let [teachingSubjects, setTeachingSubjects]=useState([]);
 
-    let getData = async () => {
-        try {
-            tempSubjects = await AsyncStorage.getItem('teachingSubjects');
-            if (tempSubjects !== null) {
-                 setTeachingSubjects(JSON.parse(tempSubjects));
-                 console.log(JSON.parse(tempSubjects));
-            }
-            console.log(teachingSubjects);
-        } catch (e) {
-        }
-    };
-
-    for (let i=0; i < teachingSubjects.length; i++){
-        initSelect.push(true);
-    }
+    // let getData = async () => {
+    //     try {
+    //         tempSubjects = await AsyncStorage.getItem('teachingSubjects');
+    //         if (tempSubjects !== null) {
+    //              await setTeachingSubjects(JSON.parse(tempSubjects));
+    //             teachingSubjects.map((o,i)=>{
+    //                 setSelect(select.concat(false));
+    //             })
+    //         }
+    //     } catch (e) {
+    //     }
+    // };
 
     let ShowOptions = ({subject, grade, ind}) => {
         if (ind===0){
@@ -34,37 +29,35 @@ export default function SubjectsFilter() {
         } else {
             margin = 10
         }
+        console.log("try", selectedSubjects[ind]);
+        selectedSubjects[ind] ? styles[ind] = SubjectsFilterStyles.selectedTxt : styles[ind] = SubjectsFilterStyles.unselectedTxt;
 
         return(
             <TouchableOpacity style={{marginLeft: margin}}
                               onPress={()=>{
-                                  HandleClick(ind)
+                                  handleClick(ind)
                               }}
             >
-                <Text style={[SubjectsFilterStyles.txt, SubjectsFilterStyles.selectedTxt, styles[ind]]}>{subject} {grade}</Text>
+                <Text style={[SubjectsFilterStyles.txt, styles[ind]]}>{subject} {grade}</Text>
             </TouchableOpacity>
         )
     };
 
-    let HandleClick = (ind) => {
+    let handleClick = (ind) => {
         initSelect=select;
         initSelect[ind]=!initSelect[ind];
         setSelect(initSelect);
         for (let i = 0; i < initSelect.length; i++){
-            initSelect[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt;
+            // initSelect[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt;
             select[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt;
         }
         setStyles(tempStyles);
     };
 
 
-    useEffect(()=>{
-        getData();
-        for (let i=0; i <teachingSubjects.length; i++){
-            initSelect.push(true);
-        }
-        setSelect(initSelect);
-    },[]);
+    // useEffect( ()=>{
+    //     getData();
+    // },[]);
 
     return(
         <View style={SubjectsFilterStyles.wrapper}>
@@ -75,7 +68,7 @@ export default function SubjectsFilter() {
                 style={SubjectsFilterStyles.selectionWrapper}
             >
                 {
-                    teachingSubjects.map((obj, ind)=>{
+                    subjects.map((obj, ind)=>{
                         return <ShowOptions
                             key={ind}
                             ind={ind}

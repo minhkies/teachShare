@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, Alert, ToastAndroid} from 'react-native';
 import firebase from 'react-native-firebase';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
@@ -14,32 +14,46 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import MultiTxtInpWBox from '../comps/MultiTxtInpWBox';
 import TxtWBox from '../comps/TxtWBox';
+import LottieView from 'lottie-react-native';
+import Modal from 'react-native-modal';
+import {Actions} from 'react-native-router-flux';
 
 export default function CreatePost() {
 
-    const host = 'htin.postgres.database.azure.com:3001/post';
+    // const host = 'https://htin.postgres.database.azure.com:3001/post';
+    // const host = 'http://142.232.162.210:3001/post';
+    // const host = 'http://192.168.1.90:3001/post';
+    const host = "https://teachsharek12ss.herokuapp.com/post";
 
-    const [selectedCoreCompetencies, setSelectedCoreCompetencies] = useState([null, null, null]);
-    const [data, setData] = useState(false);
-    const [curriculum, setCurriculum] = useState([]);
-    const [selectedCurriculum, setSelectedCurriculum] = useState('');
-    const [selectedGrade, setSelectedGrade] = useState('');
-    const [subjects, setSubjects] = useState([]);
-    const [selectedSubject, setSelectedSubject] = useState('');
-    const [topics, setTopics] = useState([]);
-    const [selectedTopic, setSelectedTopic] = useState('');
-    const [links, setLinks] = useState([]);
-    const [desc, setDesc] = useState('');
-    const [instruction, setInstruction] = useState('');
-    const [remarks, setRemarks] = useState('');
+    let [selectedCoreCompetencies, setSelectedCoreCompetencies] = useState([null, null, null]);
+    let [data, setData] = useState(false);
+    let [curriculum, setCurriculum] = useState([]);
+    let [selectedCurriculum, setSelectedCurriculum] = useState('');
+    let [selectedGrade, setSelectedGrade] = useState('');
+    let [subjects, setSubjects] = useState([]);
+    let [selectedSubject, setSelectedSubject] = useState('');
+    let [topics, setTopics] = useState([]);
+    let [selectedTopic, setSelectedTopic] = useState('');
+    let [links, setLinks] = useState([]);
+    let [desc, setDesc] = useState('');
+    let [instruction, setInstruction] = useState('');
+    let [remarks, setRemarks] = useState('');
     let [view, setView] = useState(1);
-    let UserProfile;
     let [uid, setUid] = useState('');
     let [pid, setPid] = useState();
     let [uri, setUri] = useState('');
-    let [photo, setPhoto] = useState('');
     let [selectedFiles, setSelectedFiles] = useState([]);
     let [uploadedFile, setUploadedFile] = useState([]);
+    let [loading, setLoading] = useState(false);
+    let photo="";
+
+    const capitalize = (s) => {
+        if (typeof s !== 'string') {
+            return '';
+        } else {
+            return s.charAt(0).toUpperCase() + s.slice(1);
+        }
+    };
 
     let getData = async () => {
         let tempUid;
@@ -54,7 +68,36 @@ export default function CreatePost() {
         }
     };
 
-    function getCurriculum() {
+    let inputValidation = async () => {
+        let msg = '';
+        if (selectedCoreCompetencies === [null, null, null]) {
+            msg = 'please selected at least a core competencies';
+        } else if (selectedCurriculum === null || selectedCurriculum === '') {
+            msg = 'please select enter a valid curriculum';
+        } else if (selectedSubject === null || selectedSubject === '') {
+            msg = 'please enter a valid subject';
+        } else if (selectedGrade === null || selectedGrade === '') {
+            msg = 'please enter a valid grade';
+        } else if (selectedTopic === null || selectedTopic === '') {
+            msg = 'please enter a valid learning topic';
+        } else if (desc === null || desc === '') {
+            msg = 'please enter a description';
+        } else if (links === [] || links === null || links === '' || selectedFiles === [] || selectedFiles === null || selectedFiles === '') {
+            msg = 'please enter at least one link or file';
+        }
+
+        if (msg !== '') {
+            ToastAndroid.show(capitalize(msg), ToastAndroid.LONG, ToastAndroid.BOTTOM);
+            return false;
+        } else {
+            setLoading(true);
+            await submitImg().then(()=>{
+                createPost();
+            })
+        }
+    };
+
+    const getCurriculum = () => {
         let tempCurriculumArray = [];
         firestore()
             .collection('Curriculum').onSnapshot(querySnapshot => {
@@ -64,7 +107,7 @@ export default function CreatePost() {
             });
             setCurriculum(tempCurriculumArray);
         });
-    }
+    };
 
     function getSubjects() {
         let tempSubjectsArray = [];
@@ -94,31 +137,20 @@ export default function CreatePost() {
         const task = ref2.child(name).put(file, metadata);
 
         await task
-            .then(snapshot =>
-                setPhoto(snapshot.downloadURL));
-        await updateImgLink();
+            .then((snapshot) => {
+                photo=snapshot.downloadURL;
+            });
     };
 
-    let updateImgLink = async () => {
-        let obj = {
-            key: 'lesson_plans_update',
-            data: {
-                id: pid,
-                img: photo,
-            },
-        };
-        let data = await axios.post(host, obj);
-    };
 
-    let CreatePost = async () => {
-        //fetch to the bd to create
-        //the object (usually) you're sending over
+    let createPost = async () => {
         let obj = {
             key: 'lesson_plans_create',
             data: {
                 subject: selectedSubject,
                 grade: selectedGrade,
                 topic: selectedTopic,
+                img: photo,
                 uid: uid,
                 description: desc,
                 instruction: instruction,
@@ -131,10 +163,14 @@ export default function CreatePost() {
 
         // The link to the file that's doing query
         let data = await axios.post(host, obj);
-        setPid(JSON.parse(data.data.body).data[0].id);
+        await setPid(JSON.parse(data.data.body).data[0].id);
+        runTasks().then(()=>{
+            setLoading(false);
+            Actions.home();
+        })
     };
 
-    let CreateCompetencies = async () => {
+    let createCompetencies = async () => {
         selectedCoreCompetencies.map((o, i) => {
             if (o !== null) {
                 let comps = async () => {
@@ -154,7 +190,7 @@ export default function CreatePost() {
         });
     };
 
-    let CreateLinks = async () => {
+    let createLinks = async () => {
         links.map((o, i) => {
             let tempLink = async () => {
                 let obj = {
@@ -172,8 +208,8 @@ export default function CreatePost() {
 
     let submitFile = async () => {
 
-        await selectedFiles.map((o,i)=>{
-            let tempFile = async () =>{
+        await selectedFiles.map((o, i) => {
+            let tempFile = async () => {
                 const file = o[1];
                 const name = o[0];
                 const ref2 = firebase.storage().ref().child('lp_files').child(pid);
@@ -183,49 +219,45 @@ export default function CreatePost() {
                 await task
                     .then(snapshot =>
                         setUploadedFile(uploadedFile.concat(snapshot.downloadURL)),
-                console.log("hahahaha", uploadedFile)
                     )
-                    .catch((e)=>{{
-                        Alert.alert("hihi", e.message);
-                    }})
+                    .catch((e) => {
+                        {
+                            Alert.alert(e.message);
+                        }
+                    });
 
             };
-            tempFile()
+            tempFile();
         });
-        await CreateFiles();
+        await createFiles();
     };
 
-    let CreateFiles = async () => {
-        console.log("huhuhuhu", uploadedFile);
-        uploadedFile.map((o, i) => {
-            console.log("hihihihi", o);
+    let createFiles = async () => {
+        await uploadedFile.map((o, i) => {
             let tempFile = async () => {
                 let obj = {
                     key: 'files_create',
                     data: {
                         uid: uid,
                         pid: pid,
-                        name: file[i][0],
-                        file_link: o
+                        name: o[0],
+                        file_link: o[1],
                     },
                 };
                 let data = await axios.post(host, obj);
-                console.log(data);
             };
             tempFile();
         });
     };
 
-    useEffect(() => {
-        submitFile();
-        CreateCompetencies();
-        CreateLinks();
-        submitImg();
-    }, [pid]);
+    let runTasks = async () => {
+        await submitFile();
+        await createCompetencies();
+        await createLinks();
 
-    useEffect(()=>{
-        console.log("run", selectedFiles)
-    }, [selectedFiles]);
+    };
+
+
 
     // let ReadUsers = async () => {
     //     //fetch to the bd to read
@@ -339,14 +371,14 @@ export default function CreatePost() {
                         setUri={setUri}
                     />
                     <TxtWBox
-                        title={"Uploaded file(s)"}
+                        title={'Uploaded file(s)'}
                         selectedFiles={selectedFiles}
                         setSelectedFiles={setSelectedFiles}
                     />
                     <TouchableOpacity
                         style={CreateStyles.btn}
                         onPress={() => {
-                            CreatePost();
+                            inputValidation();
                         }}>
                         <Text style={CreateStyles.btnTxt}>Post</Text>
                     </TouchableOpacity>
@@ -358,6 +390,26 @@ export default function CreatePost() {
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
                 />
+                <Modal
+                    // style={CreateStyles.modal}
+                    isVisible={loading}
+                    coverScreen={true}
+                    animationIn={'slideInUp'}
+                    animationOut={'slideInDown'}
+                    animationInTiming={500}
+                    animationOutTiming={500}
+                    backdropOpacity={0.2}
+                    style={CreateStyles.popUpWrapper}
+                >
+                    <View style={CreateStyles.popUp}>
+                        <LottieView
+                            source={require('../media/animation/loading')}
+                            autoPlay
+                            loop
+                            style={CreateStyles.popUpAnimation}/>
+                        <Text style={CreateStyles.popUpTxt}>Creating lesson plan...</Text>
+                    </View>
+                </Modal>
             </View>
         );
     }

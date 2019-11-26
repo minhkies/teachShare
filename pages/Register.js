@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity, ScrollView, Image, Modal} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, ScrollView, Image, ToastAndroid} from 'react-native';
 // import ShadowView from 'react-native-simple-shadow-view/src/ShadowView';
 import firebase from 'react-native-firebase';
 import firestore from '@react-native-firebase/firestore';
@@ -11,6 +11,10 @@ import ImgOptions from '../comps/ImgOptions';
 import DropBox from '../comps/DropBox';
 import curriculum from '../data/CurriculumData';
 import LoadingStyles from '../styles/LoadingStyles';
+import CreateStyles from '../styles/CreateStyles';
+import LottieView from "lottie-react-native";
+import Modal from 'react-native-modal';
+import {asyncStorage} from 'reactotron-react-native';
 
 export default function Register() {
     const ref = firestore().collection('UserProfiles');
@@ -23,7 +27,6 @@ export default function Register() {
     let [email, setEmail] = useState();
     let [bio, setBio] = useState();
     let [password, setPassword] = useState();
-    let [errorMsg, setErrorMsg] = useState();
     let passIcon = null;
     let [uri, setUri] = useState("");
     let [photo, setPhoto] = useState("");
@@ -33,19 +36,30 @@ export default function Register() {
     let [selectedSubject, setSelectedSubject] = useState("");
     let [listSubjects, setListSubjects] = useState([]);
 
+
     if (pass === true) {
         passIcon = require('../media/icon/eye-closed.png');
     } else {
         passIcon = require('../media/icon/eye.png');
     }
 
+    const capitalize = (s) => {
+        if (typeof s !== 'string') {
+            return '';
+        } else {
+            return s.charAt(0).toUpperCase() + s.slice(1);
+        }
+    };
 
-    let HandleSignUp = () => {
+    let handleSignUp = () => {
         firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
             .then(() => submitImg())
-            .catch(error => setErrorMsg(error.message));
+            .catch((error) => {
+                setLoading(false);
+                ToastAndroid.show(error.message, ToastAndroid.LONG, ToastAndroid.BOTTOM)}
+            );
     };
 
     let submitImg = () => {
@@ -78,7 +92,7 @@ export default function Register() {
             .then(addSubjects(currentUser))
             .catch((error) => {
                 setLoading(false);
-                setErrorMsg(error.message)
+                ToastAndroid.show(error.message, ToastAndroid.LONG, ToastAndroid.BOTTOM);
             });
     };
 
@@ -87,12 +101,13 @@ export default function Register() {
             addSub(currentUser, obj);
         })
             .then(()=>{
-                Actions.loading();
                 setLoading(false);
+                Actions.loading();
+
             })
             .catch((error) => {
                 setLoading(false);
-                setErrorMsg(error.message)
+                ToastAndroid.show(error.message, ToastAndroid.LONG, ToastAndroid.BOTTOM);
             });
     }
 
@@ -102,7 +117,7 @@ export default function Register() {
             grade: obj[1]
         }).catch((error) => {
             setLoading(false);
-            setErrorMsg(error.message)
+            ToastAndroid.show(error.message, ToastAndroid.LONG, ToastAndroid.BOTTOM);
         });
     }
 
@@ -152,6 +167,28 @@ export default function Register() {
         }
     }
 
+    let inputValidation = async () => {
+        let msg="";
+        if (firstName === "" || firstName === null){
+            msg="please enter a valid first name"
+        } else if (lastName === "" || lastName === null){
+            msg="please enter a valid last name"
+        } else if (school === "" || school === null){
+            msg="please enter a valid school name"
+        } else if (listSubjects === [] || listSubjects === [null]){
+            msg="please select at least one teach subject"
+        } else if (uri=== "" || uri === null){
+            msg="please select a profile photo"
+        }
+
+        if (msg !== ""){
+            ToastAndroid.show(capitalize(msg), ToastAndroid.LONG, ToastAndroid.BOTTOM)
+        } else {
+            setLoading(true);
+            handleSignUp();
+        }
+    };
+
     useEffect(()=>{
         addUserProfile();
     },[photo]);
@@ -172,7 +209,6 @@ export default function Register() {
         }
     }, [selectedCurriculum]);
 
-    if(loading===false){
         return (
             <ScrollView style={RegisterStyles.wrapper}
                         showsVerticalScrollIndicator={false}>
@@ -304,13 +340,11 @@ export default function Register() {
                         }}
                     />
                 </View>
-                <Text style={RegisterStyles.msg}>{errorMsg}</Text>
                 <View style={RegisterStyles.btnWrapper}>
                     <TouchableOpacity
                         style={RegisterStyles.registerBtn}
                         onPress={() => {
-                            setLoading(true);
-                            HandleSignUp();
+                            inputValidation();
                         }}
                     >
                         <Text style={RegisterStyles.registerBtnTxt}>Register</Text>
@@ -324,24 +358,27 @@ export default function Register() {
                         <Text style={RegisterStyles.loginBtnTxt}>Already have an account? Login</Text>
                     </TouchableOpacity>
                 </View>
+                <Modal
+                    isVisible={loading}
+                    coverScreen={true}
+                    animationIn={'slideInUp'}
+                    animationOut={'slideInDown'}
+                    animationInTiming={500}
+                    animationOutTiming={500}
+                    backdropOpacity={0.2}
+                    style={RegisterStyles.popUpWrapper}
+                >
+                    <View style={CreateStyles.popUp}>
+                        <LottieView
+                            source={require('../media/animation/loading')}
+                            autoPlay
+                            loop
+                            style={RegisterStyles.popUpAnimation}/>
+                        <Text style={RegisterStyles.popUpTxt}>Creating lesson plan...</Text>
+                    </View>
+                </Modal>
             </ScrollView>
+
         );
-    } else {
-        return(
-            <View style={LoadingStyles.wrapper}>
-                <Image
-                    style={LoadingStyles.top}
-                    source={require('../media/imgs/loadingbg.png')}
-                />
-                <View style={LoadingStyles.bottom}>
-                    <Image
-                        style={LoadingStyles.logo}
-                        source={require('../media/imgs/logo.png')}
-                    />
-                    <Text style={LoadingStyles.txt}>teachShare. All rights reserved</Text>
-                </View>
-            </View>
-        )
-    }
 
 }

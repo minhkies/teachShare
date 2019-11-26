@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {Image, TouchableOpacity} from 'react-native';
 import CreateBtnStyles from '../compstyles/CreateBtnStyles';
-import DocumentPicker from 'react-native-document-picker';
-const RNFS = require('react-native-fs');
+// import DocumentPicker from 'react-native-document-picker';
+// const RNFS = require('react-native-fs');
+// const RNGRP = require('react-native-get-real-path');
+import FilePickerManager from 'react-native-file-picker';
 
 /**
  * @return {null}
@@ -20,23 +22,17 @@ export default function CreateBtn({page, data, setView, selectedFiles, setSelect
 
     let uploadFiles = async () => {
         let tempFile = [];
-        try {
-            const results = await DocumentPicker.pickMultiple({
-                type: [DocumentPicker.types.allFiles],
-            });
-            await results.map((o,i)=>{
-                RNFS.readDir(o.uri)
-                    .then((res)=>{console.log(res)})
-                    .catch((e)=>console.log(e.message));
-                tempFile.push([o.name, o.uri]);
-            });
-            setSelectedFiles(selectedFiles.concat(tempFile));
-        } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-            } else {
-                throw err;
+        await FilePickerManager.showFilePicker(null, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled file picker');
             }
-        }
+            else if (response.error) {
+                console.log('FilePickerManager Error: ', response.error);
+            } else {
+                tempFile.push([response.fileName, response.path]);
+                setSelectedFiles(selectedFiles.concat(tempFile));
+            }
+        });
     };
 
 

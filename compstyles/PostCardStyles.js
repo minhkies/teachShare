@@ -58,11 +58,29 @@ const PostCardStyles = StyleSheet.create({
         marginRight: -10
     },
     timeTxt:{
-        color: "#ebebeb",
+        color: "#7C7C81",
     },
     leftTxt:{
-        color: "#ebebeb",
+        color: "#7C7C81",
+    },
+    leftWrapper:{
+        flexDirection: "row"
+    },
+    statWrapper:{
+        flexDirection: "row",
+        marginRight: 10,
+        alignItems: "center"
+    },
+    statIcon:{
+        width: 15,
+        height: 15,
+        resizeMode: "contain",
+        marginRight: 5
+    },
+    statTxt: {
+        color: "#ebebeb"
     }
+
 });
 
 export default PostCardStyles;

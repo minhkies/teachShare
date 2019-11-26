@@ -10,14 +10,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 export default function Loading() {
 
     async function storeData() {
-        const TeachingSubjects = [];
+        const teachingSubjects = [];
         const {currentUser} = firebase.auth();
         let ref = firestore().collection('UserProfiles').doc(currentUser && currentUser.uid);
         await AsyncStorage.setItem('uid', currentUser && currentUser.uid);
         ref.collection('teachingSubjects').onSnapshot(querySnapshot => {
             querySnapshot.forEach(doc => {
                 const {subject, grade} = doc.data();
-                TeachingSubjects.push({
+                teachingSubjects.push({
                     id: doc.id,
                     subject,
                     grade,
@@ -30,7 +30,7 @@ export default function Loading() {
                     const currentUser = await transaction.get(ref);
                     try {
                         await AsyncStorage.setItem('userData', JSON.stringify(currentUser.data()));
-                        await AsyncStorage.setItem('teachingSubjects', JSON.stringify(TeachingSubjects)).then(Actions.main());
+                        await AsyncStorage.setItem('teachingSubjects', JSON.stringify(teachingSubjects)).then(Actions.main());
                     } catch (e) {
                         // saving error
                     }

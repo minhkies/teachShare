@@ -11,11 +11,16 @@ import PostCard from '../comps/PostCard';
 import axios from 'axios';
 
 export default function Home() {
-    let UserProfile, TeachingSubjects;
+    let userProfile, teachingSubjects;
     let [currentUser, setCurrentUser] = useState('');
     let [lessonPlans, setLessonPlans] = useState([]);
+    let [subjects, setSubjects] = useState([]);
+    let [selectedSubjects, setSelectedSubjects] = useState([]);
 
-    const host = 'htin.postgres.database.azure.com:3001/post';
+    // const host = 'https://htin.postgres.database.azure.com:3001/post';
+    // const host = 'http://142.232.162.210:3001/post';
+    // const host = 'http://192.168.1.90:3001/post';
+    const host = "https://teachsharek12ss.herokuapp.com/post";
 
     const capitalize = (s) => {
         if (typeof s !== 'string') {return ''} else {
@@ -23,11 +28,20 @@ export default function Home() {
     };
 
     let getData = async () => {
+        let count = 0;
         try {
-            UserProfile = await AsyncStorage.getItem('userData');
-            if (UserProfile !== null) {
-                UserProfile = JSON.parse(UserProfile);
-                setCurrentUser(capitalize(UserProfile.fname));
+            userProfile = await AsyncStorage.getItem('userData');
+            teachingSubjects = await AsyncStorage.getItem('teachingSubjects');
+            if (userProfile !== null && teachingSubjects !==null) {
+                 userProfile = JSON.parse(userProfile);
+                teachingSubjects = JSON.parse(teachingSubjects);
+                setSubjects(teachingSubjects);
+                 subjects.map((o,i)=>{
+                    setSelectedSubjects(selectedSubjects.concat([true]));
+                    count++;
+                    console.log("hihihi", selectedSubjects, count);
+                });
+                setCurrentUser(capitalize(userProfile.fname));
             }
         } catch (e) {
             // error reading value
@@ -41,16 +55,15 @@ export default function Home() {
                 data: {},
             };
 
-            let data = await axios.post(host, obj);
-            console.log('read', JSON.parse(data.data.body).data[0]);
+            let data = await axios.post(host, obj)
+                .catch(function (error) {
+            });
             setLessonPlans(JSON.parse(data.data.body).data)
         };
 
-    useEffect(() => {
-        getData();
-    }, );
 
     useEffect(()=>{
+        getData();
         ReadLessonPlans();
     }, []);
 
@@ -64,7 +77,11 @@ export default function Home() {
                 msg={'This homepage is tailored for you!'}
             />
             <SearchBar/>
-            <SubjectsFilter/>
+            <SubjectsFilter
+                subjects= {subjects}
+                selectedSubjects = {selectedSubjects}
+                setSelectedSubjects= {setSelectedSubjects}
+            />
             {
                 lessonPlans.map((o,i)=>{
                     if (o.is_public === true){
@@ -84,8 +101,6 @@ export default function Home() {
                             />
                         )
                     }
-
-
                 })
             }
         </ScrollView>

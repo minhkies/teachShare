@@ -5,6 +5,7 @@ app.listen(port, function(error){
     if(error){
         return false;
     }
-    
+
+    console.log(port);
     console.log("PORT IS RUNNING");
 });
