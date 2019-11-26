@@ -14,8 +14,9 @@ export default function Profile() {
     let [lessonPlans, setLessonPlans] = useState([]);
 
     // const host = 'https://htin.postgres.database.azure.com:3001/post';
-    const host = 'http://142.232.162.210:3001/post';
+    // const host = 'http://142.232.162.210:3001/post';
     // const host = 'http://192.168.1.90:3001/post';
+    const host = "https://teachsharek12ss.herokuapp.com/post";
 
     const capitalize = (s) => {
         if (typeof s !== 'string') {

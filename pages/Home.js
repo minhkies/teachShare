@@ -20,27 +20,29 @@ export default function Home() {
     // const host = 'https://htin.postgres.database.azure.com:3001/post';
     // const host = 'http://142.232.162.210:3001/post';
     // const host = 'http://192.168.1.90:3001/post';
-    const host = "https://teachsharek12ss.herokuapp.com/post";
+    const host = 'https://teachsharek12ss.herokuapp.com/post';
 
     const capitalize = (s) => {
-        if (typeof s !== 'string') {return ''} else {
-            return s.charAt(0).toUpperCase() + s.slice(1)}
+        if (typeof s !== 'string') {
+            return '';
+        } else {
+            return s.charAt(0).toUpperCase() + s.slice(1);
+        }
     };
 
     let getData = async () => {
-        let count = 0;
+        let tempSub = [];
         try {
             userProfile = await AsyncStorage.getItem('userData');
             teachingSubjects = await AsyncStorage.getItem('teachingSubjects');
-            if (userProfile !== null && teachingSubjects !==null) {
-                 userProfile = JSON.parse(userProfile);
+            if (userProfile !== null && teachingSubjects !== null) {
+                userProfile = JSON.parse(userProfile);
                 teachingSubjects = JSON.parse(teachingSubjects);
                 setSubjects(teachingSubjects);
-                 subjects.map((o,i)=>{
-                    setSelectedSubjects(selectedSubjects.concat([true]));
-                    count++;
-                    console.log("hihihi", selectedSubjects, count);
+                await teachingSubjects.map((o, i) => {
+                    tempSub.push(true);
                 });
+                setSelectedSubjects(tempSub);
                 setCurrentUser(capitalize(userProfile.fname));
             }
         } catch (e) {
@@ -49,23 +51,51 @@ export default function Home() {
     };
 
     let ReadLessonPlans = async () => {
-            //fetch to the bd to read
-            let obj = {
-                key: 'lesson_plans_read',
-                data: {},
-            };
+        //fetch to the bd to read
+        let tempLessonPlans=[];
 
-            let data = await axios.post(host, obj)
-                .catch(function (error) {
-            });
-            setLessonPlans(JSON.parse(data.data.body).data)
-        };
+        subjects.map((o, i) => {
+            if (selectedSubjects[i] === true) {
+                let readLessonPlans = async () => {
+                    let obj = {
+                        key: 'lesson_plans_read',
+                        data: {
+                            subject: o.subject,
+                            grade: o.grade,
+                        },
+                    };
+                    console.log(o.subject, o.grade);
+                    let data = await axios.post(host, obj)
+                        .catch(function (error) {
+                        });
+                    tempLessonPlans.push(JSON.parse(data.data.body).data[0]);
+                    console.log(tempLessonPlans);
+                };
+                readLessonPlans();
+            }
+
+        });
+        // let obj = {
+        //     key: 'lesson_plans_read',
+        //     data: {},
+        // };
+        //
+        // let data = await axios.post(host, obj)
+        //     .catch(function (error) {
+        // });
+        // setLessonPlans(JSON.parse(data.data.body).data)
+        setLessonPlans(tempLessonPlans);
+    };
 
 
-    useEffect(()=>{
+    useEffect(() => {
         getData();
         ReadLessonPlans();
     }, []);
+
+    useEffect(() => {
+        ReadLessonPlans();
+    }, [selectedSubjects]);
 
     return (
         <ScrollView
@@ -78,14 +108,14 @@ export default function Home() {
             />
             <SearchBar/>
             <SubjectsFilter
-                subjects= {subjects}
-                selectedSubjects = {selectedSubjects}
-                setSelectedSubjects= {setSelectedSubjects}
+                subjects={subjects}
+                selectedSubjects={selectedSubjects}
+                setSelectedSubjects={setSelectedSubjects}
             />
             {
-                lessonPlans.map((o,i)=>{
-                    if (o.is_public === true){
-                        return(
+                lessonPlans.map((o, i) => {
+                    if (o.is_public === true) {
+                        return (
                             <PostCard
                                 id={o.id}
                                 uid={o.uid}
@@ -99,7 +129,7 @@ export default function Home() {
                                 created_time={o.created_time}
                                 objs={o.learning_objs}
                             />
-                        )
+                        );
                     }
                 })
             }

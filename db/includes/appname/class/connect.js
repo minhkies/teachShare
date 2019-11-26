@@ -53,6 +53,6 @@ exp = {
     await client.end();
     return results.rows;
   }
-}
+};
 
 module.exports = exp;

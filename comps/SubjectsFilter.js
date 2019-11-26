@@ -29,7 +29,6 @@ export default function SubjectsFilter({subjects, selectedSubjects, setSelectedS
         } else {
             margin = 10
         }
-        console.log("try", selectedSubjects[ind]);
         selectedSubjects[ind] ? styles[ind] = SubjectsFilterStyles.selectedTxt : styles[ind] = SubjectsFilterStyles.unselectedTxt;
 
         return(
@@ -44,13 +43,12 @@ export default function SubjectsFilter({subjects, selectedSubjects, setSelectedS
     };
 
     let handleClick = (ind) => {
-        initSelect=select;
+        initSelect=selectedSubjects;
         initSelect[ind]=!initSelect[ind];
-        setSelect(initSelect);
-        for (let i = 0; i < initSelect.length; i++){
-            // initSelect[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt;
-            select[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt;
-        }
+        setSelectedSubjects(initSelect);
+        initSelect.map((i)=>{
+            selectedSubjects[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt;
+        });
         setStyles(tempStyles);
     };
 

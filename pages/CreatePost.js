@@ -40,12 +40,12 @@ export default function CreatePost() {
     let [remarks, setRemarks] = useState('');
     let [view, setView] = useState(1);
     let [uid, setUid] = useState('');
-    let [pid, setPid] = useState();
     let [uri, setUri] = useState('');
     let [selectedFiles, setSelectedFiles] = useState([]);
     let [uploadedFile, setUploadedFile] = useState([]);
     let [loading, setLoading] = useState(false);
     let photo="";
+    let pid;
 
     const capitalize = (s) => {
         if (typeof s !== 'string') {
@@ -163,8 +163,10 @@ export default function CreatePost() {
 
         // The link to the file that's doing query
         let data = await axios.post(host, obj);
-        await setPid(JSON.parse(data.data.body).data[0].id);
+        console.log("hihihhhhhh", JSON.parse(data.data.body).data[0].id);
+        pid = JSON.parse(data.data.body).data[0].id;
         runTasks().then(()=>{
+            console.log("running");
             setLoading(false);
             Actions.home();
         })
@@ -254,163 +256,168 @@ export default function CreatePost() {
         await submitFile();
         await createCompetencies();
         await createLinks();
-
     };
 
+        // useEffect(async () => {
+        //     await runTasks().then(() => {
+        //         setLoading(false);
+        //         Actions.home();
+        //     })
+        // }, [pid]);
 
 
-    // let ReadUsers = async () => {
-    //     //fetch to the bd to read
-    //     let obj = {
-    //         key: 'lesson_plans_read',
-    //         data: {},
-    //     };
-    //
-    //     let data = await axios.post('http://142.232.170.187:3001/post', obj);
-    //     console.log('read', JSON.parse(data.data.body));
-    //     let dbUsers = JSON.parse(data.data.body).data;
-    // };
+        // let ReadUsers = async () => {
+        //     //fetch to the bd to read
+        //     let obj = {
+        //         key: 'lesson_plans_read',
+        //         data: {},
+        //     };
+        //
+        //     let data = await axios.post('http://142.232.170.187:3001/post', obj);
+        //     console.log('read', JSON.parse(data.data.body));
+        //     let dbUsers = JSON.parse(data.data.body).data;
+        // };
 
-    useEffect(() => {
-        getData();
-        getCurriculum();
-    }, []);
+        useEffect(() => {
+            getData();
+            getCurriculum();
+        }, []);
 
-    useEffect(() => {
-        if (selectedGrade !== '' && selectedCurriculum !== '') {
-            getSubjects();
-        }
-    }, [selectedGrade]);
+        useEffect(() => {
+            if (selectedGrade !== '' && selectedCurriculum !== '') {
+                getSubjects();
+            }
+        }, [selectedGrade]);
 
-    useEffect(() => {
-        if (selectedGrade !== '' && selectedCurriculum !== '') {
-            getSubjects();
-        }
-    }, [selectedCurriculum]);
+        useEffect(() => {
+            if (selectedGrade !== '' && selectedCurriculum !== '') {
+                getSubjects();
+            }
+        }, [selectedCurriculum]);
 
-    useEffect(() => {
-        if (selectedSubject !== '') {
-            getTopics();
-        }
-    }, [selectedSubject]);
+        useEffect(() => {
+            if (selectedSubject !== '') {
+                getTopics();
+            }
+        }, [selectedSubject]);
 
-    if (view === 1) {
-        return (
-            <View style={CreateStyles.wrapper}>
-                <PageTitle
-                    title={'Create'}
-                    msg={'Create a lesson plan'}
-                />
-                <Text style={CreateStyles.desc}>Select one or multiple competencies to continue</Text>
-                <CoreCompetenciesSelections
-                    setData={setData}
-                    setCoreCompetencies={setSelectedCoreCompetencies}
-                    coreCompetencies={selectedCoreCompetencies}
-                />
-                <CreateBtn
-                    page={view}
-                    data={data}
-                    setView={setView}
-                />
-            </View>
-        );
-    } else {
-        return (
-            <View style={[CreateStyles.wrapper]}>
-                <ScrollView
-                    style={[CreateStyles.wrapper, CreateStyles.scrollableWrapper]}
-                    showsVerticalScrollIndicator={false}>
-                    <DropBoxWBox
-                        title={'curriculum'}
-                        data={curriculum}
-                        select={setSelectedCurriculum}
+        if (view === 1) {
+            return (
+                <View style={CreateStyles.wrapper}>
+                    <PageTitle
+                        title={'Create'}
+                        msg={'Create a lesson plan'}
                     />
-                    <DropBoxWBox
-                        title={'grade'}
-                        data={['10', '11', '12']}
-                        select={setSelectedGrade}
+                    <Text style={CreateStyles.desc}>Select one or multiple competencies to continue</Text>
+                    <CoreCompetenciesSelections
+                        setData={setData}
+                        setCoreCompetencies={setSelectedCoreCompetencies}
+                        coreCompetencies={selectedCoreCompetencies}
                     />
-                    <DropBoxWBox
-                        title={'subjects'}
-                        data={subjects}
-                        select={setSelectedSubject}
+                    <CreateBtn
+                        page={view}
+                        data={data}
+                        setView={setView}
                     />
-                    <DropBoxWBox
-                        title={'learning topic'}
-                        data={topics}
-                        select={setSelectedTopic}
-                    />
-                    <TxtInpWBox
-                        title={'description'}
-                        placeholder={'Brief description/ introduction'}
-                        multiline={true}
-                        set={setDesc}
-                    />
-                    <MultiTxtInpWBox
-                        title={'instruction resource'}
-                        placeholder={'resource links'}
-                        setLinks={setLinks}
-                        links={links}
-                    />
-                    <TxtInpWBox
-                        title={'instruction'}
-                        placeholder={'additional instruction'}
-                        multiline={true}
-                        set={setInstruction}
-                    />
-                    <TxtInpWBox
-                        title={'remarks'}
-                        placeholder={'remarks'}
-                        multiline={true}
-                        set={setRemarks}
-                    />
-                    <ImgOptions
-                        title={'cover image'}
-                        type={'create'}
-                        topic={selectedSubject}
-                        setUri={setUri}
-                    />
-                    <TxtWBox
-                        title={'Uploaded file(s)'}
+                </View>
+            );
+        } else {
+            return (
+                <View style={[CreateStyles.wrapper]}>
+                    <ScrollView
+                        style={[CreateStyles.wrapper, CreateStyles.scrollableWrapper]}
+                        showsVerticalScrollIndicator={false}>
+                        <DropBoxWBox
+                            title={'curriculum'}
+                            data={curriculum}
+                            select={setSelectedCurriculum}
+                        />
+                        <DropBoxWBox
+                            title={'grade'}
+                            data={['10', '11', '12']}
+                            select={setSelectedGrade}
+                        />
+                        <DropBoxWBox
+                            title={'subjects'}
+                            data={subjects}
+                            select={setSelectedSubject}
+                        />
+                        <DropBoxWBox
+                            title={'learning topic'}
+                            data={topics}
+                            select={setSelectedTopic}
+                        />
+                        <TxtInpWBox
+                            title={'description'}
+                            placeholder={'Brief description/ introduction'}
+                            multiline={true}
+                            set={setDesc}
+                        />
+                        <MultiTxtInpWBox
+                            title={'instruction resource'}
+                            placeholder={'resource links'}
+                            setLinks={setLinks}
+                            links={links}
+                        />
+                        <TxtInpWBox
+                            title={'instruction'}
+                            placeholder={'additional instruction'}
+                            multiline={true}
+                            set={setInstruction}
+                        />
+                        <TxtInpWBox
+                            title={'remarks'}
+                            placeholder={'remarks'}
+                            multiline={true}
+                            set={setRemarks}
+                        />
+                        <ImgOptions
+                            title={'cover image'}
+                            type={'create'}
+                            topic={selectedSubject}
+                            setUri={setUri}
+                        />
+                        <TxtWBox
+                            title={'Uploaded file(s)'}
+                            selectedFiles={selectedFiles}
+                            setSelectedFiles={setSelectedFiles}
+                        />
+                        <TouchableOpacity
+                            style={CreateStyles.btn}
+                            onPress={() => {
+                                inputValidation();
+                            }}>
+                            <Text style={CreateStyles.btnTxt}>Post</Text>
+                        </TouchableOpacity>
+                    </ScrollView>
+                    <CreateBtn
+                        page={view}
+                        data={data}
+                        setView={setView}
                         selectedFiles={selectedFiles}
                         setSelectedFiles={setSelectedFiles}
                     />
-                    <TouchableOpacity
-                        style={CreateStyles.btn}
-                        onPress={() => {
-                            inputValidation();
-                        }}>
-                        <Text style={CreateStyles.btnTxt}>Post</Text>
-                    </TouchableOpacity>
-                </ScrollView>
-                <CreateBtn
-                    page={view}
-                    data={data}
-                    setView={setView}
-                    selectedFiles={selectedFiles}
-                    setSelectedFiles={setSelectedFiles}
-                />
-                <Modal
-                    // style={CreateStyles.modal}
-                    isVisible={loading}
-                    coverScreen={true}
-                    animationIn={'slideInUp'}
-                    animationOut={'slideInDown'}
-                    animationInTiming={500}
-                    animationOutTiming={500}
-                    backdropOpacity={0.2}
-                    style={CreateStyles.popUpWrapper}
-                >
-                    <View style={CreateStyles.popUp}>
-                        <LottieView
-                            source={require('../media/animation/loading')}
-                            autoPlay
-                            loop
-                            style={CreateStyles.popUpAnimation}/>
-                        <Text style={CreateStyles.popUpTxt}>Creating lesson plan...</Text>
-                    </View>
-                </Modal>
-            </View>
-        );
+                    <Modal
+                        // style={CreateStyles.modal}
+                        isVisible={loading}
+                        coverScreen={true}
+                        animationIn={'slideInUp'}
+                        animationOut={'slideInDown'}
+                        animationInTiming={500}
+                        animationOutTiming={500}
+                        backdropOpacity={0.2}
+                        style={CreateStyles.popUpWrapper}
+                    >
+                        <View style={CreateStyles.popUp}>
+                            <LottieView
+                                source={require('../media/animation/loading')}
+                                autoPlay
+                                loop
+                                style={CreateStyles.popUpAnimation}/>
+                            <Text style={CreateStyles.popUpTxt}>Creating lesson plan...</Text>
+                        </View>
+                    </Modal>
+                </View>
+            );
+        }
     }
-}

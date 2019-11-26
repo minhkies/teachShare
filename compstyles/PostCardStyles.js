@@ -78,7 +78,7 @@ const PostCardStyles = StyleSheet.create({
         marginRight: 5
     },
     statTxt: {
-        color: "#ebebeb"
+        color: "#7C7C81"
     }
 
 });
