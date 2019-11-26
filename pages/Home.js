@@ -12,6 +12,7 @@ import axios from 'axios';
 
 export default function Home() {
     let userProfile, teachingSubjects;
+    let tempLessonPlans =[];
     let [currentUser, setCurrentUser] = useState('');
     let [lessonPlans, setLessonPlans] = useState([]);
     let [subjects, setSubjects] = useState([]);
@@ -52,9 +53,11 @@ export default function Home() {
 
     let ReadLessonPlans = async () => {
         //fetch to the bd to read
-        let tempLessonPlans=[];
+        tempLessonPlans=[];
+        lessonPlans=[];
 
-        subjects.map((o, i) => {
+        await subjects.map((o, i) => {
+            console.log("kkkk", selectedSubjects[i]);
             if (selectedSubjects[i] === true) {
                 let readLessonPlans = async () => {
                     let obj = {
@@ -64,29 +67,32 @@ export default function Home() {
                             grade: o.grade,
                         },
                     };
-                    console.log(o.subject, o.grade);
                     let data = await axios.post(host, obj)
                         .catch(function (error) {
                         });
-                    tempLessonPlans.push(JSON.parse(data.data.body).data[0]);
-                    console.log(tempLessonPlans);
+                    if (JSON.parse(data.data.body).data[0] !== undefined){
+                        tempLessonPlans.push(JSON.parse(data.data.body).data[0]);
+                    }
+                    console.log("haha", tempLessonPlans);
                 };
-                readLessonPlans();
+                readLessonPlans().then(()=>{
+                        setLessonPlans(lessonPlans.concat(tempLessonPlans));
+                        console.log("hehe", lessonPlans);
+                });
             }
-
         });
-        // let obj = {
-        //     key: 'lesson_plans_read',
-        //     data: {},
-        // };
-        //
-        // let data = await axios.post(host, obj)
-        //     .catch(function (error) {
-        // });
-        // setLessonPlans(JSON.parse(data.data.body).data)
-        setLessonPlans(tempLessonPlans);
+
     };
 
+    // let obj = {
+    //     key: 'lesson_plans_read',
+    //     data: {},
+    // };
+    //
+    // let data = await axios.post(host, obj)
+    //     .catch(function (error) {
+    // });
+    // setLessonPlans(JSON.parse(data.data.body).data)
 
     useEffect(() => {
         getData();
@@ -94,6 +100,7 @@ export default function Home() {
     }, []);
 
     useEffect(() => {
+        console.log("workkkk!!!!!!!! ==> NAH TT");
         ReadLessonPlans();
     }, [selectedSubjects]);
 

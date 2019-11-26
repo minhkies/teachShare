@@ -7,7 +7,6 @@ export default function SubjectsFilter({subjects, selectedSubjects, setSelectedS
     let margin;
     let initSelect = [];
     let tempStyles=[];
-    let [select, setSelect] = useState([]);
     let [styles, setStyles] = useState([]);
 
     // let getData = async () => {
@@ -45,7 +44,9 @@ export default function SubjectsFilter({subjects, selectedSubjects, setSelectedS
     let handleClick = (ind) => {
         initSelect=selectedSubjects;
         initSelect[ind]=!initSelect[ind];
-        setSelectedSubjects(initSelect);
+        selectedSubjects=[];
+        // setSelectedSubjects(initSelect);
+        setSelectedSubjects(selectedSubjects.concat(initSelect));
         initSelect.map((i)=>{
             selectedSubjects[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt;
         });

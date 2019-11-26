@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 const PostTabsStyles = StyleSheet.create({
     wrapper:{
-        marginTop: 20,
+        paddingTop: 20,
         marginLeft: 20,
         marginRight: 20,
         paddingBottom: 20,
@@ -10,7 +10,8 @@ const PostTabsStyles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-around",
         borderBottomColor: "#ebebeb",
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+        backgroundColor: "white"
     },
     tabWrapper:{
         justifyContent: "center",

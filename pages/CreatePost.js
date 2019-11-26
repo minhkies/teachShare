@@ -163,10 +163,8 @@ export default function CreatePost() {
 
         // The link to the file that's doing query
         let data = await axios.post(host, obj);
-        console.log("hihihhhhhh", JSON.parse(data.data.body).data[0].id);
         pid = JSON.parse(data.data.body).data[0].id;
         runTasks().then(()=>{
-            console.log("running");
             setLoading(false);
             Actions.home();
         })
