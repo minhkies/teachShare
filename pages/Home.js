@@ -1,22 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 import PageTitle from '../comps/PageTitle';
 import HomeStyles from '../styles/HomeStyles';
 import SearchBar from '../comps/SearchBar';
 import SubjectsFilter from '../comps/SubjectsFilter';
-import firebase from 'react-native-firebase';
-import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-community/async-storage';
 import PostCard from '../comps/PostCard';
 import axios from 'axios';
 
 export default function Home() {
     let userProfile, teachingSubjects;
-    let tempLessonPlans =[];
+    let tempLessonPlans = [];
     let [currentUser, setCurrentUser] = useState('');
     let [lessonPlans, setLessonPlans] = useState([]);
     let [subjects, setSubjects] = useState([]);
     let [selectedSubjects, setSelectedSubjects] = useState([]);
+    let [stat, setStat] = useState();
 
     // const host = 'https://htin.postgres.database.azure.com:3001/post';
     // const host = 'http://142.232.162.210:3001/post';
@@ -40,9 +39,10 @@ export default function Home() {
                 userProfile = JSON.parse(userProfile);
                 teachingSubjects = JSON.parse(teachingSubjects);
                 setSubjects(teachingSubjects);
-                await teachingSubjects.map((o, i) => {
+                teachingSubjects.map((o, i) => {
                     tempSub.push(true);
                 });
+                await readLessonPlans(teachingSubjects, tempSub);
                 setSelectedSubjects(tempSub);
                 setCurrentUser(capitalize(userProfile.fname));
             }
@@ -51,39 +51,48 @@ export default function Home() {
         }
     };
 
-    let ReadLessonPlans = async () => {
-        //fetch to the bd to read
-        tempLessonPlans=[];
-        lessonPlans=[];
-
-        await subjects.map((o, i) => {
-            console.log("kkkk", selectedSubjects[i]);
-            if (selectedSubjects[i] === true) {
-                let readLessonPlans = async () => {
-                    let obj = {
+    let readLessonPlans = async (ts, sel) => {
+        tempLessonPlans = [];
+        lessonPlans = [];
+        let c = 0;
+        await ts.map(async (o, i) => {
+            if (sel[i] === true) {
+                c++;
+                let readLessonPlan = async () => {
+                    let data = await axios.post(host, {
                         key: 'lesson_plans_read',
-                        data: {
-                            subject: o.subject,
-                            grade: o.grade,
-                        },
-                    };
-                    let data = await axios.post(host, obj)
+                        data: {subject: o.subject, grade: o.grade},
+                    })
                         .catch(function (error) {
                         });
-                    if (JSON.parse(data.data.body).data[0] !== undefined){
-                        tempLessonPlans.push(JSON.parse(data.data.body).data[0]);
+                    let arr = JSON.parse(data.data.body).data;
+                    for (let z = 0; z < arr.length; z++) {
+                        let obj = arr[z];
+                        let x = await readCompetencies(obj.id.toString());
+                        obj['competencies'] = x;
+                        tempLessonPlans.push(obj);
                     }
-                    console.log("haha", tempLessonPlans);
+                    console.log('templp', tempLessonPlans);
+                    return tempLessonPlans;
                 };
-                readLessonPlans().then(()=>{
-                        setLessonPlans(lessonPlans.concat(tempLessonPlans));
-                        console.log("hehe", lessonPlans);
-                });
+
+                let tp = await readLessonPlan();
+                setLessonPlans(tp.map((o) => {
+                    return o;
+                }));
             }
         });
-
     };
 
+
+    let readCompetencies = async (id) => {
+
+        let data = await axios.post(host, {
+            key: 'competencies_read',
+            data: {pid: id},
+        }).catch(e => console.log(e.message));
+        return JSON.parse(data.data.body).data;
+    };
     // let obj = {
     //     key: 'lesson_plans_read',
     //     data: {},
@@ -96,12 +105,10 @@ export default function Home() {
 
     useEffect(() => {
         getData();
-        ReadLessonPlans();
     }, []);
 
     useEffect(() => {
-        console.log("workkkk!!!!!!!! ==> NAH TT");
-        ReadLessonPlans();
+        readLessonPlans(teachingSubjects, selectedSubjects);
     }, [selectedSubjects]);
 
     return (
@@ -133,7 +140,7 @@ export default function Home() {
                                 desc={o.description}
                                 inst={o.instruction}
                                 remarks={o.remarks}
-                                created_time={o.created_time}
+                                created_time={o.created_time.toLocaleString('en-US', {timeZone: 'Canada/Pacific'})}
                                 objs={o.learning_objs}
                             />
                         );
