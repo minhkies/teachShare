@@ -2,20 +2,20 @@ import {StyleSheet} from 'react-native';
 
 const DiscoverStyles = StyleSheet.create({
     container:{
-        backgroundColor: "white"
+        backgroundColor: "white",
     },
     text: {
         fontSize: 18,
-        marginLeft: 10,
+        marginLeft: 23,
         marginTop: 10,
         marginBottom: 10
     }, 
     chart: {
-        marginLeft: 10
+        marginLeft: 17,
     },
     card: {
-        marginLeft: 10,
-        marginRight: 10
+        marginLeft: 17,
+        marginRight: 17
     }
 });
 

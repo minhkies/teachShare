@@ -9,8 +9,11 @@ const ChartStyles = StyleSheet.create({
     },
     rect: {
         margin: 5,
-        padding: 20,
-        borderRadius: 10
+        width:130,
+        height:90,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center"
     },
     title:{
         fontSize: 18,
