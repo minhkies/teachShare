@@ -1,10 +1,46 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, ScrollView} from 'react-native';
+import NotificationsTags from '../comps/NotificationsTag';
+import PageTitle from '../comps/PageTitle';
+import NotificationsStyles from "../styles/NotificationsStyles"
 
-export default function Notifications(){
+export default function Notifications() {
+    let example = [
+        {
+            type: "appreciate",
+            data: "25"
+        },
+        {
+            type: "download",
+            data: "30"
+        },
+        {
+            type: "comment",
+            data: "40"
+        },
+        {
+            type: "reply",
+            data: "Solaleh Roumi"
+        }
+    ];
+
     return(
-        <View>
-            <Text>NOTIFICATIONS</Text>
-        </View>
+        <ScrollView style={NotificationsStyles.wrapper}>
+            <PageTitle
+                title={"Notifications"}
+                msg={"Good news come here first"}
+            />
+        {
+            example.map((obj, i) => {
+                return(
+                    <NotificationsTags
+                        key={i}
+                        type={obj.type}
+                        data={obj.data}
+                    />
+                )
+            })
+        }
+        </ScrollView>
     )
 }

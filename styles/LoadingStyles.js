@@ -26,4 +26,4 @@ const LoadingStyles = StyleSheet.create({
     }
 });
 
-export default LoadingStyles
+export default LoadingStyles;

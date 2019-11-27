@@ -7,14 +7,29 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "android-phone": "adb reverse tcp:8081 tcp:8081 && react-native start"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.6.2",
+    "@react-native-firebase/app": "^6.0.3",
+    "@react-native-firebase/firestore": "^6.0.3",
+    "@react-native-firebase/storage": "^6.0.3",
+    "axios": "^0.19.0",
+    "lottie-react-native": "^3.3.2",
     "react": "16.9.0",
     "react-native": "0.61.3",
+    "react-native-document-picker": "^3.2.4",
+    "react-native-file-picker": "0.0.19",
     "react-native-firebase": "^5.5.6",
     "react-native-popup-menu": "^0.15.6",
-    "react-native-router-flux": "^4.0.6"
+    "react-native-fs": "^2.16.2",
+    "react-native-get-real-path": "git+https://github.com/Wraptime/react-native-get-real-path.git",
+    "react-native-image-crop-picker": "^0.26.1",
+    "react-native-image-picker": "^1.1.0",
+    "react-native-modal": "^11.5.3",
+    "react-native-router-flux": "^4.0.6",
+    "rn-fetch-blob": "^0.11.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -29,7 +44,8 @@
     "jetifier": "^1.6.4",
     "metro-react-native-babel-preset": "^0.57.0",
     "react-native-firebase": "^5.5.6",
-    "react-test-renderer": "16.9.0"
+    "react-test-renderer": "16.9.0",
+    "reactotron-react-native": "^4.0.2"
   },
   "jest": {
     "preset": "react-native"

@@ -4,8 +4,9 @@ const MainStyles = StyleSheet.create({
     main:{
         flex: 1,
         justifyContent: "center",
-        alignItems: "stretch"
+        alignItems: "stretch",
+        backgroundColor: "#ffffff"
     }
 });
 
-export default MainStyles
+export default MainStyles;
