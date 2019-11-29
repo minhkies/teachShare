@@ -1,7 +1,0 @@
-let c = 0;
-forEach(fTaxi=>{
-    fTaxi === newTaxi && c++;
-});
-if (c===0){
-    push()
-}
