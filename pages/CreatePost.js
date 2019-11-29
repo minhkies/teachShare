@@ -44,7 +44,6 @@ export default function CreatePost() {
     let [selectedFiles, setSelectedFiles] = useState([]);
     let [uploadedFile, setUploadedFile] = useState([]);
     let [loading, setLoading] = useState(false);
-    let photo="";
     let pid;
 
     const capitalize = (s) => {
@@ -91,9 +90,7 @@ export default function CreatePost() {
             return false;
         } else {
             setLoading(true);
-            await submitImg().then(()=>{
-                createPost();
-            })
+            await createPost();
         }
     };
 
@@ -129,7 +126,6 @@ export default function CreatePost() {
     }
 
     let submitImg = async () => {
-        // const ref2 = firebase.storage().ref("profilePhoto");
         const file = uri;
         const name = pid;
         const ref2 = firebase.storage().ref().child('coverPhotos');
@@ -138,8 +134,19 @@ export default function CreatePost() {
 
         await task
             .then((snapshot) => {
-                photo=snapshot.downloadURL;
+                updateImgLink(snapshot.downloadURL);
             });
+    };
+
+    let updateImgLink = async (photo) => {
+        let obj = {
+            key: 'lesson_plans_update',
+            data: {
+                id: pid,
+                img: photo,
+            },
+        };
+        let data = await axios.post(host, obj);
     };
 
 
@@ -150,7 +157,7 @@ export default function CreatePost() {
                 subject: selectedSubject,
                 grade: selectedGrade,
                 topic: selectedTopic,
-                img: photo,
+                img: "",
                 uid: uid,
                 description: desc,
                 instruction: instruction,
@@ -251,6 +258,7 @@ export default function CreatePost() {
     };
 
     let runTasks = async () => {
+        await submitImg();
         await submitFile();
         await createCompetencies();
         await createLinks();

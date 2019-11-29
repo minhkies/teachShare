@@ -5,7 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import firebase from "react-native-firebase";
 import AsyncStorage from '@react-native-community/async-storage';
 
-export default function PostCard({id, uid, img, subject, grade, topic, desc, inst,remarks,created_time, objs}){
+export default function PostCard({id, uid, img, subject, grade, topic, desc, inst,remarks,created_time, objs, coms, apps, downs, views, cmts}){
     let [name, setName] = useState();
     let [ava, setAva] = useState();
     let [timeTxt, setTimeTxt] = useState("");
@@ -86,6 +86,20 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
             ).then();
     }
 
+    let Competencies = ({o}) => {
+      return(
+          <View style={PostCardStyles.comsCommCore}>
+              <Text>{o.core}</Text>
+              <View style={PostCardStyles.comsCommSub}>
+                  <Text>{o.sub}</Text>
+                  <View style={PostCardStyles.comsCommProfile}>
+                      <Text>{o.profile}</Text>
+                  </View>
+              </View>
+          </View>
+      )
+    };
+
     useEffect(()=>{
         getUserProfile();
         timing();
@@ -112,6 +126,19 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
             <Text style={PostCardStyles.topicTxt}>{topic}</Text>
             <Text style={PostCardStyles.subjectTxt}>{subject} {grade}</Text>
             <Text>{desc}</Text>
+            <View
+                style={PostCardStyles.comsWrapper}
+            >
+                {
+                    coms.map((o)=>{
+                        return(
+                            <Competencies
+                                o={o}
+                            />
+                        )
+                    })
+                }
+            </View>
             <View style={PostCardStyles.statisticTag}>
                 <View style={PostCardStyles.leftWrapper}>
                     <View style={PostCardStyles.statWrapper}>
@@ -119,28 +146,28 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
                             style={PostCardStyles.statIcon}
                             source={require('../media/icon/appreciate-stat.png')}
                         />
-                        <Text style={PostCardStyles.statTxt}>12</Text>
+                        <Text style={PostCardStyles.statTxt}>{apps.length}</Text>
                     </View>
                     <View style={PostCardStyles.statWrapper}>
                         <Image
                             style={PostCardStyles.statIcon}
                             source={require('../media/icon/view-stat.png')}
                         />
-                        <Text style={PostCardStyles.statTxt}>24</Text>
+                        <Text style={PostCardStyles.statTxt}>{views.length}</Text>
                     </View>
                     <View style={PostCardStyles.statWrapper}>
                         <Image
                             style={PostCardStyles.statIcon}
                             source={require('../media/icon/download-stat.png')}
                         />
-                        <Text style={PostCardStyles.statTxt}>12</Text>
+                        <Text style={PostCardStyles.statTxt}>{downs.length}</Text>
                     </View>
                     <View style={PostCardStyles.statWrapper}>
                         <Image
                             style={PostCardStyles.statIcon}
                             source={require('../media/icon/cmt-stat.png')}
                         />
-                        <Text style={PostCardStyles.statTxt}>12</Text>
+                        <Text style={PostCardStyles.statTxt}>{cmts.length}</Text>
                     </View>
                 </View>
                 <Text style={PostCardStyles.timeTxt}>{timeTxt}</Text>

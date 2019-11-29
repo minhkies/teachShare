@@ -43,6 +43,47 @@ const PostCardStyles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 15
     },
+    comsWrapper:{
+        paddingTop: 10,
+        justifyContent: "flex-start",
+    },
+    comsCommCore:{
+        backgroundColor: "#F7D1BE",
+        paddingLeft: 10,
+        height: 25,
+        borderRadius: 12.5,
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 5,
+        maxWidth: "100%",
+        overflow: "hidden",
+        justifyContent: "center",
+    },
+    comsCommSub:{
+        flex: 1,
+        backgroundColor: "#FBE9DF",
+        flexDirection: "row",
+        height: 25,
+        borderRadius: 12.5,
+        paddingLeft: 10,
+        marginLeft: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden"
+    },
+    comsCommProfile:{
+        flex: 1,
+        backgroundColor: "#FCF3EE",
+        height: 25,
+        borderRadius: 12.5,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginLeft: 10,
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "center",
+        overflow: "hidden"
+    },
     statisticTag:{
         height: 40,
         backgroundColor: "#f7f7f7",

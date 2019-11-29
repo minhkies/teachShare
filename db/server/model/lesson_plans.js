@@ -1,5 +1,5 @@
 const approot = require('app-root-path');
-const config = require(approot+"/config"); 
+const config = require(approot+"/config");
 const types = config.types;
 const DB = require(types.DB_PATH);
 
@@ -10,7 +10,7 @@ module.exports = class lesson_plansDB extends DB {
     this.returns = ["*"];
     this.config = {};
   }
-  
+
   set set_data(d){
     this.data = d;
   }
@@ -29,30 +29,30 @@ module.exports = class lesson_plansDB extends DB {
 
   async insert(){
     super.set_config = {
-      
-      
+
+
       ...this.config
     };
 
     var result = await super.insert(this.data, this.returns);
     return result;
   }
-  
+
   async read(){
     super.set_config = {
       order:["id"],
-      
+
       ...this.config
     };
 
     var result = await super.read(this.data, this.returns)
     return result;
   }
-  
+
   async update(){
     super.set_config = {
-      
-      
+
+
       query_where:["id"],
       ...this.config
     };
@@ -60,12 +60,12 @@ module.exports = class lesson_plansDB extends DB {
     var result = await super.update(this.data, this.returns);
     return result;
   }
-  
+
   async delete(){
     super.set_config = {
       ...this.config
     };
-    
+
     var result = await super.delete(this.data);
     return result;
   }
@@ -74,5 +74,20 @@ module.exports = class lesson_plansDB extends DB {
     /*
       your own custom query
     */
+
+    let result = await super.runquery("SELECT lesson_plans.*," +
+        "COUNT(views.id) as c_views," +
+        "COUNT(appreciates.id) as c_apps," +
+        "COUNT (downloads.id) as c_downs," +
+        "COUNT (cmts.id) as c_cmts" +
+        "FROM public.lesson_plans" +
+        "LEFT JOIN views ON lesson_plans.id = views.pid::int" +
+        "LEFT JOIN appreciates ON lesson_plans.id = appreciates.pid::int" +
+        "LEFT JOIN downloads ON lesson_plans.id = downloads.pid::int" +
+        "LEFT JOIN cmts ON lesson_plans.id = cmts.pid::int" +
+        "GROUP BY lesson_plans.id" +
+        "ORDER BY lesson_plans.id DESC;"
+        ,[this.data], [this.returns] );
+    return result;
   }
 }
