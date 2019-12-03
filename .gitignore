@@ -34,10 +34,18 @@ build/Release
 
 # Dependency directories
 node_modules/
-ios/
 android/
 package-lock.json
 jspm_packages/
+
+# ios
+Pods/
+build/
+Podfile.lock
+.DS_Store
+.AppleDouble
+.LSOverride
+xcuserdata/
 
 # TypeScript v1 declaration files
 typings/
