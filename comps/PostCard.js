@@ -4,8 +4,9 @@ import PostCardStyles from '../compstyles/PostCardStyles';
 import firestore from '@react-native-firebase/firestore';
 import firebase from "react-native-firebase";
 import AsyncStorage from '@react-native-community/async-storage';
+import {Actions} from 'react-native-router-flux';
 
-export default function PostCard({id, uid, img, subject, grade, topic, desc, inst,remarks,created_time, objs}){
+export default function PostCard({id, uid, img, subject, grade, topic, desc, inst, remarks, created_time, objs, coms, apps, downs, views, cmts}){
     let [name, setName] = useState();
     let [ava, setAva] = useState();
     let [timeTxt, setTimeTxt] = useState("");
@@ -92,7 +93,10 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
     },[]);
 
     return(
-        <TouchableOpacity style={PostCardStyles.wrapper}>
+        <TouchableOpacity
+            style={PostCardStyles.wrapper}
+            onPress={()=>Actions.post({})}
+        >
             <View style={PostCardStyles.topWrapper}>
                 <TouchableOpacity style={PostCardStyles.profileWrapper}>
                     <Image
@@ -119,14 +123,14 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
                             style={PostCardStyles.statIcon}
                             source={require('../media/icon/appreciate-stat.png')}
                         />
-                        <Text style={PostCardStyles.statTxt}>12</Text>
+                        <Text style={PostCardStyles.statTxt}>{apps}</Text>
                     </View>
                     <View style={PostCardStyles.statWrapper}>
                         <Image
                             style={PostCardStyles.statIcon}
                             source={require('../media/icon/view-stat.png')}
                         />
-                        <Text style={PostCardStyles.statTxt}>24</Text>
+                        <Text style={PostCardStyles.statTxt}>{}</Text>
                     </View>
                     <View style={PostCardStyles.statWrapper}>
                         <Image

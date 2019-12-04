@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, Flatlist} from 'react-native';
+import {ScrollView} from 'react-native';
 import PageTitle from '../comps/PageTitle';
 import HomeStyles from '../styles/HomeStyles';
 import SearchBar from '../comps/SearchBar';
 import SubjectsFilter from '../comps/SubjectsFilter';
 import AsyncStorage from '@react-native-community/async-storage';
 import PostCard from '../comps/PostCard';
+import ContentLoader from "react-content-loader";
 import axios from 'axios';
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
     let [selectedSubjects, setSelectedSubjects] = useState([]);
     let [stat, setStat] = useState();
     let [c, setC] = useState(0);
+    let [loading, setLoading]  = useState(true);
 
     // const host = 'https://htin.postgres.database.azure.com:3001/post';
     // const host = 'http://192.168.1.84:3001/post';
@@ -168,6 +170,31 @@ export default function Home() {
         );
     }, [selectedSubjects]);
 
+
+    // const MyLoader = () => {
+    //     return (
+    //         <ContentLoader
+    //             height={475}
+    //             width={400}
+    //             speed={2}
+    //             primaryColor="#f3f3f3"
+    //             secondaryColor="#ecebeb"
+    //         >
+    //             <circle cx="26" cy="26" r="26"/>
+    //             <rect x="66" y="20" rx="2" ry="2" width="100" height="15"/>
+    //             <rect x="0" y="62" rx="10" ry="10" width="400" height="135"/>
+    //             <rect x="0" y="213" rx="5" ry="5" width="345" height="45"/>
+    //             <rect x="0" y="264" rx="3" ry="3" width="181" height="29"/>
+    //             <rect x="0" y="307" rx="2" ry="2" width="400" height="15"/>
+    //             <rect x="0" y="328" rx="2" ry="2" width="400" height="15"/>
+    //             <rect x="0" y="349" rx="2" ry="2" width="400" height="15"/>
+    //             <rect x="0" y="381" rx="10" ry="10" width="400" height="20"/>
+    //             <rect x="0" y="406" rx="10" ry="10" width="400" height="20"/>
+    //         </ContentLoader>
+    //     )
+    // };
+
+
     const detectBot = ({layoutMeasurement, contentOffset, contentSize}) => {
         const paddingToBottom = 20;
         return layoutMeasurement.height + contentOffset.y >=
@@ -195,6 +222,7 @@ export default function Home() {
                 subjects={subjects}
                 selectedSubjects={selectedSubjects}
                 setSelectedSubjects={setSelectedSubjects}
+                setC={setC}
             />
             {
                 lessonPlans.map((o, i) => {

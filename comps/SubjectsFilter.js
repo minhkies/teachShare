@@ -3,7 +3,7 @@ import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import SubjectsFilterStyles from '../compstyles/SubjectsFilterStyles';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export default function SubjectsFilter({subjects, selectedSubjects, setSelectedSubjects}) {
+export default function SubjectsFilter({subjects, selectedSubjects, setSelectedSubjects, setC}) {
     let margin;
     let initSelect = [];
     let tempStyles=[];
@@ -42,6 +42,7 @@ export default function SubjectsFilter({subjects, selectedSubjects, setSelectedS
     };
 
     let handleClick = (ind) => {
+        setC(0);
         initSelect=selectedSubjects;
         initSelect[ind]=!initSelect[ind];
         selectedSubjects=[];
@@ -51,6 +52,7 @@ export default function SubjectsFilter({subjects, selectedSubjects, setSelectedS
             selectedSubjects[i] ? tempStyles[i]=SubjectsFilterStyles.selectedTxt : tempStyles[i] = SubjectsFilterStyles.unselectedTxt;
         });
         setStyles(tempStyles);
+
     };
 
 
