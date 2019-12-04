@@ -43,6 +43,44 @@ const PostCardStyles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 15
     },
+    comsWrapper:{
+        marginTop: 10
+    },
+    comsCore:{
+        flexDirection: "row"
+    },
+    comsSub:{
+        flexDirection: "row"
+    },
+    comsProfile:{
+
+    },
+    comsCommCore:{
+
+    },
+    comsCommSub:{
+
+    },
+    comsCommProfile:{
+
+    },
+    comsThinkCore:[
+
+    ],
+    comsThinkSub:{
+
+    },
+    comsThinkProfile:{
+
+    },
+    comsSocialCore:{
+
+    },
+    comsSocialSub:{
+
+    },
+    coms
+
     statisticTag:{
         height: 40,
         backgroundColor: "#f7f7f7",

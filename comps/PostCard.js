@@ -71,8 +71,6 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
                 setTimeTxt("a year ago")
             }
         }
-
-
     }
 
     function getUserProfile(){
@@ -86,6 +84,26 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
                 }
             ).then();
     }
+
+    const ShowComs = ({c,s,p}) => {
+        return(
+            <View
+                style={PostCardStyles.comsCore}
+            >
+                <Text>{c}</Text>
+                <View
+                style={PostCardStyles.comsSub}
+                >
+                    <Text>{s}</Text>
+                    <View
+                    style={PostCardStyles.comsProfile}
+                    >
+                        <Text>{p}</Text>
+                    </View>
+                </View>
+            </View>
+        )
+    };
 
     useEffect(()=>{
         getUserProfile();
@@ -116,6 +134,19 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
             <Text style={PostCardStyles.topicTxt}>{topic}</Text>
             <Text style={PostCardStyles.subjectTxt}>{subject} {grade}</Text>
             <Text>{desc}</Text>
+            <View style={PostCardStyles.comsWrapper}>
+                {
+                    coms.map((o)=>{
+                        return(
+                            <ShowComs
+                                c={o.core}
+                                s={o.sub}
+                                p={o.profile}
+                            />
+                        )
+                    })
+                }
+            </View>
             <View style={PostCardStyles.statisticTag}>
                 <View style={PostCardStyles.leftWrapper}>
                     <View style={PostCardStyles.statWrapper}>
@@ -130,21 +161,21 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
                             style={PostCardStyles.statIcon}
                             source={require('../media/icon/view-stat.png')}
                         />
-                        <Text style={PostCardStyles.statTxt}>{}</Text>
+                        <Text style={PostCardStyles.statTxt}>{views}</Text>
                     </View>
                     <View style={PostCardStyles.statWrapper}>
                         <Image
                             style={PostCardStyles.statIcon}
                             source={require('../media/icon/download-stat.png')}
                         />
-                        <Text style={PostCardStyles.statTxt}>12</Text>
+                        <Text style={PostCardStyles.statTxt}>{downs}</Text>
                     </View>
                     <View style={PostCardStyles.statWrapper}>
                         <Image
                             style={PostCardStyles.statIcon}
                             source={require('../media/icon/cmt-stat.png')}
                         />
-                        <Text style={PostCardStyles.statTxt}>12</Text>
+                        <Text style={PostCardStyles.statTxt}>{cmts}</Text>
                     </View>
                 </View>
                 <Text style={PostCardStyles.timeTxt}>{timeTxt}</Text>
