@@ -6,12 +6,14 @@ import MainStyles from '../styles/MainStyles';
 
 export default function Main() {
   // state = { currentUser: null };
-  let [currentUser, setCurrentUser] = useState(this.state);
+
+    const [route, setRoute] = useState(null);
   return(
     <View style={MainStyles.main}>
-      <MainRoute/>
+      <MainRoute />
       <Navbar
-        OS={Platform.OS}/>
+        OS={Platform.OS}
+      />
     </View>
   )
 }
