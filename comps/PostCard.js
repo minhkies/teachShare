@@ -5,6 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import firebase from "react-native-firebase";
 import AsyncStorage from '@react-native-community/async-storage';
 import {Actions} from 'react-native-router-flux';
+import CompetencyTag from './CompetencyTag';
 
 export default function PostCard({id, uid, img, subject, grade, topic, desc, inst, remarks, created_time, objs, coms, apps, downs, views, cmts}){
     let [name, setName] = useState();
@@ -29,6 +30,7 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
         let cuH = new Date().getHours();
         let cuMi = new Date().getMinutes();
         let cuS = new Date().getSeconds();
+
 
         if (cY === cuY){
             if (cM === cuM){
@@ -85,26 +87,6 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
             ).then();
     }
 
-    const ShowComs = ({c,s,p}) => {
-        return(
-            <View
-                style={PostCardStyles.comsCore}
-            >
-                <Text>{c}</Text>
-                <View
-                style={PostCardStyles.comsSub}
-                >
-                    <Text>{s}</Text>
-                    <View
-                    style={PostCardStyles.comsProfile}
-                    >
-                        <Text>{p}</Text>
-                    </View>
-                </View>
-            </View>
-        )
-    };
-
     useEffect(()=>{
         getUserProfile();
         timing();
@@ -113,7 +95,7 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
     return(
         <TouchableOpacity
             style={PostCardStyles.wrapper}
-            onPress={()=>Actions.post({})}
+            onPress={()=>Actions.post({id:id, username: name, ava: ava, uid:uid, img:img, subject:subject, grade:grade, topic:topic, desc: desc, inst: inst, remarks: remarks, created_time:created_time, objs: objs, coms: coms})}
         >
             <View style={PostCardStyles.topWrapper}>
                 <TouchableOpacity style={PostCardStyles.profileWrapper}>
@@ -138,7 +120,7 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
                 {
                     coms.map((o)=>{
                         return(
-                            <ShowComs
+                            <CompetencyTag
                                 c={o.core}
                                 s={o.sub}
                                 p={o.profile}

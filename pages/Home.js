@@ -99,62 +99,6 @@ export default function Home() {
         return JSON.parse(data.data.body).data;
     };
 
-    // let readLinks = async (o) => {
-    //     let data = await axios.post(host, {
-    //         key: 'links_read',
-    //         data: {pid: o.id}
-    //     }).catch(e => console.log(e.message));
-    //     return JSON.parse(data.data.body).data;
-    // };
-    // let readFiles = async (o) => {
-    //     let data = await axios.post(host, {
-    //         key: 'files_read',
-    //         data: {pid: o.id}
-    //     }).catch(e => console.log(e.message));
-    //     return JSON.parse(data.data.body).data;
-    // };
-    //
-    // let readAppreciations = async (o) => {
-    //     let data = await axios.post(host, {
-    //         key: 'appreciates_read',
-    //         data: {pid: o.id}
-    //     }).catch(e => console.log(e.message));
-    //     return JSON.parse(data.data.body).data;
-    // };
-    // let readViews = async (o) => {
-    //     let data = await axios.post(host, {
-    //         key: 'views_read',
-    //         data: {pid: o.id}
-    //     }).catch(e => console.log(e.message));
-    //     return JSON.parse(data.data.body).data;
-    // };
-    // let readDownloads = async (o) => {
-    //     let data = await axios.post(host, {
-    //         key: 'downloads_read',
-    //         data: {pid: o.id}
-    //     }).catch(e => console.log(e.message));
-    //     return JSON.parse(data.data.body).data;
-    // };
-    // let readCmts = async (o) => {
-    //     let data = await axios.post(host, {
-    //         key: 'cmts_read',
-    //         data: {pid: o.id}
-    //     }).catch(e => console.log(e.message));
-    //     return JSON.parse(data.data.body).data;
-    // };
-
-
-
-    // let obj = {
-    //     key: 'lesson_plans_read',
-    //     data: {},
-    // };
-    //
-    // let data = await axios.post(host, obj)
-    //     .catch(function (error) {
-    // });
-    // setLessonPlans(JSON.parse(data.data.body).data)
-
     useEffect(() => {
         getData();
     }, []);

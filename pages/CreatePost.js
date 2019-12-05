@@ -214,48 +214,52 @@ export default function CreatePost() {
     };
 
     let submitFile = async () => {
-
-        await selectedFiles.map((o, i) => {
+        let files = [];
+        console.log("tttttt", selectedFiles);
+        for (let i=0; i < selectedFiles.length; i++){
             let tempFile = async () => {
-                const file = o[1];
-                const name = o[0];
+                const file = selectedFiles[i][1];
+                const name = selectedFiles[i][0];
                 const ref2 = firebase.storage().ref().child('lp_files').child(pid);
                 const metadata = {contentType: file.type};
                 const task = ref2.child(name).put(file, metadata);
 
                 await task
                     .then(snapshot =>
-                        setUploadedFile(uploadedFile.concat(snapshot.downloadURL)),
+                        files = [selectedFiles[i][0], snapshot.downloadURL]
                     )
                     .catch((e) => {
                         {
                             Alert.alert(e.message);
                         }
                     });
-
+                return files;
             };
-            tempFile();
-        });
-        await createFiles();
+
+            await tempFile().then(async (r)=>{
+                console.log("haha", r);
+                try {
+                    await axios.post(host, {
+                        key: "files_create",
+                        data:{
+                            uid: uid,
+                            pid: pid,
+                            name: r[0],
+                            file_link: r[1],
+                        }
+
+                    });
+                }
+                catch (e) {
+                    alert(e.message)
+                }
+
+            });
+        }
+
     };
 
-    let createFiles = async () => {
-        await uploadedFile.map((o, i) => {
-            let tempFile = async () => {
-                let obj = {
-                    key: 'files_create',
-                    data: {
-                        uid: uid,
-                        pid: pid,
-                        name: o[0],
-                        file_link: o[1],
-                    },
-                };
-                let data = await axios.post(host, obj);
-            };
-            tempFile();
-        });
-    };
+
 
     let runTasks = async () => {
         await submitImg();
