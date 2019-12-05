@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, BackHandler} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text} from 'react-native';
 import {Router, Stack, Scene} from 'react-native-router-flux';
 
 import Home from './Home';
@@ -13,25 +13,10 @@ import Navbar from '../comps/Navbar';
 
 export default function Route(){
 
-    let [rN, setRN] = useState({
-        c: "home",
-        s: []
-    });
-    useEffect(()=>{
-        let backHandler = BackHandler.addEventListener('hardwareBackPress', (e)=>{
-
-        });
-    },[]);
+    let [rN, setRN] = useState('home');
     return(
         <View style={{flex: 1}}>
-            <Router
-                backAndroidHandler={(e)=>{
-                    console.log("kkkkkkkk", e);
-                    if (e.index > 0){
-                        setRN(e.routes[e.index].routeName);
-                    }
-                }}
-                onStateChange={(e)=>{
+            <Router onStateChange={(e)=>{
                 console.log(e.routes[e.index].routeName);
                 setRN(e.routes[e.index].routeName);
             }}>
@@ -41,8 +26,8 @@ export default function Route(){
                     <Scene key="createPost" component={CreatePost} initial={rN==='createPost'}/>
                     <Scene key="notifications" component={Notifications} initial={rN==='notifications'}/>
                     <Scene key="more" component={More} initial={rN==='more'}/>
-                    <Scene key="profile" component={Profile}/>
-                    <Scene key="post" component={Post}/>
+                    <Scene key="profile" component={Profile} initial={rN==='profile'}/>
+                    <Scene key="post" component={Post} initial={rN==='post'}/>
                 </Stack>
             </Router>
             <Navbar
