@@ -11,15 +11,11 @@ import axios from 'axios';
 
 export default function Home() {
     let userProfile, teachingSubjects;
-    let tempLessonPlans = [];
-    let temp = [];
     let [currentUser, setCurrentUser] = useState('');
     let [lessonPlans, setLessonPlans] = useState([]);
     let [subjects, setSubjects] = useState([]);
     let [selectedSubjects, setSelectedSubjects] = useState([]);
-    let [stat, setStat] = useState();
     let [c, setC] = useState(0);
-    let [loading, setLoading]  = useState(true);
 
     // const host = 'https://htin.postgres.database.azure.com:3001/post';
     // const host = 'http://192.168.1.84:3001/post';

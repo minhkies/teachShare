@@ -87,7 +87,8 @@ export default function Register() {
             lname: lastName.toLowerCase(),
             school: school,
             bio: bio,
-            photo: photo
+            photo: photo,
+            saved: []
         })
             .then(addSubjects(currentUser))
             .catch((error) => {

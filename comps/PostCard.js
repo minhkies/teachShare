@@ -98,7 +98,10 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
             onPress={()=>Actions.post({id:id, username: name, ava: ava, uid:uid, img:img, subject:subject, grade:grade, topic:topic, desc: desc, inst: inst, remarks: remarks, created_time:created_time, objs: objs, coms: coms})}
         >
             <View style={PostCardStyles.topWrapper}>
-                <TouchableOpacity style={PostCardStyles.profileWrapper}>
+                <TouchableOpacity
+                    style={PostCardStyles.profileWrapper}
+                    onPress={()=>Actions.profile({u: uid})}
+                >
                     <Image
                         style={PostCardStyles.avatar}
                         source={{uri: ava}}

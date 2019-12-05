@@ -3,12 +3,35 @@ import {View, ScrollView, Image, Text, TextInput, TouchableOpacity, Linking} fro
 import axios from 'axios';
 import PostStyles from '../styles/PostStyles';
 import CompetencyTag from '../comps/CompetencyTag';
+import firebase from 'react-native-firebase';
+import AsyncStorage from '@react-native-community/async-storage';
+import {Actions} from 'react-native-router-flux';
+import firestore from '@react-native-firebase/firestore';
 
 export default function Post({id, username, ava, uid, img, subject, grade, topic, desc, inst, remarks, created_time, objs, coms}) {
     const host = 'https://teachsharek12ss.herokuapp.com/post';
+
+    let userProfile;
     let [links, setLinks] = useState([]);
     let [files, setFiles] = useState([]);
+    let [cUid, setCUid] = useState('');
+    let [app, setApp] = useState(false);
+    let [appStyles, setAppStyles] = useState([]);
+    let [appTxt, setAppTxt] = useState('');
+    let [savedLps, setSavedLps] = useState([]);
+    let [save, setSave] = useState(false);
+    let [saveStyles, setSaveStyles] = useState([]);
+    let [saveTxt, setSaveTxt] = useState('');
 
+    let getData = async () => {
+        let tempUid = await AsyncStorage.getItem('uid');
+        userProfile = await AsyncStorage.getItem('userData');
+        setCUid(tempUid);
+        if (userProfile !== null) {
+            userProfile = JSON.parse(userProfile);
+        }
+        return tempUid;
+    };
 
     let readLinks = async () => {
         let data = await axios.post(host, {
@@ -26,19 +49,42 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
         setFiles(JSON.parse(data.data.body).data);
     };
 
-    let readAppreciations = async () => {
+    let readAppreciations = async (r) => {
         let data = await axios.post(host, {
             key: 'appreciates_read',
-            data: {pid: id},
+            data: {pid: id, uid: r},
         }).catch(e => console.log(e.message));
-        return JSON.parse(data.data.body).data;
+        JSON.parse(data.data.body).data.length !== 0 ? setApp(true) : setApp(false);
+        await appreciationStyles();
     };
+
+
+    let readSaved = async (r) => {
+        let saved = [];
+        let c = 0;
+        let ref = firestore().collection('UserProfiles').doc(r);
+        firebase
+            .firestore()
+            .runTransaction(async transaction => {
+                    const currentUser = await transaction.get(ref);
+                    saved = currentUser.data().saved;
+                },
+            );
+        console.log("hahahahahahaha", saved);
+        await saved.map((o) => {
+            o === id && c++;
+        });
+        c > 0 ? setSave(true) : setSave(false);
+        savedStyles();
+    };
+
     let readViews = async () => {
         let data = await axios.post(host, {
             key: 'views_read',
             data: {pid: id},
         }).catch(e => console.log(e.message));
         return JSON.parse(data.data.body).data;
+
     };
 
     let readCmts = async () => {
@@ -60,30 +106,85 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
     // });
     // setLessonPlans(JSON.parse(data.data.body).data);
 
+    let appreciationData = async () => {
+        if (app === false) {
+            await axios.post(host, {
+                key: 'appreciates_create',
+                data: {pid: id, uid: cUid},
+            }).catch(e => console.log(e.message));
+        } else {
+            await axios.post(host, {
+                key: 'appreciates_delete',
+                data: {pid: id, uid: cUid},
+            }).catch(e => console.log(e.message));
+        }
+    };
+
+    let appreciationStyles = () => {
+        if (app === true) {
+            setAppTxt('Appreciated');
+            setAppStyles([PostStyles.selectedAppBtn, PostStyles.selectedAppTxt]);
+        } else {
+            setAppTxt('Appreciate');
+            setAppStyles([PostStyles.unselectedAppBtn, PostStyles.unselectedAppTxt]);
+        }
+    };
+
+    let savedData = async () => {
+        let ref = firestore().collection('UserProfiles').doc(cUid);
+        if (save === false){
+            ref.update({
+                saved: firebase.firestore.FieldValue.arrayUnion(id)
+            })
+        } else {
+            ref.update({
+                saved: firebase.firestore.FieldValue.arrayRemove(id)
+        })
+        }
+    };
+
+    let savedStyles = () => {
+        if (save === true) {
+            setSaveTxt('Saved');
+            setSaveStyles([PostStyles.selectedSaveBtn, PostStyles.selectedSaveTxt]);
+        } else {
+            setSaveTxt('Save');
+            setSaveStyles([PostStyles.unselectedSaveBtn, PostStyles.unselectedSaveTxt]);
+        }
+    };
+
     useEffect(() => {
+        getData().then(r => {
+            readAppreciations(r);
+            readSaved(r);
+        });
         readLinks();
         readFiles();
+
     }, []);
 
-
+    useEffect(() => {
+        appreciationStyles();
+    }, [app]);
     return (
         <ScrollView
             style={PostStyles.wrapper}
         >
-            <View
-                style={PostStyles.topBarWrapper}
-            >
-                <TouchableOpacity>
-                    <View>
-                        <Text>Back</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
+            {/*<View*/}
+            {/*    style={PostStyles.topBarWrapper}*/}
+            {/*>*/}
+            {/*    <TouchableOpacity>*/}
+            {/*        <View>*/}
+            {/*            <Text>Back</Text>*/}
+            {/*        </View>*/}
+            {/*    </TouchableOpacity>*/}
+            {/*</View>*/}
             <View
                 style={PostStyles.profileWrapper}
             >
                 <TouchableOpacity
                     style={PostStyles.avaWrapper}
+                    onPress={()=>Actions.profile({u: uid})}
                 >
                     <Image
                         style={PostStyles.avaImg}
@@ -91,7 +192,9 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
                     />
                 </TouchableOpacity>
                 <View>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={()=>Actions.profile({u: uid})}
+                    >
                         <Text>{username}</Text>
                     </TouchableOpacity>
                     <Text
@@ -164,11 +267,54 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
                 </View>
             }
             {
-                remarks && <View style={PostStyles.contentWrapper}>
+                remarks && <View style={[PostStyles.contentWrapper, {marginBottom: 20}]}>
                     <Text style={PostStyles.title}>Remarks</Text>
                     <Text>{remarks}</Text>
                 </View>
             }
+            <View style={PostStyles.btnWrapper}>
+                <TouchableOpacity
+                    onPress={() => {
+                        setApp(!app);
+                        appreciationData();
+                        appreciationStyles();
+                    }
+                    }
+                >
+                    <View style={[PostStyles.btn, appStyles[0]]}>
+                        <Text style={appStyles[1]}>{appTxt}</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        setSave(!save);
+                        savedData();
+                        savedStyles();
+                    }
+                    }
+                >
+                    <View style={[PostStyles.btn, saveStyles[0]]}>
+                        <Text style={saveStyles[1]}>{saveTxt}</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <View style={[PostStyles.btn, PostStyles.shareBtn]}>
+                        <Text style={PostStyles.shareTxt}>Share</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+            <View style={PostStyles.cmtInpWrapper}>
+            <TextInput
+                style={PostStyles.cmtInp}
+                multiline={true}
+                placeholder={"Write your comment"}
+            />
+            <TouchableOpacity style={PostStyles.cmtBtnWrapper}>
+                <View style={PostStyles.cmtBtn}>
+                    <Text style={PostStyles.cmtTxt}>Send</Text>
+                </View>
+            </TouchableOpacity>
+            </View>
 
 
         </ScrollView>

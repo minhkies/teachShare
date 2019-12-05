@@ -7,8 +7,11 @@ import BlueBtn from '../comps/BlueBtn';
 import PostTabs from '../comps/PostTabs';
 import axios from 'axios';
 import PostCard from '../comps/PostCard';
+import firestore from '@react-native-firebase/firestore';
+import firebase from "react-native-firebase";
+import {Actions} from 'react-native-router-flux';
 
-export default function Profile() {
+export default function Profile({u}) {
     let tempUserProfile, uid;
     let [userInfo, setUserInfo] = useState({});
     let [lessonPlans, setLessonPlans] = useState([]);
@@ -26,20 +29,38 @@ export default function Profile() {
         }
     };
 
-    let getData = async () => {
-        let tempUid;
-        try {
-            tempUserProfile = await AsyncStorage.getItem('userData');
-            tempUid = await AsyncStorage.getItem('uid');
+    let init = async () => {
+        if (!u){
+                let tempUid;
+                try {
+                    tempUserProfile = await AsyncStorage.getItem('userData');
+                    tempUid = await AsyncStorage.getItem('uid');
 
-            if (tempUserProfile !== null && tempUid !== null) {
-                setUserInfo(JSON.parse(tempUserProfile));
-                uid = tempUid;
-            }
-        } catch (e) {
-            console.log(e.message)
+                    if (tempUserProfile !== null && tempUid !== null) {
+                        setUserInfo(JSON.parse(tempUserProfile));
+                        uid = tempUid;
+                    }
+                } catch (e) {
+                    console.log(e.message)
+                }
+        } else {
+            uid = u;
+            let ref = firestore().collection('UserProfiles').doc(u);
+            firebase
+                .firestore()
+                .runTransaction(async transaction => {
+                        const currentUser = await transaction.get(ref);
+                        try {
+                            setUserInfo(currentUser.data())
+                        } catch (e) {
+                            // saving error
+                        }
+                    }
+                );
         }
     };
+
+
 
     let readLessonPlans = async () => {
         //fetch to the bd to read
@@ -59,7 +80,7 @@ export default function Profile() {
 
 
     useEffect(() => {
-        getData().then(()=>{
+        init().then(()=>{
             readLessonPlans();
         });
 
@@ -98,8 +119,13 @@ export default function Profile() {
                                 desc={o.description}
                                 inst={o.instruction}
                                 remarks={o.remarks}
-                                created_time={o.created_time}
+                                created_time={o.created_time.toLocaleString('en-US', {timeZone: 'Canada/Pacific'})}
                                 objs={o.learning_objs}
+                                coms={o.competencies}
+                                apps={o.c_apps}
+                                downs={o.c_downs}
+                                views={o.c_views}
+                                cmts={o.c_cmts}
                             />
                         )
                     }

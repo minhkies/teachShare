@@ -56,7 +56,92 @@ const PostStyles = StyleSheet.create({
     },
     links:{
         color: "blue"
+    },
+    btnWrapper:{
+        paddingTop: 20,
+        paddingBottom: 20,
+        borderColor: "#ebebeb",
+        borderTopWidth: 1,
+        borderBottomWidth: 1
+    },
+    btn:{
+        width: "100%",
+        height: 60,
+        borderRadius: 10,
+        borderWidth: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 5
+    },
+    unselectedAppBtn:{
+        backgroundColor: "#EDFAFF",
+        borderColor: "#5DC1D8"
+    },
+    unselectedAppTxt:{
+        color: "#5DC1D8"
+    },
+    selectedAppBtn:{
+        backgroundColor: "#5DC1D8",
+        borderColor: "#5DC1D8"
+    },
+    selectedAppTxt:{
+        color: "#EDFAFF"
+    },
+    unselectedSaveBtn:{
+        backgroundColor: "#FEF6EB",
+        borderColor: "#D3B594"
+    },
+    unselectedSaveTxt:{
+        color: "#D3B594"
+    },
+    selectedSaveBtn:{
+        backgroundColor: "#D3B594",
+        borderColor: "#D3B594"
+    },
+    selectedSaveTxt:{
+        color: "#FEF6EB"
+    },
+    shareBtn:{
+        backgroundColor: "#F2F9EA",
+        borderColor: "#AABC8B"
+    },
+    shareTxt:{
+        color: "#AABC8B"
+    },
+    cmtInpWrapper:{
+        marginTop: 20,
+        marginBottom: 20,
+        alignItems: "center",
+    },
+    cmtInp:{
+        backgroundColor: "#f7f7f7",
+        borderRadius: 10,
+        height: 160,
+        textAlignVertical: "top",
+        width: "100%"
+    },
+    cmtBtnWrapper:{
+        position: "absolute",
+        top: 95,
+        width: "97%",
+        marginLeft: 5,
+        marginRight: 5
+    },
+    cmtBtn:{
+        height: 60,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#EDFAFF",
+        borderColor: "#5DC1D8",
+        borderWidth: 1,
+        borderRadius: 10
+    },
+    cmtTxt:{
+        color: "#5DC1D8"
     }
+
+
+
 
 });
 
