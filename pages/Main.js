@@ -11,6 +11,9 @@ export default function Main() {
   return(
     <View style={MainStyles.main}>
       <MainRoute />
+      <Navbar
+        OS={Platform.OS}
+      />
     </View>
   )
 }

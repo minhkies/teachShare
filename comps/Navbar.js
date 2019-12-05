@@ -51,8 +51,8 @@ export default function Navbar(props) {
         setNotifications(false);
         setMore(false);
     }
-
-    if (props.route === 'home') {
+    
+    if (home === true || props.route === 'home') {
         data[0].img = <Image style={NavbarStyles.icon} source={require('../media/icon/home-selected.png')}/>;
         data[0].lbl = <Text style={NavbarStyles.txtSelected}>Home</Text>;
     } else {
@@ -60,7 +60,7 @@ export default function Navbar(props) {
         data[0].lbl = <Text style={NavbarStyles.txt}>Home</Text>;
     }
 
-    if (props.route === 'discover') {
+    if (discover === true || props.route === 'discover') {
         data[1].img = <Image style={NavbarStyles.icon} source={require('../media/icon/discover-selected.png')}/>;
         data[1].lbl = <Text style={NavbarStyles.txtSelected}>Discover</Text>;
     } else {
@@ -68,7 +68,7 @@ export default function Navbar(props) {
         data[1].lbl = <Text style={NavbarStyles.txt}>Discover</Text>;
     }
 
-    if (props.route === 'createPost') {
+    if (create === true || props.route === 'createPost') {
         data[2].img = <Image style={NavbarStyles.icon} source={require('../media/icon/create-selected.png')}/>;
         data[2].lbl = <Text style={NavbarStyles.txtSelected}>Create</Text>;
     } else {
@@ -76,7 +76,7 @@ export default function Navbar(props) {
         data[2].lbl = <Text style={NavbarStyles.txt}>Create</Text>;
     }
 
-    if (props.route === 'notifications') {
+    if (notifications === true || props.route === 'notifications') {
         data[3].img = <Image style={NavbarStyles.icon} source={require('../media/icon/notification-selected.png')}/>;
         data[3].lbl = <Text style={NavbarStyles.txtSelected}>Notifications</Text>;
     } else {
@@ -84,7 +84,7 @@ export default function Navbar(props) {
         data[3].lbl = <Text style={NavbarStyles.txt}>Notifications</Text>;
     }
 
-    if (props.route === 'more') {
+    if (more === true || props.route === 'more') {
         data[4].img = <Image style={NavbarStyles.icon} source={require('../media/icon/more-selected.png')}/>;
         data[4].lbl = <Text style={NavbarStyles.txtSelected}>More</Text>;
     } else {
