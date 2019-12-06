@@ -105,32 +105,32 @@ export default function Profile({u}) {
                 />
             </View>
             <PostTabs/>
-            {
-                lessonPlans.map((o,i)=>{
-                    if (o.is_public === true){
-                        return(
-                            <PostCard
-                                id={o.id}
-                                uid={o.uid}
-                                img={o.img}
-                                subject={o.subject}
-                                grade={o.grade}
-                                topic={o.topic}
-                                desc={o.description}
-                                inst={o.instruction}
-                                remarks={o.remarks}
-                                created_time={o.created_time.toLocaleString('en-US', {timeZone: 'Canada/Pacific'})}
-                                objs={o.learning_objs}
-                                coms={o.competencies}
-                                apps={o.c_apps}
-                                downs={o.c_downs}
-                                views={o.c_views}
-                                cmts={o.c_cmts}
-                            />
-                        )
-                    }
-                })
-            }
+            {/*{*/}
+            {/*    lessonPlans.map((o,i)=>{*/}
+            {/*        if (o.is_public === true){*/}
+            {/*            return(*/}
+            {/*                <PostCard*/}
+            {/*                    id={o.id}*/}
+            {/*                    uid={o.uid}*/}
+            {/*                    img={o.img}*/}
+            {/*                    subject={o.subject}*/}
+            {/*                    grade={o.grade}*/}
+            {/*                    topic={o.topic}*/}
+            {/*                    desc={o.description}*/}
+            {/*                    inst={o.instruction}*/}
+            {/*                    remarks={o.remarks}*/}
+            {/*                    created_time={o.created_time.toLocaleString('en-US', {timeZone: 'Canada/Pacific'})}*/}
+            {/*                    objs={o.learning_objs}*/}
+            {/*                    coms={o.competencies}*/}
+            {/*                    apps={o.c_apps}*/}
+            {/*                    downs={o.c_downs}*/}
+            {/*                    views={o.c_views}*/}
+            {/*                    cmts={o.c_cmts}*/}
+            {/*                />*/}
+            {/*            )*/}
+            {/*        }*/}
+            {/*    })*/}
+            {/*}*/}
         </ScrollView>
     );
 

@@ -6,8 +6,11 @@ import firebase from "react-native-firebase";
 import AsyncStorage from '@react-native-community/async-storage';
 import {Actions} from 'react-native-router-flux';
 import CompetencyTag from './CompetencyTag';
+import axios from 'axios';
 
 export default function PostCard({id, uid, img, subject, grade, topic, desc, inst, remarks, created_time, objs, coms, apps, downs, views, cmts}){
+    const host = 'https://teachsharek12ss.herokuapp.com/post';
+
     let [name, setName] = useState();
     let [ava, setAva] = useState();
     let [timeTxt, setTimeTxt] = useState("");
@@ -87,6 +90,22 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
             ).then();
     }
 
+    let viewCount = async () =>{
+        let data = await axios.post(host, {
+            key: 'views_read',
+            data: {pid: id, uid: uid},
+        }).catch(e => console.log(e.message));
+
+        console.log("hahahahha", JSON.parse(data.data.body).data);
+
+        if(JSON.parse(data.data.body).data.length === 0){
+            await axios.post(host, {
+                key: 'views_create',
+                data: {pid: id, uid: uid},
+            }).catch(e => console.log(e.message));
+        }
+    };
+
     useEffect(()=>{
         getUserProfile();
         timing();
@@ -95,7 +114,10 @@ export default function PostCard({id, uid, img, subject, grade, topic, desc, ins
     return(
         <TouchableOpacity
             style={PostCardStyles.wrapper}
-            onPress={()=>Actions.post({id:id, username: name, ava: ava, uid:uid, img:img, subject:subject, grade:grade, topic:topic, desc: desc, inst: inst, remarks: remarks, created_time:created_time, objs: objs, coms: coms})}
+            onPress={()=>{
+                viewCount();
+                Actions.post({id:id, username: name, ava: ava, uid:uid, img:img, subject:subject, grade:grade, topic:topic, desc: desc, inst: inst, remarks: remarks, created_time:created_time, objs: objs, coms: coms})
+                }}
         >
             <View style={PostCardStyles.topWrapper}>
                 <TouchableOpacity

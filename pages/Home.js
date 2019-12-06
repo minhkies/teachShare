@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {ScrollView, TouchableOpacity, Image} from 'react-native';
 import PageTitle from '../comps/PageTitle';
 import HomeStyles from '../styles/HomeStyles';
 import SearchBar from '../comps/SearchBar';
@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import PostCard from '../comps/PostCard';
 import ContentLoader from "react-content-loader";
 import axios from 'axios';
+import SearchModal from '../comps/SearchModal';
 
 export default function Home() {
     let userProfile, teachingSubjects;
@@ -16,6 +17,8 @@ export default function Home() {
     let [subjects, setSubjects] = useState([]);
     let [selectedSubjects, setSelectedSubjects] = useState([]);
     let [c, setC] = useState(0);
+    let [visible, setVisible] = useState(false);
+
 
     // const host = 'https://htin.postgres.database.azure.com:3001/post';
     // const host = 'http://192.168.1.84:3001/post';
@@ -97,9 +100,9 @@ export default function Home() {
 
     useEffect(() => {
         getData();
+
     }, []);
 
-    console.log("hhhhhhhh", c);
 
     useEffect(() => {
         readLessonPlans(subjects, selectedSubjects).then(async(r)=>{
@@ -157,7 +160,20 @@ export default function Home() {
                 title={'Welcome ' + currentUser}
                 msg={'This homepage is tailored for you!'}
             />
-            <SearchBar/>
+            <TouchableOpacity
+                style={{width: "100%", height: 90}}
+                onPress={()=>{
+                    setVisible(!visible);
+                    console.log("runninnnnnnnnggg");
+                }}
+            >
+                {/*<SearchBar/>*/}
+                <Image
+                    style={{width:"100%", resizeMode: "contain", height: 90}}
+                    source={require("../media/imgs/searchBar.jpg")}
+                />
+            </TouchableOpacity>
+
             <SubjectsFilter
                 subjects={subjects}
                 selectedSubjects={selectedSubjects}
@@ -190,6 +206,10 @@ export default function Home() {
                     }
                 })
             }
+            <SearchModal
+                visible={visible}
+                setVisible={setVisible}
+            />
         </ScrollView>
     );
 }

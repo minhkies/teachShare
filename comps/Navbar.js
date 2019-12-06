@@ -1,9 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import NavbarStyles from '../compstyles/NavbarStyles';
 import {Actions} from 'react-native-router-flux';
 
+
 export default function Navbar(props) {
+
+    const [scene, setScene] = useState("home");
+    useEffect(()=>{
+        console.log("scene", Actions.currentScene);
+        setScene(Actions.currentScene);
+    }, [Actions.currentScene]);
 
     let [home, setHome] = useState(true);
     let [discover, setDiscover] = useState(false);
@@ -51,8 +58,8 @@ export default function Navbar(props) {
         setNotifications(false);
         setMore(false);
     }
-    
-    if (home === true || props.route === 'home') {
+
+    if (scene === "home") {
         data[0].img = <Image style={NavbarStyles.icon} source={require('../media/icon/home-selected.png')}/>;
         data[0].lbl = <Text style={NavbarStyles.txtSelected}>Home</Text>;
     } else {
@@ -60,7 +67,7 @@ export default function Navbar(props) {
         data[0].lbl = <Text style={NavbarStyles.txt}>Home</Text>;
     }
 
-    if (discover === true || props.route === 'discover') {
+    if (scene === "discover") {
         data[1].img = <Image style={NavbarStyles.icon} source={require('../media/icon/discover-selected.png')}/>;
         data[1].lbl = <Text style={NavbarStyles.txtSelected}>Discover</Text>;
     } else {
@@ -68,7 +75,7 @@ export default function Navbar(props) {
         data[1].lbl = <Text style={NavbarStyles.txt}>Discover</Text>;
     }
 
-    if (create === true || props.route === 'createPost') {
+    if (scene === "createPost") {
         data[2].img = <Image style={NavbarStyles.icon} source={require('../media/icon/create-selected.png')}/>;
         data[2].lbl = <Text style={NavbarStyles.txtSelected}>Create</Text>;
     } else {
@@ -76,7 +83,7 @@ export default function Navbar(props) {
         data[2].lbl = <Text style={NavbarStyles.txt}>Create</Text>;
     }
 
-    if (notifications === true || props.route === 'notifications') {
+    if (scene === "notifications") {
         data[3].img = <Image style={NavbarStyles.icon} source={require('../media/icon/notification-selected.png')}/>;
         data[3].lbl = <Text style={NavbarStyles.txtSelected}>Notifications</Text>;
     } else {
@@ -84,7 +91,7 @@ export default function Navbar(props) {
         data[3].lbl = <Text style={NavbarStyles.txt}>Notifications</Text>;
     }
 
-    if (more === true || props.route === 'more') {
+    if (scene === "more") {
         data[4].img = <Image style={NavbarStyles.icon} source={require('../media/icon/more-selected.png')}/>;
         data[4].lbl = <Text style={NavbarStyles.txtSelected}>More</Text>;
     } else {
@@ -103,7 +110,7 @@ export default function Navbar(props) {
                             lbl={obj.lbl}
                             page={obj.page}
                             hook={obj.hook}
-                            falseEverything={falseEverything}
+                            setScene={setScene}
                         />
                     );
                 })
@@ -112,12 +119,13 @@ export default function Navbar(props) {
     );
 }
 
-let MenuOptions = ({ind, img, lbl, page, hook, falseEverything}) => {
+let MenuOptions = ({ind, img, lbl, page, hook, setScene}) => {
     return (
         <TouchableOpacity
             style={NavbarStyles.iconWrapper}
             onPress={() => {
-                falseEverything();
+                //falseEverything();
+                setScene(page);
                 hook(true);
                 Actions[page]();
             }}

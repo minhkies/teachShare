@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, ScrollView, TouchableOpacity, Alert, ToastAndroid} from 'react-native';
 import firebase from 'react-native-firebase';
 import firestore from '@react-native-firebase/firestore';
@@ -17,6 +17,7 @@ import TxtWBox from '../comps/TxtWBox';
 import LottieView from 'lottie-react-native';
 import Modal from 'react-native-modal';
 import {Actions} from 'react-native-router-flux';
+
 
 export default function CreatePost() {
 

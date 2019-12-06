@@ -9,6 +9,7 @@ import {Actions} from 'react-native-router-flux';
 import firestore from '@react-native-firebase/firestore';
 
 export default function Post({id, username, ava, uid, img, subject, grade, topic, desc, inst, remarks, created_time, objs, coms}) {
+
     const host = 'https://teachsharek12ss.herokuapp.com/post';
 
     let userProfile;
@@ -162,6 +163,8 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
         readFiles();
 
     }, []);
+
+    console.log("..kncjsaiusbcuds", coms);
 
     useEffect(() => {
         appreciationStyles();
