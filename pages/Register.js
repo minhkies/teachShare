@@ -60,6 +60,7 @@ export default function Register() {
                 setLoading(false);
                 ToastAndroid.show(error.message, ToastAndroid.LONG, ToastAndroid.BOTTOM)}
             );
+        setLoading(false);
     };
 
     let submitImg = () => {
@@ -85,6 +86,7 @@ export default function Register() {
         await ref.doc(currentUser && currentUser.uid).set({
             fname: firstName.toLowerCase(),
             lname: lastName.toLowerCase(),
+            school: school,
             school: school,
             bio: bio,
             photo: photo,
@@ -375,7 +377,7 @@ export default function Register() {
                             autoPlay
                             loop
                             style={RegisterStyles.popUpAnimation}/>
-                        <Text style={RegisterStyles.popUpTxt}>Creating lesson plan...</Text>
+                        <Text style={RegisterStyles.popUpTxt}>Creating new account...</Text>
                     </View>
                 </Modal>
             </ScrollView>

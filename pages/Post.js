@@ -12,7 +12,7 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
 
     const host = 'https://teachsharek12ss.herokuapp.com/post';
 
-    let userProfile;
+    let [userProfile, setUserProfile] = useState();
     let [links, setLinks] = useState([]);
     let [files, setFiles] = useState([]);
     let [cUid, setCUid] = useState('');
@@ -23,13 +23,16 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
     let [save, setSave] = useState(false);
     let [saveStyles, setSaveStyles] = useState([]);
     let [saveTxt, setSaveTxt] = useState('');
+    let [cmt, setCmt] = useState([]);
+    let [tempCmt, setTempCmt] = useState("");
 
     let getData = async () => {
         let tempUid = await AsyncStorage.getItem('uid');
-        userProfile = await AsyncStorage.getItem('userData');
+        let tempUserProfile= await AsyncStorage.getItem('userData');
         setCUid(tempUid);
-        if (userProfile !== null) {
-            userProfile = JSON.parse(userProfile);
+        console.log("bzhczdlcsdasd", tempUserProfile);
+        if (tempUserProfile !== null) {
+            setUserProfile(JSON.parse(tempUserProfile));
         }
         return tempUid;
     };
@@ -104,7 +107,7 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
     //
     // let data = await axios.post(host, obj)
     //     .catch(function (error) {
-    // });
+    // })
     // setLessonPlans(JSON.parse(data.data.body).data);
 
     let appreciationData = async () => {
@@ -154,6 +157,29 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
         }
     };
 
+    const capitalize = (s) => {
+        if (typeof s !== 'string') {
+            return '';
+        } else {
+            return s.charAt(0).toUpperCase() + s.slice(1);
+        }
+    };
+
+    let Comments = ({c}) => {
+        return (
+            <View style={{flexDirection: "row", alignItems: "flex-start"}}>
+                <Image
+                    style={{width: 40, height: 40, borderRadius: 20, marginRight: 10}}
+                    source={{uri: userProfile.photo}}
+                />
+                <View style={{backgroundColor: "#f7f7f7", width: "100%", padding: 10, borderRadius: 10}}>
+                    <Text style={{fontWeight: "bold", marginBottom: 5}}>{capitalize(userProfile.fname)} {capitalize((userProfile.lname))}</Text>
+                    <Text>{c}</Text>
+                </View>
+            </View>
+        )
+    };
+
     useEffect(() => {
         getData().then(r => {
             readAppreciations(r);
@@ -164,11 +190,13 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
 
     }, []);
 
-    console.log("..kncjsaiusbcuds", coms);
 
     useEffect(() => {
         appreciationStyles();
     }, [app]);
+
+    console.log("uhiusdgfuids", tempCmt, cmt, userProfile);
+
     return (
         <ScrollView
             style={PostStyles.wrapper}
@@ -311,12 +339,30 @@ export default function Post({id, username, ava, uid, img, subject, grade, topic
                 style={PostStyles.cmtInp}
                 multiline={true}
                 placeholder={"Write your comment"}
+                onChangeText={(t)=>setTempCmt(t)}
+                value={tempCmt}
             />
-            <TouchableOpacity style={PostStyles.cmtBtnWrapper}>
+            <TouchableOpacity
+                style={PostStyles.cmtBtnWrapper}
+                onPress={()=>{
+                    setCmt(cmt.concat(tempCmt))
+                }}
+            >
                 <View style={PostStyles.cmtBtn}>
                     <Text style={PostStyles.cmtTxt}>Send</Text>
                 </View>
             </TouchableOpacity>
+            </View>
+            <View style={{marginBottom: 60, flex: 1}}>
+                {
+                    cmt.map((o)=>{
+                        return(
+                            <Comments
+                                c={o}
+                            />
+                        )
+                    })
+                }
             </View>
 
 
